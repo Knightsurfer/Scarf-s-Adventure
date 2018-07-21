@@ -44,4 +44,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Knight's Files/Resources/Scenes/test.unity
     guid: c8affbe0ba2ebbf429d837af81dee5cc
+  - enabled: 1
+    path: Assets/Knight's Files/Resources/Scenes/New Level.unity
+    guid: 6b128d3a4bf816c42afe13a96e175378
   m_configObjects: {}
