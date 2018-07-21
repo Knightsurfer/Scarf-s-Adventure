@@ -34,3 +34,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+*.meta
+*Application/
+Application/Windows/Windows_Data/globalgamemanagers
+Application/Windows/Windows_Data/level0
