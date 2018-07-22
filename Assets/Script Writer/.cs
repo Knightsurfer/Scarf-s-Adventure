@@ -1,8 +1,7 @@
 using UnityEngine;                               
-public class Test : MonoBehaviour  
+public class TestScript : MonoBehaviour  
 {                                                
                                                  
-
        void Start()                              
        {                                         
                                                  
@@ -17,5 +16,5 @@ public class Test : MonoBehaviour
                                                  
                                                  
                                                  
-
+                                                 
 }                                                  
