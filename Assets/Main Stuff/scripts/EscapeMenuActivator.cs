@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,19 +46,25 @@ public class EscapeMenuActivator : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-
-            switch (EscapeMenuOpen)
+            if (!Application.isEditor)
             {
-                case true:
-                    EscapeMenuOpen = false;
-                    UnityEngine.Cursor.visible = false;
-                    break;
+                
+                switch (EscapeMenuOpen)
+                {
+                    case true:
 
-                case false:
-                    EscapeMenuOpen = true;
-                    UnityEngine.Cursor.visible = true;
-                    System.Windows.Forms.Cursor.Position = new System.Drawing.Point(UnityEngine.Screen.width / 2, UnityEngine.Screen.height / 2);
-                    break;
+                        EscapeMenuOpen = false;
+                        UnityEngine.Cursor.visible = false;
+                        break;
+
+                    case false:
+                        EscapeMenuOpen = true;
+                        UnityEngine.Cursor.visible = true;
+                        #if !UNITY_WEBGL
+                        System.Windows.Forms.Cursor.Position = new System.Drawing.Point(UnityEngine.Screen.width / 2, UnityEngine.Screen.height / 2);
+                        #endif
+                        break;
+                }
             }
         }
     }

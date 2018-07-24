@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Main Stuff/team.unity
     guid: 040d46dca1cf57848884973e40a906b2
   - enabled: 0
@@ -41,10 +41,13 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
-    path: Assets/Knight's Files/Resources/Scenes/test.unity
-    guid: c8affbe0ba2ebbf429d837af81dee5cc
-  - enabled: 1
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
     path: Assets/Knight's Files/Resources/Scenes/New Level.unity
     guid: 6b128d3a4bf816c42afe13a96e175378
+  - enabled: 1
+    path: Assets/Knight's Files/Resources/Scenes/test.unity
+    guid: b85cd57ed60169a4ca963b099d85935d
   m_configObjects: {}

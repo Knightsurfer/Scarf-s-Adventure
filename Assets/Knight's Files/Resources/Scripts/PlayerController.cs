@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    float leftx;
-    float lefty;
+    public Camera cam;
+    public LayerMask movementLayer;
     Rigidbody rigid;
 
-	// Use this for initialization
+
 	void Start ()
     {
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>() ;
         rigid = GetComponent<Rigidbody>();
 	}
 	
@@ -25,16 +26,23 @@ public class PlayerController : MonoBehaviour {
 
     void ControllerInput()
     {
-        ControllerConvert();
+        if(Input.GetMouseButtonDown(0))
+        {
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
 
-        rigid.AddForce(new Vector3(leftx,0,lefty));
+            if (Physics.Raycast(ray,out hit,100,movementLayer))
+            {
+                Debug.Log("We hit " + hit.collider.name + " " + hit.point);
+
+
+            }
+
+        }
+
     }
 
-    void ControllerConvert()
-    {
-        leftx = Input.GetAxis("LeftStickX")  *25;
-        lefty = Input.GetAxis("LeftStickY")  *25;
-    }
+    
 
 
 
