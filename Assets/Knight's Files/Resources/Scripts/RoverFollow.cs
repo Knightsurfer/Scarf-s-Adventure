@@ -8,7 +8,7 @@ public class RoverFollow : MonoBehaviour
     protected EscapeMenuActivator pause;
 
     protected float currentYaw = 180f;
-    public float currentZoom = 2f;
+    float currentZoom = 2f;
 
     Quaternion invertRotation;
 
@@ -61,18 +61,22 @@ public class RoverFollow : MonoBehaviour
         currentYaw += Input.GetAxis("Mouse X") * 100f * Time.deltaTime;
 
 
-        if(Input.GetKeyDown(KeyCode.W))
+        if(Input.GetKey(KeyCode.W))
         {
+                        
             anim.SetFloat("MoveY", 1.0f);
+            anim.SetBool("Moving", true);
+
 
         }
         if (Input.GetKeyUp(KeyCode.W))
         {
             anim.SetFloat("MoveY", 0f);
+            anim.SetBool("Moving", false);
 
         }
 
-
+   
 
     }
 
@@ -88,10 +92,10 @@ public class RoverFollow : MonoBehaviour
 
 
 
-    public Transform gameCamera;
     void CameraMovement()
     {
         var characterRotation = transform.rotation;
+
 
         characterRotation.x = 0;
         characterRotation.z = 0;
