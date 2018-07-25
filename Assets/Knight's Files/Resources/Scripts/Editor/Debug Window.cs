@@ -42,7 +42,7 @@ public class DebugWindow : EditorWindow
 
     #region Mesh Variables
     #region Title
-     bool levelFold = false;
+     protected bool levelFold = false;
     protected Texture levelIcon;
     #endregion
     #region Grid

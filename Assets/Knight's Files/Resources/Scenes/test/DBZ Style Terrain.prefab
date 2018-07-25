@@ -20,8 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4440429588387092}
   - component: {fileID: 218781377840613150}
-  - component: {fileID: 154224062851225580}
-  m_Layer: 0
+  - component: {fileID: 65643830054829318}
+  m_Layer: 10
   m_Name: DBZ Style Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,16 +41,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!154 &154224062851225580
-TerrainCollider:
+--- !u!65 &65643830054829318
+BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1031100617890426}
   m_Material: {fileID: 13400000, guid: f700158a9c5873e4b8ebe6519e940cfc, type: 2}
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_TerrainData: {fileID: 15600000, guid: 3caa0366387d1d24f9fe4af5c26f6803, type: 2}
-  m_EnableTreeColliders: 1
+  serializedVersion: 2
+  m_Size: {x: 89.607025, y: 1, z: 90.22735}
+  m_Center: {x: 50.829422, y: 0, z: 50.42145}
 --- !u!218 &218781377840613150
 Terrain:
   m_ObjectHideFlags: 1

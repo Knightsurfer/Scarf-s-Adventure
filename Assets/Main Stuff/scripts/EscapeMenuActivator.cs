@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class EscapeMenuActivator : MonoBehaviour {
@@ -17,10 +14,8 @@ public class EscapeMenuActivator : MonoBehaviour {
     private void Start()
     {
         UnityEngine.Cursor.visible = false;
-        
     }
 
-    // Update is called once per frame
     void Update()
     {
         OpenMenu();
