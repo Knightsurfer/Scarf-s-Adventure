@@ -10,7 +10,7 @@ public class NewDebug : EditorWindow
     CameraMode camMode;
 
     protected bool debugToggle;
-    protected string[] gameOptions = new string[] { "First Person", "Third Person", "Real Time Strategy" };
+    protected string[] gameOptions = new string[] { "Spectate", "First Person", "Third Person", "Real Time Strategy" };
 
     protected GameObject camera;
     
@@ -100,19 +100,21 @@ public class NewDebug : EditorWindow
                 break;
 
             case 0:
-                camMode.gameType = "FirstPerson";
+                camMode.gameType = "Spectate";
                 break;
 
             case 1:
-                camMode.gameType = "ThirdPerson";
+                camMode.gameType = "FirstPerson";
                 break;
 
 
             case 2:
-                camMode.gameType = "RealTimeStratedgy";
+                camMode.gameType = "ThirdPerson";
                 break;
 
-
+            case 3:
+                camMode.gameType = "RealTimeStratedgy";
+                break;
 
         }
 
