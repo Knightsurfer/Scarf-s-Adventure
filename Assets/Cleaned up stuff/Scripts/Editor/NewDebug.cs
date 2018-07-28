@@ -5,12 +5,12 @@ public class NewDebug : EditorWindow
 {
     #region Variables
    
-    int gameType = 0;
+    int gameType = 4;
 
     CameraMode camMode;
 
     protected bool debugToggle;
-    protected string[] gameOptions = new string[] { "Spectate", "First Person", "Third Person", "Real Time Strategy" };
+    protected string[] gameOptions = new string[] { "Spectate", "First Person", "Third Person", "Real Time Strategy", "Misc" };
 
     protected GameObject camera;
     
@@ -114,6 +114,10 @@ public class NewDebug : EditorWindow
 
             case 3:
                 camMode.gameType = "RealTimeStratedgy";
+                break;
+
+            case 4:
+                camMode.gameType = "Misc";
                 break;
 
         }

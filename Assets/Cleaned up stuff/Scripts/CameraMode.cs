@@ -1,5 +1,7 @@
 ﻿
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class CameraMode : MonoBehaviour {
@@ -15,9 +17,11 @@ public class CameraMode : MonoBehaviour {
     #region RealTimeStratedgy Variables
     protected float panspeed = 20f;
     protected float panBorder = 10f;
-    [HideInInspector]
     public LayerMask movementLayer;
-    public LayerMask spritetLayer;
+    public LayerMask spriteLayer;
+    RaycastHit hit;
+    Vector3 point;
+    public Text remainingDistance;
     #endregion
 
     #region ThirdPerson Variables
@@ -42,6 +46,7 @@ public class CameraMode : MonoBehaviour {
     float rotY = 0.0f;
     #endregion
 
+    ScarfController scarf;
 
 
 
@@ -55,22 +60,29 @@ public class CameraMode : MonoBehaviour {
         neck = GameObject.Find("Neck");
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
-        if (gameType == "RealTimeStratedgy")
+        if (gameType == "RealTimeStratedgy" || gameType == "Misc")
         {
             camTransform = new Vector3(57f,0,44.5f);
             UnityEngine.Cursor.visible = true;
             currentZoom = 4f;
         }
-        if (gameType != "RealTimeStratedgy")
+
+
+        if (gameType != "RealTimeStratedgy" || gameType != "Misc")
         {
             currentZoom = 2f;
             UnityEngine.Cursor.visible = false;
         }
+
+        scarf = GameObject.FindGameObjectWithTag("Player").GetComponent<ScarfController>();
+
+
     }
     void Update()
     {
         OpenMenu();
         CursorCheck();
+        remainingDistance.text = scarf.GetComponent<NavMeshAgent>().remainingDistance.ToString();
 
 
         switch (gameType)
@@ -79,17 +91,23 @@ public class CameraMode : MonoBehaviour {
                 FirstPerson();
                 break;
 
-
             case "ThirdPerson":
                 ThirdPerson();
                 break;
 
             case "RealTimeStratedgy":
                 RealTimeStratedgy();
+                
                 break;
 
             case "Spectate":
                 Spectate();
+                break;
+
+            case "Misc":
+                UnityEngine.Cursor.visible = true;
+                Misc();
+                MiscKeyboard();
                 break;
 
 
@@ -237,33 +255,81 @@ public class CameraMode : MonoBehaviour {
         }
     void CursorMessage()
     {
+       
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, spritetLayer))
+            if (Physics.Raycast(ray, out hit, 100, spriteLayer))
             {
 
-
+               
+                
                 Debug.Log("We hit " + hit.collider.name + " " + hit.point);
+            }
+
+          
+
+        }
+        if (scarf.GetComponent<NavMeshAgent>().remainingDistance == 0)
+        {
+            scarf.GetComponent<Animator>().SetBool("Walking", false);
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            Ray ray = cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+            
+
+            if (Physics.Raycast(ray, out hit, movementLayer))
+            {
+                scarf.GetComponent<Animator>().SetBool("Walking", true);
+                scarf.MoveToPoint(hit.point);
+                point = hit.point;
+                Debug.Log("We hit " + hit.collider.name + " " + hit.point );
 
 
             }
 
         }
-
+         
     }
+    #endregion
+
+    #region ThirdPerson
+    void Misc()
+    {
+        switch (EscapeMenuOpen)
+        {
+            case false:
+                MiscKeyboard();
+                ThirdPersonCamera();
+                CursorMessage();
+                break;
+        }
+    }
+
+
+
     #endregion
 
 
 
+    #region Misc
+    void MiscKeyboard()
+    {
+            currentZoom -= Input.GetAxis("Mouse ScrollWheel") * 4f;
+            currentZoom = Mathf.Clamp(currentZoom, 1f, 8f);
+    }
+    void MiscCamera()
+    {
+        neck.transform.localScale = new Vector3(1, 1, 1);
+        cam.transform.position = target.position - new Vector3(0, -2, -2) * currentZoom;
+        cam.transform.LookAt(target.position + Vector3.up * 2f);
 
-
-
-
-
-
+        cam.transform.RotateAround(target.position, Vector3.up, currentYaw);
+    }
+    #endregion
 
 
 
