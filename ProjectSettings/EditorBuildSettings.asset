@@ -48,6 +48,9 @@ EditorBuildSettings:
     path: Assets/Knight's Files/Resources/Scenes/New Level.unity
     guid: 6b128d3a4bf816c42afe13a96e175378
   - enabled: 1
+    path: Assets/Creations Law - The VideoGame/Creations Law - Title.unity
+    guid: b4b2c1e90d77e4545ae0b59971d56df3
+  - enabled: 1
     path: Assets/Knight's Files/Resources/Scenes/test.unity
     guid: b85cd57ed60169a4ca963b099d85935d
   m_configObjects: {}
