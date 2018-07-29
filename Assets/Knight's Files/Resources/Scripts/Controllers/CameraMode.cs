@@ -21,7 +21,7 @@ public class CameraMode : MonoBehaviour {
     public LayerMask spriteLayer;
     RaycastHit hit;
     Vector3 point;
-    public Text remainingDistance;
+    protected Text remainingDistance;
     #endregion
 
     #region ThirdPerson Variables
@@ -82,7 +82,7 @@ public class CameraMode : MonoBehaviour {
     {
         OpenMenu();
         CursorCheck();
-        remainingDistance.text = scarf.GetComponent<NavMeshAgent>().remainingDistance.ToString();
+        
 
 
         switch (gameType)
@@ -199,11 +199,16 @@ public class CameraMode : MonoBehaviour {
     {
         currentYaw += Input.GetAxis("Mouse X") * 100f * Time.deltaTime;
         currentZoom -= Input.GetAxis("Mouse ScrollWheel") * 4f;
-        currentZoom = Mathf.Clamp(currentZoom, 2.4f, 4f);
+
+        currentYaw += Input.GetAxis("RightStickY") * 100f * Time.deltaTime;
+        currentZoom -= Input.GetAxis("RightStickX") * 4f;
+
+
     }
     void ThirdPersonCamera()
     {
         neck.transform.localScale = new Vector3(1, 1, 1);
+        currentZoom = Mathf.Clamp(currentZoom, 2.4f, 4f);
         cam.transform.position = target.position - new Vector3(0, -2, -2) * currentZoom;
         cam.transform.LookAt(target.position + Vector3.up * 2f);
 

@@ -8,7 +8,7 @@ using UnityEngine.AI;
 public class ScarfController : MonoBehaviour
 {
 
-    NavMeshAgent agent;
+    public NavMeshAgent agent;
     CameraMode cameraChecker;
 
 
