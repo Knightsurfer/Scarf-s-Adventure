@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf7219bab7fe46a1ad266029b2fee19, type: 3}
+  m_Name: Readme
+  m_EditorClassIdentifier: 
+  icon: {fileID: 2800000, guid: 7a98d030e140bad468ba6212d4edd695, type: 3}
+  iconMaxWidth: 192
+  title: Changelog
+  sections:
+  - heading: New Debug Menu
+    text: If you go to the top tool bar and hit "Debug" and "Main Settings" you can
+      tweak settings that haven't been fully implemented yet.
+    linkText: 
+    url: 
+  - heading: This Readme is customizable
+    text: You can hit ctrl + D and it will make a duplicate, from there you can look
+      at the top right and you should see a menu icon next to a padlock, click that
+      and then click  "Debug to make your own readme file."
+    linkText: 
+    url: 
+  - heading: ' '
+    text: ' '
+    linkText: 
+    url: 
+  - heading: ' '
+    text: ' '
+    linkText: 
+    url: 
+  - heading: ' '
+    text: '                                                                                             '
+    linkText: 
+    url: 
+  - heading: 'Special thanks to '
+    text: Brackeys - for all of his unity playlists.
+    linkText: Check him out!
+    url: https://www.youtube.com/user/Brackeys/playlists
+  - heading: Also thanks to
+    text: TheNewBoston - for all of his wonderful c# tutorials.
+    linkText: Check this playlist out!
+    url: https://www.youtube.com/playlist?list=PL0EE421AE8BCEBA4A
+  - heading: Another thanks to
+    text: Sebastian Lague - without his modeling tutorials I'd be lost!
+    linkText: Here they are.
+    url: https://www.youtube.com/playlist?list=PLPV2KyIb3jR4KLGCCAciWQ5qHudKtYeP7
