@@ -633,7 +633,7 @@ PlayerSettings:
     Build: 1
     Collab: 0
     UNet: 1
-  facebookSdkVersion: 7.10.1
+  facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
   cloudProjectId: df458204-3065-43ca-be7d-0c61c639492f
   projectName: Making a team

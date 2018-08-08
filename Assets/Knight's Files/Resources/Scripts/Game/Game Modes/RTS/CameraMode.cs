@@ -83,10 +83,14 @@ public class CameraMode : MonoBehaviour {
         /*
         OpenMenu();
         CursorCheck();
+<<<<<<< HEAD:Assets/Knight's Files/Resources/Scripts/Game/Game Modes/RTS/CameraMode.cs
         if (GetComponent<NavMeshAgent>())
         {
             remainingDistance.text = "Remaining Distance: " + (int)scarf.agent.remainingDistance;
         }
+=======
+        remainingDistance.text = scarf.GetComponent<NavMeshAgent>().remainingDistance.ToString();
+>>>>>>> parent of fb467c5... Controls Worked On:Assets/Knight's Files/Resources/Scripts/Controllers/CameraMode.cs
 
 
         switch (gameType)
@@ -204,16 +208,11 @@ public class CameraMode : MonoBehaviour {
     {
         currentYaw += Input.GetAxis("Mouse X") * 100f * Time.deltaTime;
         currentZoom -= Input.GetAxis("Mouse ScrollWheel") * 4f;
-
-        currentYaw += Input.GetAxis("RightStickY") * 100f * Time.deltaTime;
-        currentZoom -= Input.GetAxis("RightStickX") * 4f;
-
-
+        currentZoom = Mathf.Clamp(currentZoom, 2.4f, 4f);
     }
     void ThirdPersonCamera()
     {
         neck.transform.localScale = new Vector3(1, 1, 1);
-        currentZoom = Mathf.Clamp(currentZoom, 2.4f, 4f);
         cam.transform.position = target.position - new Vector3(0, -2, -2) * currentZoom;
         cam.transform.LookAt(target.position + Vector3.up * 2f);
 
