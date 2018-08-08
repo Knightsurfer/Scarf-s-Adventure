@@ -9,7 +9,7 @@ using UnityEngine;
 [RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(Animator))]
 public class PlayerController : MonoBehaviour {
-    
+    /*
         //string movementX = "LeftStickX";
         //string movementY = "LeftStickY";
 
@@ -337,6 +337,7 @@ public void Move(Vector3 move, bool crouch, bool jump)
             Vector3 moveVector = new Vector3(moveX, 0, moveY) * speed;
             rb.AddForce(moveVector, ForceMode.VelocityChange);
         }
+        
         */
-
+        
 }

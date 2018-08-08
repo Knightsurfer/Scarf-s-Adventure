@@ -12,14 +12,16 @@ public class RTS_Variables : MonoBehaviour
     #region Pause Menu
     [HideInInspector] protected bool EscapeMenuOpen = false;
 
-    
+
     #endregion
 
     #region Main variables
 
-     protected GameObject cam;
-     protected ScarfController scarf;
-     protected Vector3 camTransform;
+    public Vector3 destination;
+    public GameObject scarf;
+    public GameObject skeleton;
+    protected GameObject cam;
+    protected Vector3 camTransform;
 
     protected float currentYaw = 180f;
     protected float currentZoom = 2f;
@@ -30,14 +32,14 @@ public class RTS_Variables : MonoBehaviour
     protected float panBorder = 10f;
 
 
-     protected RaycastHit hit;
-     protected Vector3 point;
+     public RaycastHit hit;
+     public Vector3 point;
 
 
     [SerializeField] protected LayerMask movementLayer;
     [SerializeField] protected LayerMask spriteLayer;
-    [SerializeField] protected Text remainingDistance;
-    [SerializeField] protected NavMeshAgent agent;
+    public float remainingDistance;
+    public NavMeshAgent agent;
     #endregion
 
 
