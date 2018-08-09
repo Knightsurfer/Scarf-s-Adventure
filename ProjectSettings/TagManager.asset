@@ -4,7 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Menu
   - Skeleton
   layers:
   - Default
@@ -17,8 +16,11 @@ TagManager:
   - 
   - Tiles
   - Sprites
+  - 
+  - 
   - Ground
   - Player
+  - Item
   - 
   - 
   - 
@@ -35,17 +37,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - null
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: Tiles
-    uniqueID: 3584415875
-    locked: 0
-  - name: Sprites
-    uniqueID: 2245904771
     locked: 0
