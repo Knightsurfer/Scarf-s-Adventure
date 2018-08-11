@@ -17,12 +17,13 @@ public class RTS_Variables : MonoBehaviour
     protected Canvas pausePanel;
     #endregion
     #region Controller
-    protected GameObject selectedUnit;
+    protected GameObject selectedUnit = null;
     protected RaycastHit hit;
     protected Vector3 point;
 
-    [SerializeField] protected LayerMask movementLayer;
-    [SerializeField] protected LayerMask spriteLayer;
+    public LayerMask movementLayer;
+    public LayerMask spriteLayer;
+    public LayerMask itemLayer;
     #endregion
     #region RTS Controls
 
@@ -30,7 +31,7 @@ public class RTS_Variables : MonoBehaviour
     protected float panBorder = 10f;
     protected float remainingDistance;
     
-    protected GameObject selected;
+    protected RTS_Panel panel;
     #endregion
     #endregion
     #region Not Inplemented
