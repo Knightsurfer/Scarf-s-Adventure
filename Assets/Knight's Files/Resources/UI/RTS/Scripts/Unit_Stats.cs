@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Unit_Stats : MonoBehaviour {
+public class Unit_Stats : Interactable {
 
     [HideInInspector] public UnitInfo unit;
 
@@ -18,8 +18,8 @@ public class Unit_Stats : MonoBehaviour {
     [HideInInspector] public string unitName = "";
 
 
-    public int baseHP = 0;
-    public int baseMP = 0;
+    public int baseHP = 10;
+    public int baseMP = 10;
     public int baseEXP = 10;
 
     [HideInInspector] public int maxHP = 0;
@@ -30,7 +30,7 @@ public class Unit_Stats : MonoBehaviour {
 
 
 
-    public void Start()
+    protected void Assign_Stats()
     {
         unitName = name;
 
@@ -72,16 +72,16 @@ public class Unit_Stats : MonoBehaviour {
         {
             LevelUp();
         }
-        if (Input.GetKey(KeyCode.F1))
+        if (Input.GetKey(KeyCode.Alpha1))
         {
             TakeDamage(5, 0);
         }
-        if (Input.GetKey(KeyCode.F2))
+        if (Input.GetKey(KeyCode.Alpha2))
         {
             TakeDamage(0, 5);
 
         }
-        if (Input.GetKey(KeyCode.F3))
+        if (Input.GetKey(KeyCode.Alpha0))
         {
             EXP++;
         }

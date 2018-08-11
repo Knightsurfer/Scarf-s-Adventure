@@ -11,8 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: Scarf
   m_EditorClassIdentifier: Assembly-CSharp::UnitInfo
-  unitName: Scarf
+  unitName: Fred
   unitPortrait: {fileID: 21300000, guid: b9377e5715900eb458dacc317b9ccf22, type: 3}
-  default_HP: 50
-  default_MP: 50
+  default_HP: 30
+  default_MP: 30
   selected: 0

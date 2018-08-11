@@ -21,6 +21,10 @@ public class RTS_Variables : MonoBehaviour
     protected RaycastHit hit;
     protected Vector3 point;
 
+    protected Color selected = new Color(1, 1, 1);
+
+
+
     public LayerMask movementLayer;
     public LayerMask spriteLayer;
     public LayerMask itemLayer;

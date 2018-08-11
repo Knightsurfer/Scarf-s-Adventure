@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class RTS_Checks : RTS_Cam
 {
-    public Unit_Stats unit;
+    public Player_Controller unit;
 
 
 
@@ -38,13 +38,12 @@ public class RTS_Checks : RTS_Cam
 
         if (selectedUnit != null)
         {
-            #region RTS Panel
-            
 
-            #endregion
+            selected.a = 1;
+            panel.portrait.color = selected;
 
             #region Selected Unit
-            unit = selectedUnit.GetComponent<Unit_Stats>();
+            unit = selectedUnit.GetComponent<Player_Controller>();
             ChangeStats();
 
             #endregion
@@ -53,7 +52,7 @@ public class RTS_Checks : RTS_Cam
             {
 
                 default:
-                    panel.chatpanel.text = unit.unitName;
+                    panel.unitName.text = unit.portrait.name;
                     panel.portrait.sprite = unit.portrait;
 
                     panel.HP_Text.text = "HP " + unit.HP + "/" + unit.maxHP;
@@ -69,8 +68,10 @@ public class RTS_Checks : RTS_Cam
         }
         else if (selectedUnit == null)
         {
-            panel.chatpanel.text = "";
+            panel.unitName.text = "";
             panel.portrait.sprite = null;
+            selected.a = 0;
+            panel.portrait.color = selected;
 
             panel.HP_Text.text = "";
             panel.MP_Text.text = "";
@@ -86,15 +87,22 @@ public class RTS_Checks : RTS_Cam
 
     protected void OnHealthChanged(int MaxHP, int HP)
     {
-
-
+        if (HP <= 0)
+        {
+            panel.portrait.sprite = null;
+            selected.a = 0;
+            panel.portrait.color = selected;
+            Destroy(selectedUnit);
+        }
     }
 
 
 
     protected void ChangeStats()
     {
+        OnHealthChanged(unit.maxHP, unit.HP);
         unit.Stats();
+       
     }
 
 

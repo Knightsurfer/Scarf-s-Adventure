@@ -15,7 +15,7 @@ public class RTS_Cam : RTS_Variables
         
         selectedUnit = null;
         cam = GameObject.FindGameObjectWithTag("MainCamera");
-        camLocation = new Vector3(47f, 0, 18f);
+        camLocation = new Vector3(47.5f, 0, 30f);
         currentZoom = 4f;
         skeleton = GameObject.FindGameObjectWithTag("Skeleton");
     }

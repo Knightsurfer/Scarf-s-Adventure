@@ -3,207 +3,97 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Player_Controller : Interactable
+public class Player_Controller : Unit_Stats
 {
     protected RTS_Controller RTS;
     protected Transform target;
     protected Interactable focus;
-
-    protected LayerMask itemLayer;
-    protected LayerMask movementLayer;
+    NavMeshAgent nav;
 
 
 
-
-
-
-
-
-
-    Camera cam;
-    public float remainingDistance;
-
-    protected RaycastHit hit;
-    protected Vector3 point;
-
-    private void Start()
+    protected void Start()
     {
+        Assign_Stats();
         RTS = GameObject.Find("Game Manager").GetComponent<RTS_Controller>();
-        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-        itemLayer = RTS.itemLayer;
-        movementLayer = RTS.movementLayer;
-
-
-
-
-
-
-
-
+        nav = GetComponent<NavMeshAgent>();
     }
-
-
-    private void Update()
+    protected void Update()
     {
-        Selected();
+        Animation();
         Follow();
     }
 
 
-
-    protected void Selected()
+    protected void Animation()
     {
-        
-            remainingDistance = (int)GetComponent<NavMeshAgent>().remainingDistance;
-            if (GetComponent<NavMeshAgent>().remainingDistance >= 0 && GetComponent<NavMeshAgent>().remainingDistance <= GetComponent<NavMeshAgent>().stoppingDistance)
-            {
-                GetComponent<Animator>().SetBool("Walking", false);
-            }
-        
-    }
-
-
-
-
-
-
-
-    public void MainControls()
-    {
-
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit, 100, RTS.movementLayer))
+        if ((int)nav.remainingDistance > -1 && (int)nav.remainingDistance <= nav.stoppingDistance || target != null && nav.remainingDistance == (int)focus.radius)
         {
-            Movement();
-
-
-
-            Interactable interactable = hit.collider.GetComponent<Interactable>();
-            if (interactable != null)
-            {
-                SetFocus(interactable);
-
-            }
-
-        }
-
-        if (Physics.Raycast(ray, out hit, 100, RTS.itemLayer))
-        {
-            Movement();
-
-            Interactable interactable = hit.collider.GetComponent<Interactable>();
-            if (interactable != null)
-            {
-                SetFocus(interactable);
-            }
-
-
-        }
-
-    }
-
-
-
-
-
-
-
-
-
+            GetComponent<Animator>().SetBool("Walking", false);
             
-        
-    
+        }
+        else
+        {
+            GetComponent<Animator>().SetBool("Walking", true);
+        }
 
-
-    void Movement()
+        if ((int)nav.remainingDistance == nav.stoppingDistance)
+        {
+            GetComponent<NavMeshAgent>().isStopped = true;
+            
+        }
+        else if((int)nav.remainingDistance != nav.stoppingDistance)
+        {
+            GetComponent<NavMeshAgent>().isStopped = false;
+            
+        }
+    }
+    public void Movement(Vector3 point)
     {
-
-        remainingDistance = GetComponent<NavMeshAgent>().remainingDistance;
-        GetComponent<Animator>().SetBool("Walking", true);
-        point = hit.point;
-
-        MoveToPoint(hit.point);
-
+        nav.SetDestination(point);
         RemoveFocus();
-
-
-
-
     }
 
 
-    #region Focus
-    void SetFocus(Interactable newFocus)
+
+    #region Following
+    public void SetFocus(Interactable newFocus)
     {
         focus = newFocus;
         StartFollow(newFocus);
     }
-
-    void RemoveFocus()
+    protected void RemoveFocus()
     {
         focus = null;
         StopFollow();
     }
-    #endregion
-
-
-    #region Following
-
 
     void Follow()
     {
         if (target != null)
         {
-            MoveToPoint(target.position);
-            // FaceTarget();
+            nav.SetDestination(target.position);
+            if (nav.remainingDistance >= nav.stoppingDistance)
+            {
+                GetComponent<Animator>().SetBool("Walking", true);
+            }
+            if (nav.remainingDistance <= nav.stoppingDistance - 1)
+            {
+                GetComponent<Animator>().SetBool("Walking", false);
+            }
         }
     }
-
-
-
-
-
-
     void StartFollow(Interactable newTarget)
     {
-        GetComponent<NavMeshAgent>().stoppingDistance = 2 + focus.radius;
-        // selectedUnit.GetComponent<NavMeshAgent>().updateRotation = false;
+        nav.stoppingDistance = 2 + focus.radius;
         target = newTarget.transform;
-
     }
-
     void StopFollow()
     {
-        GetComponent<NavMeshAgent>().stoppingDistance = 0;
-        //selectedUnit.GetComponent<NavMeshAgent>().updateRotation = true;
+        nav.stoppingDistance = 0;
         target = null;
     }
     #endregion
-
-
-
-
-
-
-
-    #region Movement pointer.
-
-
-    public void PlayerMovement()
-    {
-        Vector3 destination = hit.point;
-        MoveToPoint(destination);
-
-    }
-
-    public void MoveToPoint(Vector3 point)
-    {
-        GetComponent<NavMeshAgent>().SetDestination(point);
-    }
-
-
-    #endregion
-
 }
 
 

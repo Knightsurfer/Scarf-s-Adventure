@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class RTS_Panel : MonoBehaviour
 {
     public Image portrait;
-    public InputField chatpanel;
+    public Text unitName;
 
     public Text HP_Text;
     public Image HP_Bar;
@@ -14,20 +14,11 @@ public class RTS_Panel : MonoBehaviour
 
     public Image EXP_Bar;
 
-
-
-
-
-
-
-    protected Color selected;
-    protected float alpha;
-
     void Start()
     {
-        selected = new Color(1, 1, 1);
-        portrait = GameObject.Find("Image").GetComponent<Image>();
-        chatpanel = GameObject.Find("InputField").GetComponent<InputField>();
+
+        portrait = GameObject.Find("Unit Portrait").GetComponent<Image>();
+        unitName = GameObject.Find("Unit Name").GetComponent<Text>();
 
         HP_Text = GameObject.Find("HP Text").GetComponent<Text>();
         HP_Bar = GameObject.Find("HP Bar").GetComponent<Image>();
@@ -37,26 +28,7 @@ public class RTS_Panel : MonoBehaviour
 
         EXP_Bar = GameObject.Find("EXP Bar").GetComponent<Image>();
 
+        portrait.type = Image.Type.Simple;
+
     }
-
-    void Update()
-    {
-        
-        if (portrait.sprite == null)
-        {
-            selected.a = 0;
-            portrait.color = selected;
-        }
-        else
-        {
-            selected.a = 1;
-            portrait.color = selected;
-        }
-    }
-
-
-
-
-
-
 }
