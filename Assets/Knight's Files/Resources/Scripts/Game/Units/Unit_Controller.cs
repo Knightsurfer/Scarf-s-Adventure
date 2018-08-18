@@ -3,169 +3,157 @@ using UnityEngine.AI;
 
 public class Unit_Controller : Unit_Stats
 {
-    [HideInInspector] public NavMeshAgent nav;
-    protected CharacterController ThirdPersonController;
-    protected float turnSpeed = 5f;
-
-
-
-
-
-
-    protected Animator anim;
-
+    
+    protected Unit_Controller focus;
     protected Transform target;
-    protected Unit_Interact focus;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     protected void Start()
     {
-        Assign_Stats();
-        ThirdPersonController = GetComponent<CharacterController>();
+        Stats_Start();
+        Radius_Start();
+
+       
+       
         nav = GetComponent<NavMeshAgent>();
-        anim = GetComponent<Animator>();
-
-
-
-
+        
     }
     protected void Update()
     {
-        Stats();
-        RTS_Movement();
-        ThirdPerson_Movement();
-    }
-
-
-
-
-
-
-
-
-
-    #region Third Person Mode
-    protected void ThirdPerson_Movement()
-    {
-        var horizontal = Input.GetAxis("LeftStickX");
-        var vertical = Input.GetAxis("LeftStickY");
-
-        var movement = new Vector3(horizontal, 0, vertical);
-
-        if (ThirdPersonController != null)
-        {
-            if (canMove)
-            {
-                ThirdPersonController.SimpleMove(movement * Time.deltaTime * 200);
-                anim.SetFloat("Speed", movement.magnitude);
-
-                if (movement.magnitude > 0)
-                {
-                    Quaternion newDirection = Quaternion.LookRotation(movement);
-                    transform.rotation = Quaternion.Slerp(transform.rotation,newDirection, Time.deltaTime * turnSpeed);
-                }
-            }
-        }
-    }
-    #endregion
-
-
-
-
-
-
-
-
-
-
-
-    #region RTS Mode
-    protected void RTS_Movement()
-    {
-        if (!isDead)
-        {
-            if (nav != null)
-            {
-                Animation();
-            }
-            Follow();
-        }
-    }
-    #region Movement
-    protected void Animation()
-    { 
-        
-            if ((int)nav.remainingDistance > -1 && (int)nav.remainingDistance <= nav.stoppingDistance || target != null && nav.remainingDistance == (int)focus.radius)
-            {
-                GetComponent<Animator>().SetBool("Walking", false);
-
-            }
-            else
-            {
-                GetComponent<Animator>().SetBool("Walking", true);
-            }
-
-            if ((int)nav.remainingDistance == nav.stoppingDistance)
-            {
-                GetComponent<NavMeshAgent>().isStopped = true;
-
-            }
-            else if ((int)nav.remainingDistance != nav.stoppingDistance)
-            {
-                GetComponent<NavMeshAgent>().isStopped = false;
-
-            }
-            
-        
-    }
-    public void Movement(Vector3 point)
-    {
-
+        Stats_Update();
         if (canMove)
         {
-            if (nav != null)
+            Animation(null);
+            if (canMove)
             {
-                nav.SetDestination(point);
-                RemoveFocus();
-                return;
+                Follow();
             }
+        }
+    }
+
+    #region RTS Mode
+
+    #region Movement
+    public void Movement(Vector3 point)
+    {
+        RemoveFocus();
+        if (canMove)
+        {
+            
             nav = GetComponent<NavMeshAgent>();
             nav.SetDestination(point);
         }
-        RemoveFocus();
     }
-    #endregion
-    #region Following
-    public void SetFocus(Unit_Interact newFocus)
+
+
+    protected void Animation(string action)
     {
+        Animator anim = GetComponent<Animator>();
+        switch (action)
+        {
+            case null:
+                if (nav != null)
+                {
+                    
+                    if ((int)nav.remainingDistance == nav.stoppingDistance || target != null && (int)nav.remainingDistance == nav.stoppingDistance + 1)
+                    {
+                        nav.isStopped = true;
+                        anim.SetFloat("Speed", 0);
+                    }
+                    else
+                    {
+
+
+                        
+                        nav.isStopped = false;
+                        anim.SetFloat("Speed", nav.remainingDistance);
+                    }
+                }
+                break;
+
+
+            case "work":
+                anim.SetBool("Working", true);
+                break;
+
+
+
+        }
+
+
+        
+
+        
+    }
+
+    #endregion
+
+
+
+
+    #region Unit Actions
+    #region Following
+    public void SetFocus(Unit_Controller newFocus)
+    {
+        if (newFocus.stats.isProp)
+        {
+            newFocus.GetComponent<NavMeshObstacle>().carving = false;
+        }
         if (canMove)
         {
             focus = newFocus;
             StartFollow(newFocus);
         }
     }
-    protected void RemoveFocus()
+    public void RemoveFocus()
     {
-        focus = null;
-        StopFollow();
+        if (focus != null)
+        {
+            if (focus.stats.isProp)
+            {
+                focus.GetComponent<NavMeshObstacle>().carving = true;
+            }
+            focus = null;
+            StopFollow();
+        }
     }
     protected void Follow()
     {
         if (target != null)
         {
             nav.SetDestination(target.position);
-            if (nav.remainingDistance >= nav.stoppingDistance)
+            if (focus.stats.isProp)
             {
-                GetComponent<Animator>().SetBool("Walking", true);
-            }
-            if (nav.remainingDistance <= nav.stoppingDistance - 1)
-            {
-                GetComponent<Animator>().SetBool("Walking", false);
+                
+                DestinationReached();
             }
         }
+
+        
     }
-    protected void StartFollow(Unit_Interact newTarget)
+    protected void StartFollow(Unit_Controller newTarget)
     {
-        nav.stoppingDistance = 2 + focus.radius;
         target = newTarget.transform;
+        if (focus.stats.isProp)
+            nav.stoppingDistance = 1;
+        else
+            nav.stoppingDistance = 2;
+        
+                
+        
     }
     protected void StopFollow()
     {
@@ -176,6 +164,22 @@ public class Unit_Controller : Unit_Stats
         }
     }
     #endregion
+    #endregion
+
+    protected void DestinationReached()
+    {
+        if (focus.stats.isProp && (int)nav.remainingDistance == nav.stoppingDistance +1)
+        {
+            Destroy(focus.gameObject);
+            nav.isStopped = true;
+            RemoveFocus();
+            Animation("work");
+        }
+    }
+
+
+
+
     #endregion
 
 

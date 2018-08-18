@@ -1,26 +1,45 @@
 ﻿
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Unit_Interact : MonoBehaviour
 {
-    public float radius = 1;
+    [HideInInspector]public float radius = 1;
+    [HideInInspector] public NavMeshAgent nav;
 
-    protected Vector3 boxRadius;
-    protected Vector3 boxPosition;
+    public NavMeshObstacleShape shape;
 
-
-
-    protected void RadiusUpdate()
+    protected void Radius_Start()
     {
-        boxRadius = new Vector3(radius,0);
-        radius = transform.localScale.x;
-    }
+        if (!GetComponent<Unit_Controller>().stats.isProp)
+        {
+            gameObject.AddComponent<Rigidbody>();
+            gameObject.GetComponent<Rigidbody>().isKinematic = true;
 
-    protected void OnDrawGizmosSelected()
-    {
-        
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(transform.position + boxPosition , boxRadius);
-    }
+            gameObject.AddComponent<NavMeshAgent>();
+            nav = GetComponent<NavMeshAgent>();
+            nav.speed = 7;
+            nav.baseOffset = 0;
+            nav.height = 2;
+            nav.radius = 1;
+            nav.angularSpeed = 1200;
+            nav.acceleration = 20;
+            nav.areaMask = 5;
+            nav.autoBraking = false;
+        }
+        switch (shape)
+        {
+            case NavMeshObstacleShape.Box:
+                gameObject.AddComponent<NavMeshObstacle>();
+                gameObject.GetComponent<NavMeshObstacle>().carving = true;
+                gameObject.AddComponent<BoxCollider>();
+                break;
 
+            case NavMeshObstacleShape.Capsule:
+                gameObject.AddComponent<CapsuleCollider>();
+                gameObject.GetComponent<CapsuleCollider>().height = 2.5f;
+                gameObject.GetComponent<CapsuleCollider>().center = new Vector3(0, 1, 0);
+                break;
+        }
+    }
 }

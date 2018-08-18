@@ -10,8 +10,10 @@ public class RTS_Checks : RTS_Cam
     protected Color selected = new Color(1, 1, 1);
     protected Unit_Controller unit;
     protected GameObject selectedUnit;
-    protected bool panelWarning = false;
     #endregion
+
+
+
 
 
     private void Update()
@@ -23,31 +25,34 @@ public class RTS_Checks : RTS_Cam
         Cam_Update();
         Command_Panel();
     }
-
-    void Command_Panel()
+    protected void Command_Panel()
     {
-        #region commandPanel
+        
+
             panel = GameObject.Find("Command Menu").GetComponent<Command_Panel>();
             panel.GetComponent<Canvas>().enabled = true;
             if (selectedUnit != null)
             {
-                ChangeStats();
+                unit = selectedUnit.GetComponent<Unit_Controller>();
                 PanelRemote();
             }
-            else if (selectedUnit == null)
+            if (selectedUnit == null)
             {
                 panel.Panel_Defaults();
             }
-        #endregion
     }
     protected void PanelRemote()
     {
-        selected.a = 1;
-        panel.portrait.color = selected;
-        unit = selectedUnit.GetComponent<Unit_Controller>();
-
+        #region Defaults
+        if (unit.portrait != null)
+        {
+            selected.a = 1;
+            panel.portrait.color = selected;
+            panel.portrait.sprite = unit.portrait;
+        }
+        #endregion
+        #region Setting The Panel
         panel.unitName.text = unit.unitName;
-        panel.portrait.sprite = unit.portrait;
 
         panel.HP_Text.text = "HP " + unit.HP + "/" + unit.maxHP;
         panel.MP_Text.text = "MP " + unit.MP + "/" + unit.maxMP;
@@ -56,24 +61,6 @@ public class RTS_Checks : RTS_Cam
         panel.MP_Bar.fillAmount = (float)unit.MP / unit.maxMP;
 
         panel.EXP_Bar.fillAmount = (float)unit.EXP / unit.maxEXP;
+        #endregion
     }
-
-
-
-
-    protected void ChangeStats()
-    {
-        //OnHealthChanged(unit.maxHP, unit.HP);
-    }
-    protected void OnHealthChanged(int MaxHP, int HP)
-    {
-
-    }
-
-
-
-
-
-
-
 }

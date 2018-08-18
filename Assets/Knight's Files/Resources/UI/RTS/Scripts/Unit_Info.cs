@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+
 
 [CreateAssetMenu(fileName = "NewUnit", menuName = "Unit")]
+
 public class Unit_Info : ScriptableObject
 {
+    #region Base Stats
     public Sprite unitPortrait;
 
     public int default_HP;
@@ -11,11 +15,33 @@ public class Unit_Info : ScriptableObject
 
     public int startingLevel;
 
-
     public bool isProp;
-    public bool canMove;
-    public bool canAttack;
+    #endregion
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+   
+
+
+
 
 
 
 }
+
+
+

@@ -4,9 +4,10 @@ using UnityEngine.AI;
 public class RTS_Mode : RTS_Checks
 {
     #region Variables
+
+
     protected NavMeshAgent nav;
     protected RaycastHit hit;
-    protected Vector3 point;
 
     protected LayerMask movementLayer = 4096;
     protected LayerMask unitLayer = 24576;
@@ -24,84 +25,71 @@ public class RTS_Mode : RTS_Checks
 
     protected void MainControls()
     {
-        #region Unit Select
         if (Input.GetMouseButtonDown(0))
-            {
-                ShootRay(unitLayer,false);
-            }
-        #endregion
-        #region Remote Control
+        {
+            ShootRay("Left", cam.ScreenPointToRay(Input.mousePosition));
+        }
+
+
+
         if (selectedUnit != null)
         {
+            if (selectedUnit.GetComponent<Unit_Controller>().Dead)
+            {
+                selectedUnit = null;
+            }
             if (Input.GetMouseButtonDown(1))
             {
-                ShootRay(movementLayer,true);
-                //ShootRay(itemLayer,true);
+                if (selectedUnit != null)
+                {
+                    ShootRay("Right", cam.ScreenPointToRay(Input.mousePosition));
+                }
+            }
+            if (Input.GetKey(KeyCode.F1))
+            {
+                unit.TakeDamage(5, 0);
+            }
+            if (Input.GetKey(KeyCode.F2))
+            {
+                unit.TakeDamage(0, 5);
+            }
+            if (Input.GetKey(KeyCode.F3))
+            {
+                if (!unit.stats.isProp)
+                {
+                    unit.EXP++;
+                }
             }
         }
-        #endregion
     }
-    protected void ShootRay(LayerMask layer, bool moving)
+    protected void ShootRay(string mouseClick, Ray ray)
     {
-        Ray ray = cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit, 100, layer))
+        if (Physics.Raycast(ray, out hit, 100, unitLayer))
         {
-            if (layer == unitLayer)
+            switch (mouseClick)
             {
-                if (!moving)
-                {
-                    selectedUnit = GameObject.Find(hit.collider.name);
-                    if (selectedUnit.GetComponent<Unit_Controller>().nav == null)
-                    {
-                        EnableMovement();
-                    }
-                }
-                else
-                {
+                case "Left":
+                    selectedUnit = hit.collider.gameObject;
+                    break;
+
+                case "Right":
+                        Unit_Controller followTarget = GameObject.Find(hit.collider.name).GetComponent<Unit_Controller>();
+                        selectedUnit.GetComponent<Unit_Controller>().SetFocus(followTarget);
+                    break;
+            }
+        }
+        else if (Physics.Raycast(ray, out hit, 100, movementLayer))
+        {
+            switch (mouseClick)
+            {
+                case "Left":
+
+                    break;
+
+                case "Right":
                     selectedUnit.GetComponent<Unit_Controller>().Movement(hit.point);
-                    Unit_Interact interactable = hit.collider.GetComponent<Unit_Interact>();
-                    if (interactable != null)
-                    {
-                        selectedUnit.GetComponent<Unit_Controller>().SetFocus(interactable);
-                    }
-                }
-            }
-            if (layer == movementLayer)
-            {
-                selectedUnit.GetComponent<Unit_Controller>().Movement(hit.point);
+                    break;
             }
         }
     }
-    protected void EnableMovement()
-    {
-        if (selectedUnit.GetComponent<Unit_Controller>().canMove)
-        {
-            selectedUnit.AddComponent<NavMeshAgent>();
-            nav = selectedUnit.GetComponent<NavMeshAgent>();
-            nav.speed = 7;
-            nav.angularSpeed = 1200;
-            nav.acceleration = 20;
-            nav.areaMask = 5;
-            nav.autoBraking = false;
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

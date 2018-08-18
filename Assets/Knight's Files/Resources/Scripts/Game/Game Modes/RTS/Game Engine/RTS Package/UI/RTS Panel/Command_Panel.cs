@@ -6,7 +6,6 @@ public class Command_Panel : MonoBehaviour
     #region Variables
     public Text unitName;
     public Image portrait;
-    
 
     public Text HP_Text;
     public Image HP_Bar;
@@ -19,8 +18,6 @@ public class Command_Panel : MonoBehaviour
 
     void Start()
     {
-        
-
         portrait = GameObject.Find("Unit Portrait").GetComponent<Image>();
         unitName = GameObject.Find("Unit Name").GetComponent<Text>();
 
@@ -35,9 +32,7 @@ public class Command_Panel : MonoBehaviour
         portrait.type = Image.Type.Simple;
 
         Panel_Defaults();
-
     }
-
     public void Panel_Defaults()
     {
         unitName.text = "";
