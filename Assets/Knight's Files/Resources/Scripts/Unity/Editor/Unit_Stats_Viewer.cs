@@ -92,7 +92,7 @@ public class Unit_Stats_Viewer : Editor
             }
         #endregion
         #region Name Stuff
-            unit.name = GUILayout.TextField(unit.name, titleStyle);
+            GUILayout.Label(unit.name, titleStyle);
             GUILayout.EndHorizontal();
         #endregion
     }
