@@ -9,7 +9,7 @@ using UnityEditor;
 [CustomEditor(typeof(Unit_Info))]
 public class Unit_Stats_Viewer : Editor
 {
-    protected GUIStyle titleStyle = new GUIStyle(EditorStyles.label);
+    protected GUIStyle titleStyle = new GUIStyle();
     protected GUIStyle m_TitleStyle;
     protected GUIStyle TitleStyle { get { return m_TitleStyle; } }
     protected Texture empty = null;

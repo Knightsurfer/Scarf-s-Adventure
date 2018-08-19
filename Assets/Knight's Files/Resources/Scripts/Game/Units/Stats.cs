@@ -67,7 +67,7 @@ public class Unit_Stats : Unit_Interact {
     {
         panel = GameObject.Find("Command Menu").GetComponent<Command_Panel>();
 
-        level = stats.startingLevel - 1;
+        level = stats.startingLevel -1;
         unitName = stats.name;
         portrait = stats.unitPortrait;
         canMove = !stats.isProp;
@@ -93,8 +93,7 @@ public class Unit_Stats : Unit_Interact {
     protected void Stats()
     {
         Death();
-        maxHP = stats.default_HP * level;
-        maxMP = stats.default_MP * level;
+       
         if (EXP == maxEXP)
         {
             LevelUp();
@@ -132,6 +131,8 @@ public class Unit_Stats : Unit_Interact {
         if (!stats.isProp)
         {
             level++;
+            maxHP = stats.default_HP * level;
+            maxMP = stats.default_MP * level;
             EXP = 0;
             RestoreStats(stats.default_HP * level, stats.default_MP * level);
             maxEXP = stats.default_EXP * level;
