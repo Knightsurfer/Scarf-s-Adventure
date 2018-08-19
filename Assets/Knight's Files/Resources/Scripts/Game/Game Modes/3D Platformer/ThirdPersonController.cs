@@ -73,8 +73,8 @@ public class ThirdPersonController : Controller {
 
         if (moveX != 0 || moveY != 0)
         {
-            player.transform.rotation = Quaternion.Euler(0, rotator.rotation.eulerAngles.y, 0);
-            Quaternion newRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, 420, moveDirection.z));
+            player.transform.rotation = Quaternion.Euler(0, rotator.rotation.eulerAngles.y + 30, 0);
+            Quaternion newRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, 90, moveDirection.z));
 
             skeleton.rotation = Quaternion.Slerp(skeleton.rotation,newRotation,rotateSpeed * Time.deltaTime);
         }
