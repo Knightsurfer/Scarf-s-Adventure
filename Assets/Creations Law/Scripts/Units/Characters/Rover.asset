@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitPortrait: {fileID: 21300000, guid: a46c92ac67378fa448848fed2f9ad0f8, type: 3}
   default_HP: 10
-  default_MP: 10
+  default_MP: 20
   default_EXP: 10
-  startingLevel: 1
+  startingLevel: 5
   isProp: 0

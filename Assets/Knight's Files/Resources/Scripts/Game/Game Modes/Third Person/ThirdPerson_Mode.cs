@@ -9,7 +9,7 @@ public class ThirdPerson_Mode : Controller
     protected Transform rotator;
 
     protected Vector3 offset;
-    protected float rotateSpeed = 10;
+    protected float rotateSpeed = 80;
 
 
 
@@ -30,10 +30,10 @@ public class ThirdPerson_Mode : Controller
     void LateUpdate()
     {
         
-        float horizontal = cameraX * rotateSpeed;
+        float horizontal = cameraX * rotateSpeed * Time.deltaTime;
         rotator.Rotate(0, horizontal, 0);
 
-        float vertical = -cameraY * rotateSpeed;
+        float vertical = -cameraY * rotateSpeed * Time.deltaTime;
         rotator.Rotate(vertical,0,0);
 
 

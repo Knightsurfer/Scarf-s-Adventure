@@ -18,7 +18,7 @@ public class ThirdPersonController : Controller {
     protected Vector3 moveDirection;
     protected float moveSpeed = 10;
     protected float jumpForce = 7;
-    protected float gravity = 50;
+    protected float gravity = 3;
     protected float rotateSpeed = 10;
     protected Transform skeleton;
     #endregion
@@ -66,7 +66,7 @@ public class ThirdPersonController : Controller {
                 moveDirection.y = jumpForce;
             }            
         }
-        moveDirection.y = moveDirection.y + (Physics.gravity.y * Time.deltaTime * gravity* Time.deltaTime);
+        moveDirection.y = moveDirection.y + (Physics.gravity.y * Time.deltaTime * gravity);
 
 
         Movement();
