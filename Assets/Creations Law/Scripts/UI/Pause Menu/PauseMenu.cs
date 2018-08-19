@@ -5,8 +5,8 @@ public class PauseMenu : MonoBehaviour {
 
     #region Variables
 
-    public bool paused;
-    public Canvas pausePanel;
+    [HideInInspector] public bool paused;
+    [HideInInspector] public Canvas pausePanel;
     #endregion
 
 
@@ -19,8 +19,7 @@ public class PauseMenu : MonoBehaviour {
 
     public void PauseCheck()
     {
-
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape)|| Input.GetKeyDown(KeyCode.Joystick1Button7))
         {
           pausePanel = GetComponent<Canvas>();
           pausePanel.enabled = !pausePanel.enabled;
