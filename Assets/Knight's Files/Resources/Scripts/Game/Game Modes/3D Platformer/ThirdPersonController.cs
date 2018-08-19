@@ -31,7 +31,7 @@ public class ThirdPersonController : Controller {
     }
     protected void Update()
     {
-        XboxConversion();
+        ControllerCheck();
         Controller();
     }
 

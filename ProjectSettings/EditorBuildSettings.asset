@@ -48,6 +48,9 @@ EditorBuildSettings:
     path: Assets/Creations Law/Levels/Creations Law - Title.unity
     guid: b4b2c1e90d77e4545ae0b59971d56df3
   - enabled: 1
-    path: Assets/Creations Law/Levels/Unity AI Test.unity
+    path: Assets/Knight's Files/Resources/Scenes/Test Rooms/Unity AI Test.unity
     guid: b85cd57ed60169a4ca963b099d85935d
+  - enabled: 1
+    path: Assets/Knight's Files/Resources/Scenes/Test Rooms/Controller Test.unity
+    guid: 6230d237350395b4690d8c24e62cd750
   m_configObjects: {}

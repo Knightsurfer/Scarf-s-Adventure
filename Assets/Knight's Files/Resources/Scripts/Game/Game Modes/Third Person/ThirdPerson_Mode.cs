@@ -13,7 +13,7 @@ public class ThirdPerson_Mode : Controller
 
 
 
-    private void Start()
+    protected void Start()
     {
        rotator = GameObject.Find("Rotator").transform;
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -22,9 +22,14 @@ public class ThirdPerson_Mode : Controller
         offset = player.position - cam.position;
         rotator.position = player.position;
     }
+
+    private void Update()
+    {
+        ControllerCheck();
+    }
     void LateUpdate()
     {
-        XboxConversion();
+        
         float horizontal = cameraX * rotateSpeed;
         rotator.Rotate(0, horizontal, 0);
 

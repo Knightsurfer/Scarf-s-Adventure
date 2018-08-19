@@ -133,7 +133,7 @@ public class Unit_Stats : Unit_Interact {
         {
             level++;
             EXP = 0;
-            RestoreStats(maxHP + stats.default_HP, maxMP + stats.default_MP);
+            RestoreStats(stats.default_HP * level, stats.default_MP * level);
             maxEXP = stats.default_EXP * level;
         }
     }

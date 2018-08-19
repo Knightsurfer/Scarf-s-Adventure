@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Controller : MonoBehaviour {
 
 
-
-
-
+    protected bool testMode;
+    public bool xboxController;
+    public bool psController;
 
 
     #region Text Test
@@ -19,7 +20,21 @@ public class Controller : MonoBehaviour {
     private Text RTrigger;
     private Text cameraXT;
     private Text cameraYT;
+    private Text jumpButton;
+    private Text attackButton;
+
+    private Text startButton;
+    private Text selectButton;
+
+    private Text lButton;
+    private Text rButton;
+
+    private Text DUp;
+    private Text DDown;
     private Text DLeft;
+    private Text DRight;
+
+
     private Text Axis7;
     private Text Axis8;
     private Text Axis9;
@@ -44,75 +59,66 @@ public class Controller : MonoBehaviour {
     protected float triggerR;
     #endregion
 
-
     protected bool button_Jump;
     protected bool button_Attack;
+    protected bool d_Up;
+    protected bool d_Down;
+    protected bool d_Left;
+    protected bool d_Right;
+    protected bool button_L;
+    protected bool button_R;
 
+    protected bool button_Start;
+    protected bool button_Select;
 
-
-
-
-
-    // Use this for initialization
-    void Start()
+    private void Start()
     {
+        if (testMode)
+        {
+            TestText();
+        }
+    }
+
+    private void Update()
+    {
+        ControllerCheck();
         
 
-        XBoxText();
+        if (SceneManager.GetActiveScene().buildIndex == 2)
+        {
+            testMode = true;
+        }
+       
+        if (testMode)
+        {
+            TestText();
+            ControllerInput();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+
+    protected void ControllerCheck()
     {
-        //XBoxText();
-
+        if (xboxController)
+        {
+            XboxConversion();
+        }
+        if (psController)
+        {
+            Ps4Conversion();
+        }
     }
+
+
+
+
+
+
+
+
 
 
     void TestText()
-    {
-
-        moveXT = GameObject.Find("Axis X").GetComponent<Text>();
-        moveYT = GameObject.Find("Axis Y").GetComponent<Text>();
-
-        LTrigger = GameObject.Find("Axis 3").GetComponent<Text>();
-        RTrigger = GameObject.Find("Axis 3").GetComponent<Text>();
-        cameraXT = GameObject.Find("Axis 4").GetComponent<Text>();
-        cameraYT = GameObject.Find("Axis 5").GetComponent<Text>();
-        DLeft = GameObject.Find("Axis 6").GetComponent<Text>();
-        Axis7 = GameObject.Find("Axis 7").GetComponent<Text>();
-        Axis8 = GameObject.Find("Axis 8").GetComponent<Text>();
-        Axis9 = GameObject.Find("Axis 9").GetComponent<Text>();
-        Axis10 = GameObject.Find("Axis 10").GetComponent<Text>();
-        Axis11 = GameObject.Find("Axis 11").GetComponent<Text>();
-        Axis12 = GameObject.Find("Axis 12").GetComponent<Text>();
-        Axis13 = GameObject.Find("Axis 13").GetComponent<Text>();
-        Axis14 = GameObject.Find("Axis 14").GetComponent<Text>();
-        Axis15 = GameObject.Find("Axis 15").GetComponent<Text>();
-        Axis16 = GameObject.Find("Axis 16").GetComponent<Text>();
-        Axis17 = GameObject.Find("Axis 17").GetComponent<Text>();
-
-
-
-
-
-
-
-
-        moveXT.text = "Axis X: " + Input.GetAxis("Horizontal").ToString();
-        moveYT.text = "Axis Y: " + Input.GetAxis("Vertical").ToString();
-        LTrigger.text = "Axis 3: " + Input.GetAxis("Axis3").ToString();
-        RTrigger.text = "Axis 3: " + Input.GetAxis("Axis3").ToString();
-        cameraXT.text = "Axis 4: " + Input.GetAxis("Axis4").ToString();
-        cameraYT.text = "Axis 5: " + Input.GetAxis("Axis5").ToString();
-        DLeft.text = "Axis 6: " + Input.GetAxis("Axis6").ToString();
-
-
-
-
-
-    }
-    void XBoxText()
     {
         moveXT = GameObject.Find("LeftStickX").GetComponent<Text>();
         moveYT = GameObject.Find("LeftStickY").GetComponent<Text>();
@@ -120,27 +126,25 @@ public class Controller : MonoBehaviour {
         cameraXT = GameObject.Find("RightStickX").GetComponent<Text>();
         cameraYT = GameObject.Find("RightStickY").GetComponent<Text>();
 
-
-
-
-
-
         LTrigger = GameObject.Find("TriggerL").GetComponent<Text>();
         RTrigger = GameObject.Find("TriggerR").GetComponent<Text>();
-        
-        DLeft = GameObject.Find("Axis 6").GetComponent<Text>();
-        Axis7 = GameObject.Find("Axis 7").GetComponent<Text>();
-        Axis8 = GameObject.Find("Axis 8").GetComponent<Text>();
-        Axis9 = GameObject.Find("Axis 9").GetComponent<Text>();
-        Axis10 = GameObject.Find("Axis 10").GetComponent<Text>();
-        Axis11 = GameObject.Find("Axis 11").GetComponent<Text>();
-        Axis12 = GameObject.Find("Axis 12").GetComponent<Text>();
-        Axis13 = GameObject.Find("Axis 13").GetComponent<Text>();
-        Axis14 = GameObject.Find("Axis 14").GetComponent<Text>();
-        Axis15 = GameObject.Find("Axis 15").GetComponent<Text>();
-        Axis16 = GameObject.Find("Axis 16").GetComponent<Text>();
-        Axis17 = GameObject.Find("Axis 17").GetComponent<Text>();
-        XboxConversion();
+
+        jumpButton = GameObject.Find("Button Jump").GetComponent<Text>();
+        attackButton = GameObject.Find("Button Attack").GetComponent<Text>();
+
+
+        DUp = GameObject.Find("D-Up").GetComponent<Text>();
+        DDown = GameObject.Find("D-Down").GetComponent<Text>();
+
+        DLeft = GameObject.Find("D-Left").GetComponent<Text>();
+        DRight = GameObject.Find("D-Right").GetComponent<Text>();
+
+        lButton = GameObject.Find("Button L").GetComponent<Text>();
+        rButton = GameObject.Find("Button R").GetComponent<Text>();
+
+        startButton = GameObject.Find("Button Start").GetComponent<Text>();
+        selectButton = GameObject.Find("Button Select").GetComponent<Text>();
+
 
     }
 
@@ -150,7 +154,7 @@ public class Controller : MonoBehaviour {
         #region Axis
         #region Control Sticks
         moveX = Input.GetAxis("Horizontal");
-        moveY = -Input.GetAxis("Vertical");
+        moveY = Input.GetAxis("Vertical");
         
         cameraX = Input.GetAxis("Axis4");
         cameraY = -Input.GetAxis("Axis5");
@@ -174,24 +178,119 @@ public class Controller : MonoBehaviour {
 
 
         #region Buttons
-        if(Input.GetAxis("Axis6") == 1)
+
+
+        #region D-X
+        if (Input.GetAxis("Axis6") < 0)
         {
-            
-
+            d_Left = true;
         }
-
-
-        button_Jump = Input.GetKeyDown(KeyCode.Joystick1Button0);
+        if (Input.GetAxis("Axis6") > 0)
+        {
+            d_Right = true;
+        }
+        if (Input.GetAxis("Axis6") == 0)
+        {
+            d_Left = false;
+            d_Right = false;
+        }
         #endregion
 
+        #region D-Y
+        if (Input.GetAxis("Axis7") > 0)
+        {
+            d_Up = true;
+        }
+        if (Input.GetAxis("Axis7") < 0)
+        {
+            d_Down = true;
+        }
+        if (Input.GetAxis("Axis7") == 0)
+        {
+            d_Up = false;
+            d_Down = false;
+        }
+        #endregion
 
+        button_Jump = Input.GetKeyDown(KeyCode.JoystickButton0);
+        button_Attack = Input.GetKeyDown(KeyCode.JoystickButton2);
 
+        button_L = Input.GetKeyDown(KeyCode.JoystickButton4);
+        button_R = Input.GetKeyDown(KeyCode.JoystickButton5);
 
-        //ControllerInput();
+        button_Start = Input.GetKeyDown(KeyCode.JoystickButton7);
+        button_Select = Input.GetKeyDown(KeyCode.JoystickButton6);
+        #endregion
     }
 
 
+    protected void Ps4Conversion()
+    {
+        #region Axis
+        #region Control Sticks
+        moveX = Input.GetAxis("Horizontal");
+        moveY = Input.GetAxis("Vertical");
 
+        cameraX = Input.GetAxis("Axis3");
+        cameraY = -Input.GetAxis("Axis6");
+        #endregion
+        #region Triggers
+        
+            triggerL = Input.GetAxis("Axis4");
+        
+        
+            triggerR = Input.GetAxis("Axis5");
+        
+       
+        #endregion
+        #endregion
+
+
+        #region Buttons
+
+
+        #region D-X
+        if (Input.GetAxis("Axis7") < 0)
+        {
+            d_Left = true;
+        }
+        if (Input.GetAxis("Axis7") > 0)
+        {
+            d_Right = true;
+        }
+        if (Input.GetAxis("Axis7") == 0)
+        {
+            d_Left = false;
+            d_Right = false;
+        }
+        #endregion
+
+        #region D-Y
+        if (Input.GetAxis("Axis8") > 0)
+        {
+            d_Up = true;
+        }
+        if (Input.GetAxis("Axis8") < 0)
+        {
+            d_Down = true;
+        }
+        if (Input.GetAxis("Axis8") == 0)
+        {
+            d_Up = false;
+            d_Down = false;
+        }
+        #endregion
+
+        button_Jump = Input.GetKeyDown(KeyCode.JoystickButton1);
+        button_Attack = Input.GetKeyDown(KeyCode.JoystickButton0);
+
+        button_L = Input.GetKeyDown(KeyCode.JoystickButton4);
+        button_R = Input.GetKeyDown(KeyCode.JoystickButton5);
+
+        button_Start = Input.GetKeyDown(KeyCode.JoystickButton9);
+        button_Select = Input.GetKeyDown(KeyCode.JoystickButton8);
+        #endregion
+    }
 
 
 
@@ -208,9 +307,21 @@ public class Controller : MonoBehaviour {
         cameraYT.text = "Right Stick Y : " + cameraY;
         #endregion
 
-
         #region Buttons
-        DLeft.text = "D-Left: " + Input.GetAxis("Axis6").ToString();
+        jumpButton.text = "Button Jump: " + button_Jump;
+        attackButton.text = "Button Attack: " + button_Attack;
+
+        DUp.text = "D-Up: " + d_Up;
+        DDown.text = "D-Down: " + d_Down;
+
+        DLeft.text = "D-Left: " + d_Left;
+        DRight.text = "D-Right: " + d_Right;
+
+        lButton.text = "Button L: " + button_L;
+        rButton.text = "Button R: " + button_R;
+
+        startButton.text = "Button Start: " + button_Start;
+        selectButton.text = "Button Select: " + button_Select;
         #endregion
     }
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour {
+public class PauseMenu : Controller {
 
     #region Variables
 
@@ -12,6 +12,7 @@ public class PauseMenu : MonoBehaviour {
 
     private void Update()
     {
+        ControllerCheck();
         PauseCheck();
     }
 
@@ -19,7 +20,7 @@ public class PauseMenu : MonoBehaviour {
 
     public void PauseCheck()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)|| Input.GetKeyDown(KeyCode.Joystick1Button7))
+        if (Input.GetKeyDown(KeyCode.Escape)||button_Start)
         {
           pausePanel = GetComponent<Canvas>();
           pausePanel.enabled = !pausePanel.enabled;
