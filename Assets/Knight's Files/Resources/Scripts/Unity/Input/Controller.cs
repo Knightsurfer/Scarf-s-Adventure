@@ -35,17 +35,17 @@ public class Controller : MonoBehaviour {
     private Text DRight;
 
 
-    private Text Axis7;
-    private Text Axis8;
-    private Text Axis9;
-    private Text Axis10;
-    private Text Axis11;
-    private Text Axis12;
-    private Text Axis13;
-    private Text Axis14;
-    private Text Axis15;
-    private Text Axis16;
-    private Text Axis17;
+    protected Text Axis7;
+    protected Text Axis8;
+    protected Text Axis9;
+    protected Text Axis10;
+    protected Text Axis11;
+    protected Text Axis12;
+    protected Text Axis13;
+    protected Text Axis14;
+    protected Text Axis15;
+    protected Text Axis16;
+    protected Text Axis17;
     #endregion
 
     #region Axis
@@ -71,6 +71,8 @@ public class Controller : MonoBehaviour {
     protected bool button_Start;
     protected bool button_Select;
 
+    [HideInInspector]
+    public string direction = "none";
     private void Start()
     {
         if (testMode)
@@ -149,13 +151,13 @@ public class Controller : MonoBehaviour {
     }
 
 
-   protected void XboxConversion()
+    protected void XboxConversion()
     {
         #region Axis
         #region Control Sticks
         moveX = Input.GetAxis("Horizontal");
         moveY = Input.GetAxis("Vertical");
-        
+
         cameraX = Input.GetAxis("Axis4");
         cameraY = -Input.GetAxis("Axis5");
         #endregion
@@ -168,7 +170,7 @@ public class Controller : MonoBehaviour {
         {
             triggerR = -Input.GetAxis("Axis3");
         }
-        if(Input.GetAxis("Axis3") == 0)
+        if (Input.GetAxis("Axis3") == 0)
         {
             triggerL = 0;
             triggerR = 0;
@@ -197,29 +199,41 @@ public class Controller : MonoBehaviour {
         #endregion
 
         #region D-Y
-        if (Input.GetAxis("Axis7") > 0)
+        if (!d_Up)
         {
-            d_Up = true;
+            if (Input.GetAxis("Axis7") > 0)
+            {
+                direction = "up";
+            }
         }
-        if (Input.GetAxis("Axis7") < 0)
+
+
+
+        if (!d_Down)
         {
-            d_Down = true;
+            if (Input.GetAxis("Axis7") < 0)
+            {
+                direction = "down";
+            }
         }
         if (Input.GetAxis("Axis7") == 0)
         {
             d_Up = false;
             d_Down = false;
+            direction = "none";
         }
-        #endregion
+            #endregion
 
-        button_Jump = Input.GetKeyDown(KeyCode.JoystickButton0);
-        button_Attack = Input.GetKeyDown(KeyCode.JoystickButton2);
+        button_Jump = Input.GetKeyDown(KeyCode.JoystickButton1);
+        button_Attack = Input.GetKeyDown(KeyCode.JoystickButton0);
 
         button_L = Input.GetKeyDown(KeyCode.JoystickButton4);
         button_R = Input.GetKeyDown(KeyCode.JoystickButton5);
 
         button_Start = Input.GetKeyDown(KeyCode.JoystickButton7);
         button_Select = Input.GetKeyDown(KeyCode.JoystickButton6);
+
+
         #endregion
     }
 
@@ -268,21 +282,22 @@ public class Controller : MonoBehaviour {
         #region D-Y
         if (Input.GetAxis("Axis8") > 0)
         {
-            d_Up = true;
+            direction = "up";
         }
         if (Input.GetAxis("Axis8") < 0)
         {
-            d_Down = true;
+            direction = "down";
         }
         if (Input.GetAxis("Axis8") == 0)
         {
             d_Up = false;
             d_Down = false;
+            direction = "none";
         }
         #endregion
 
-        button_Jump = Input.GetKeyDown(KeyCode.JoystickButton1);
-        button_Attack = Input.GetKeyDown(KeyCode.JoystickButton0);
+        button_Jump = Input.GetKeyDown(KeyCode.JoystickButton2);
+        button_Attack = Input.GetKeyDown(KeyCode.JoystickButton1);
 
         button_L = Input.GetKeyDown(KeyCode.JoystickButton4);
         button_R = Input.GetKeyDown(KeyCode.JoystickButton5);
@@ -291,6 +306,16 @@ public class Controller : MonoBehaviour {
         button_Select = Input.GetKeyDown(KeyCode.JoystickButton8);
         #endregion
     }
+
+
+
+
+
+
+
+
+
+
 
 
 

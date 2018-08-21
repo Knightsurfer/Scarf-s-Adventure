@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Command_Controller.cs" />
     <Compile Include="Assets\Creations Law\Scripts\Settings.cs" />
     <Compile Include="Assets\Creations Law\Scripts\UI\Pause Menu\PauseMenu.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Misc\Readme\Scripts\Readme.cs" />
