@@ -61,7 +61,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Command_Controller.cs" />
     <Compile Include="Assets\Creations Law\Scripts\Settings.cs" />
     <Compile Include="Assets\Creations Law\Scripts\UI\Pause Menu\PauseMenu.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Misc\Readme\Scripts\Readme.cs" />
@@ -73,6 +72,7 @@
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\RTS\Game Engine\RTS Package\Camera\RTS_Cam.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\RTS\Game Engine\RTS Package\Camera\RTS_Mode.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\RTS\Game Engine\RTS Package\UI\RTS Panel\Command_Panel.cs" />
+    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\Third Person\Command_Controller.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\Third Person\ThirdPerson_Mode.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Units\Interact.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Units\Stats.cs" />

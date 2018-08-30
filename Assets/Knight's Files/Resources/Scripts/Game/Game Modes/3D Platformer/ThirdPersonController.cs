@@ -90,17 +90,8 @@ public class ThirdPersonController : Controller {
 
     private void OnTriggerEnter(Collider other)
     {
-      switch(other.name)
-        {
-            case "Sword":
-                Debug.Log("You Hit " + other.name);
-                break;
-
-
-        }
-
-
-
+     
+            Debug.Log("You picked " + other.name);
     }
 
 
