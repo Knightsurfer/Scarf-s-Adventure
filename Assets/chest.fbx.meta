@@ -1,18 +1,23 @@
 fileFormatVersion: 2
-guid: b6dfe29aeac06c048b01009d256daa8e
-timeCreated: 1535600604
+guid: f2cd18542b7ef504fb92b65b31873b5b
+timeCreated: 1535603652
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
     100002: Opening
-    100004: Root
+    100004: pasted__pasted__pCube1
+    100006: Root
     400000: //RootNode
     400002: Opening
-    400004: Root
+    400004: pasted__pasted__pCube1
+    400006: Root
+    2100000: lambert2
+    4300000: pasted__pasted__pCube1
     7400000: Take 001
     9500000: //RootNode
+    13700000: pasted__pasted__pCube1
   externalObjects: {}
   materials:
     importMaterials: 1
