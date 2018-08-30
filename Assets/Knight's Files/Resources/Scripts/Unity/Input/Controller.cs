@@ -303,7 +303,7 @@ public class Controller : MonoBehaviour {
         button_R = Input.GetKeyDown(KeyCode.JoystickButton5);
 
         button_Start = Input.GetKeyDown(KeyCode.JoystickButton9);
-        button_Select = Input.GetKeyDown(KeyCode.JoystickButton8);
+        button_Select = Input.GetKeyDown(KeyCode.JoystickButton13);
         #endregion
     }
 
