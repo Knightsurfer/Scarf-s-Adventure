@@ -8,7 +8,10 @@ public class ThirdPerson_Mode : ThirdPersonController
     protected Vector3 offset;
     protected float cam_rotateSpeed_X = 180;
     protected float cam_rotateSpeed_Y = 80;
-    
+
+    protected float currentYaw = 210f;
+    protected float currentZoom = 2f;
+    protected GameObject neck;
 
     Transform lookObject;
     #endregion
@@ -55,7 +58,7 @@ public class ThirdPerson_Mode : ThirdPersonController
 
 
 
-
+    float horizontal;
 
 
 
@@ -70,31 +73,18 @@ public class ThirdPerson_Mode : ThirdPersonController
 
     protected void LateUpdate()
     {
-        float horizontal = cameraX * cam_rotateSpeed_X * Time.deltaTime;
+        horizontal = cameraX * cam_rotateSpeed_X * Time.deltaTime;
         rotator.Rotate(0, horizontal, 0);
 
-        float vertical = -cameraY * cam_rotateSpeed_Y * Time.deltaTime;
-        rotator.Rotate(vertical, 0, 0);
-
-        if (rotator.rotation.eulerAngles.x > 45 && rotator.rotation.eulerAngles.x < 180)
-        {
-            rotator.rotation = Quaternion.Euler(45, 0, 0);
-        }
-
-        if (rotator.rotation.eulerAngles.x > 180 && rotator.rotation.eulerAngles.x < 315)
-        {
-            rotator.rotation = Quaternion.Euler(315, 0, 0);
-        }
-
+        
         
 
 
 
+        currentYaw += cameraX * cam_rotateSpeed_X * Time.deltaTime;
         switch (viewType)
         {
             case "FirstPerson":
-                cam.localPosition = (lookObject.localPosition);
-               
                 if (button_Select)
                 {
                     cam.parent = GameObject.Find("Player 1").transform;
@@ -111,7 +101,7 @@ public class ThirdPerson_Mode : ThirdPersonController
                     cam.parent = lookObject.transform;
                     viewType = "FirstPerson";
                     
-                   
+
                 }
                 ThirdPerson();
                 break;
@@ -126,42 +116,23 @@ public class ThirdPerson_Mode : ThirdPersonController
 
     void FirstPerson()
     {
-        float horizontal = cameraX * cam_rotateSpeed_X * Time.deltaTime;
-
         float vertical = -cameraY * cam_rotateSpeed_Y * 2 * Time.deltaTime;
 
-        lookObject.Rotate(vertical, 0, 0);
-        player.transform.Rotate(0,horizontal,0);
-
+        cam.localPosition = new Vector3();
+        cam.localRotation = Quaternion.Euler(0, 0, 0);
+        transform.Rotate(0, horizontal,0 );
+        lookObject.Rotate(0,vertical,0);
     }
 
     void ThirdPerson()
     {
-        float desiredYAngle = rotator.eulerAngles.y;
-        float desiredXAngle = rotator.eulerAngles.x;
+        currentZoom -= cameraY * cam_rotateSpeed_Y / 2 * Time.deltaTime;
 
-        Quaternion rotation = Quaternion.Euler(desiredXAngle, desiredYAngle, 0);
-        cam.position = transform.position - (rotation * offset);
+        //neck.transform.localScale = new Vector3(1, 1, 1);
+        currentZoom = Mathf.Clamp(currentZoom, 2f, 4f);
+        cam.transform.position = player.transform.position - new Vector3(0, -1, -2) * currentZoom;
+        cam.transform.LookAt(player.transform.position + Vector3.up * 2f);
 
-        if (cam.position.y < transform.position.y -0.5f)
-        {
-            cam.position = new Vector3(cam.position.x, transform.position.y, cam.position.z);
-        }
-
-
-        cam.LookAt(transform);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
+        cam.transform.RotateAround(player.transform.position, Vector3.up, currentYaw);
+    } 
 }

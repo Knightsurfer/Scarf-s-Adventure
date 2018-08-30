@@ -75,9 +75,6 @@ public class Unit_Controller : Unit_Stats
                     }
                     else
                     {
-
-
-                        
                         nav.isStopped = false;
                         anim.SetFloat("Speed", nav.remainingDistance);
                     }
