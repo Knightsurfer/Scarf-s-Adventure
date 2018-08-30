@@ -1,18 +1,18 @@
 fileFormatVersion: 2
-guid: a1bc49b1400df7d44a202ba3b6121aaf
-timeCreated: 1535595708
+guid: b6dfe29aeac06c048b01009d256daa8e
+timeCreated: 1535600604
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
-    100002: pasted__pasted__pCube1
+    100002: Opening
+    100004: Root
     400000: //RootNode
-    400002: pasted__pasted__pCube1
-    2100000: pasted__pasted__pCube1Mat
-    2300000: pasted__pasted__pCube1
-    3300000: pasted__pasted__pCube1
-    4300000: pasted__pasted__pCube1
+    400002: Opening
+    400004: Root
+    7400000: Take 001
+    9500000: //RootNode
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -87,7 +87,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
