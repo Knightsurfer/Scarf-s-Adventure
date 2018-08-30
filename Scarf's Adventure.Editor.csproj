@@ -12,13 +12,16 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Editor:5</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2018.2.2f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -337,9 +340,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Scarf&apos;s Adventure.csproj">
+    <ProjectReference Include="Scarf's Adventure.csproj">
       <Project>{5DA4CB88-EC03-70DA-0B6C-EBD17416F2F6}</Project>
-      <Name>Scarf&apos;s Adventure</Name>
+      <Name>Scarf's Adventure</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -347,19 +350,19 @@
     <Compile Include="Assets\Creations Law\Readme\Scripts\Editor\ReadmeMaker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Knight&apos;s Files\Resources\Scripts\Shaders\Outline.shader" />
-    <None Include="Packages\com.unity.package-manager-ui\Editor\Resources\Styles\Main_Dark.uss" />
-    <None Include="Packages\com.unity.package-manager-ui\Editor\Resources\Styles\Main_Light.uss" />
-    <None Include="Packages\com.unity.package-manager-ui\Editor\Resources\Templates\Alert.uxml" />
-    <None Include="Packages\com.unity.package-manager-ui\Editor\Resources\Templates\PackageDetails.uxml" />
-    <None Include="Packages\com.unity.package-manager-ui\Editor\Resources\Templates\PackageGroup.uxml" />
-    <None Include="Packages\com.unity.package-manager-ui\Editor\Resources\Templates\PackageItem.uxml" />
-    <None Include="Packages\com.unity.package-manager-ui\Editor\Resources\Templates\PackageList.uxml" />
-    <None Include="Packages\com.unity.package-manager-ui\Editor\Resources\Templates\PackageManagerWindow.uxml" />
-    <None Include="Packages\com.unity.package-manager-ui\Editor\Resources\Templates\PackageSearchFilterTabs.uxml" />
-    <None Include="Packages\com.unity.package-manager-ui\Editor\Resources\Templates\PackagesLoading.uxml" />
-    <None Include="Packages\com.unity.package-manager-ui\Editor\Unity.PackageManagerUI.Editor.asmdef" />
-    <None Include="Packages\com.unity.package-manager-ui\Tests\Editor\Unity.PackageManagerUI.EditorTests.asmdef" />
+    <None Include="Assets\Knight's Files\Resources\Scripts\Shaders\Outline.shader" />
+    <None Include="C:\Users\armst\AppData\Local\Unity\cache\packages\packages.unity.com\com.unity.package-manager-ui@1.9.11\Editor\Resources\Styles\Main_Dark.uss" />
+    <None Include="C:\Users\armst\AppData\Local\Unity\cache\packages\packages.unity.com\com.unity.package-manager-ui@1.9.11\Editor\Resources\Styles\Main_Light.uss" />
+    <None Include="C:\Users\armst\AppData\Local\Unity\cache\packages\packages.unity.com\com.unity.package-manager-ui@1.9.11\Editor\Resources\Templates\Alert.uxml" />
+    <None Include="C:\Users\armst\AppData\Local\Unity\cache\packages\packages.unity.com\com.unity.package-manager-ui@1.9.11\Editor\Resources\Templates\PackageDetails.uxml" />
+    <None Include="C:\Users\armst\AppData\Local\Unity\cache\packages\packages.unity.com\com.unity.package-manager-ui@1.9.11\Editor\Resources\Templates\PackageGroup.uxml" />
+    <None Include="C:\Users\armst\AppData\Local\Unity\cache\packages\packages.unity.com\com.unity.package-manager-ui@1.9.11\Editor\Resources\Templates\PackageItem.uxml" />
+    <None Include="C:\Users\armst\AppData\Local\Unity\cache\packages\packages.unity.com\com.unity.package-manager-ui@1.9.11\Editor\Resources\Templates\PackageList.uxml" />
+    <None Include="C:\Users\armst\AppData\Local\Unity\cache\packages\packages.unity.com\com.unity.package-manager-ui@1.9.11\Editor\Resources\Templates\PackageManagerWindow.uxml" />
+    <None Include="C:\Users\armst\AppData\Local\Unity\cache\packages\packages.unity.com\com.unity.package-manager-ui@1.9.11\Editor\Resources\Templates\PackageSearchFilterTabs.uxml" />
+    <None Include="C:\Users\armst\AppData\Local\Unity\cache\packages\packages.unity.com\com.unity.package-manager-ui@1.9.11\Editor\Resources\Templates\PackagesLoading.uxml" />
+    <None Include="C:\Users\armst\AppData\Local\Unity\cache\packages\packages.unity.com\com.unity.package-manager-ui@1.9.11\Editor\Unity.PackageManagerUI.Editor.asmdef" />
+    <None Include="C:\Users\armst\AppData\Local\Unity\cache\packages\packages.unity.com\com.unity.package-manager-ui@1.9.11\Tests\Editor\Unity.PackageManagerUI.EditorTests.asmdef" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
