@@ -7,6 +7,7 @@ public class ThirdPersonController : Controller {
     #region Variables
     protected Vector3 moveDirection;
     protected Vector3 controllerOffset = new Vector3(0, 1.1f, 0);
+    protected Quaternion theRotation;
     protected float moveSpeed = 10;
     protected float jumpForce = 14;
     protected float gravity = 3;
@@ -20,34 +21,26 @@ public class ThirdPersonController : Controller {
     protected Transform rotator;
     protected Transform skeleton;
     protected PauseMenu pause;
+
+    Collider chest;
+
+
+
+
+
     #endregion
     
     protected void MovePlayer()
     {
-        
-            #region Move direction
+        #region Move direction
             float yspeed = moveDirection.y;
             moveDirection = transform.forward * moveY + (transform.right * moveX);
             moveDirection = moveDirection.normalized * moveSpeed;
             moveDirection.y = yspeed;
             #endregion
         
-
-    
-
-
-
-
-
         #region Gravity Handler
-        if (player.isGrounded)
-        {
-            moveDirection.y = 0;
-            if (button_Jump)
-            {
-                moveDirection.y = jumpForce;
-            }            
-        }
+        
         moveDirection.y = moveDirection.y + (Physics.gravity.y * Time.deltaTime * gravity);
         #endregion
 
@@ -60,7 +53,7 @@ public class ThirdPersonController : Controller {
             {
                 player.transform.rotation = Quaternion.Euler(0, rotator.rotation.eulerAngles.y + 30, 0);
                 Quaternion newRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, 90, moveDirection.z));
-                
+                theRotation = newRotation;
 
                 skeleton.rotation = Quaternion.Slerp(skeleton.rotation, newRotation, player_rotateSpeed * Time.deltaTime);
             }
@@ -88,13 +81,103 @@ public class ThirdPersonController : Controller {
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+
+    protected void Actions()
     {
-     
-            Debug.Log("You picked " + other.name);
+
+        if (player.isGrounded)
+        {
+            moveDirection.y = 0;
+            if (button_Jump)
+            {
+                moveDirection.y = jumpForce;
+            }
+        }
+
+
+
+
+
+
+
+        if (chest != null)
+        {
+
+            if (button_Action)
+            {
+                    chest.GetComponent<Animator>().SetBool("Open", true);
+
+                if(anim.GetBool("Working") == true)
+                {
+                    anim.SetBool("Working", false);
+
+                }
+                else if (anim.GetBool("Working") == false)
+                {
+                    anim.SetBool("Working", true);
+                }
+
+
+
+
+
+            }
+
+            if (chest.GetComponent<Animator>().GetBool("Open") == true)
+            {
+                if (button_Attack)
+                {
+                    chest.GetComponent<Animator>().SetBool("Open", false);
+                }
+            }
+
+        }
+
+
+
+
+
+
+
+
     }
 
 
+
+
+
+
+
+
+
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        Debug.Log("You picked " + other.name);
+
+        if (other.name == "chest")
+        {
+            chest = other;
+        }
+
+        
+
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+
+        Debug.Log("You left " + other.name);
+        chest = null;
+
+        if (other.name == "chest")
+        {
+            other.GetComponent<Animator>().SetBool("Open", false);
+        }
+
+    }
 
 
 

@@ -61,6 +61,8 @@ public class Controller : MonoBehaviour {
 
     protected bool button_Jump;
     protected bool button_Attack;
+    protected bool button_Action;
+
     protected bool d_Up;
     protected bool d_Down;
     protected bool d_Left;
@@ -226,6 +228,8 @@ public class Controller : MonoBehaviour {
 
         button_Jump = Input.GetKeyDown(KeyCode.JoystickButton1);
         button_Attack = Input.GetKeyDown(KeyCode.JoystickButton0);
+        button_Action = Input.GetKeyDown(KeyCode.JoystickButton3);
+
 
         button_L = Input.GetKeyDown(KeyCode.JoystickButton4);
         button_R = Input.GetKeyDown(KeyCode.JoystickButton5);
@@ -298,6 +302,7 @@ public class Controller : MonoBehaviour {
 
         button_Jump = Input.GetKeyDown(KeyCode.JoystickButton2);
         button_Attack = Input.GetKeyDown(KeyCode.JoystickButton1);
+        button_Action = Input.GetKeyDown(KeyCode.JoystickButton3);
 
         button_L = Input.GetKeyDown(KeyCode.JoystickButton4);
         button_R = Input.GetKeyDown(KeyCode.JoystickButton5);

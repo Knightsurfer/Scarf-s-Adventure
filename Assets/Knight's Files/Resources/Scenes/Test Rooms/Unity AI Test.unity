@@ -564,6 +564,16 @@ Prefab:
       propertyPath: m_AnchoredPosition.x
       value: 123.54993
       objectReference: {fileID: 0}
+    - target: {fileID: 223174747745726328, guid: 7e5e2f13972e6944cbbe382eafc45128,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114282593070992914, guid: 7e5e2f13972e6944cbbe382eafc45128,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e5e2f13972e6944cbbe382eafc45128, type: 2}
   m_IsPrefabAsset: 0
@@ -614,6 +624,16 @@ Prefab:
     - target: {fileID: 114538574975328642, guid: af44d56f2ab521943a6eb82f26f6629c,
         type: 2}
       propertyPath: xboxController
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114538574975328642, guid: af44d56f2ab521943a6eb82f26f6629c,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114940677133296568, guid: af44d56f2ab521943a6eb82f26f6629c,
+        type: 2}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -682,10 +702,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2983a4bfa72faf1408386b5bec3e1c21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats: {fileID: 11400000, guid: 4a51d3fc0da8e4844b5234d1df1ec2e2, type: 2}
   radius: 1
   nav: {fileID: 0}
-  shape: 0
-  stats: {fileID: 11400000, guid: 4a51d3fc0da8e4844b5234d1df1ec2e2, type: 2}
   unitName: 
   portrait: {fileID: 0}
   HP: 0
@@ -1381,10 +1400,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2983a4bfa72faf1408386b5bec3e1c21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats: {fileID: 11400000, guid: 0b94df2bf4a4b9b43b7f8a1984c4c469, type: 2}
   radius: 1
   nav: {fileID: 0}
-  shape: 1
-  stats: {fileID: 11400000, guid: 0b94df2bf4a4b9b43b7f8a1984c4c469, type: 2}
   unitName: 
   portrait: {fileID: 0}
   HP: 0

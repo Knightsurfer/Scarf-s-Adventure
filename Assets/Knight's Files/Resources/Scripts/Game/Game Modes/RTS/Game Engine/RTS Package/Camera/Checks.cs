@@ -29,7 +29,7 @@ public class RTS_Checks : RTS_Cam
     {
         
 
-            panel = GameObject.Find("Command Menu").GetComponent<Command_Panel>();
+            panel = FindObjectOfType<Command_Panel>();
             panel.GetComponent<Canvas>().enabled = true;
             if (selectedUnit != null)
             {

@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class ThirdPerson_Mode : ThirdPersonController
 {
@@ -9,9 +11,11 @@ public class ThirdPerson_Mode : ThirdPersonController
     protected float cam_rotateSpeed_X = 180;
     protected float cam_rotateSpeed_Y = 80;
 
-    protected float currentYaw = 210f;
+    public float currentYaw = 210f;
     protected float currentZoom = 2f;
     protected GameObject neck;
+
+    public float lookY;
 
     Transform lookObject;
     #endregion
@@ -26,6 +30,11 @@ public class ThirdPerson_Mode : ThirdPersonController
     {
         lookObject = GameObject.Find("Look Object").transform;
         Components();
+
+        if (SceneManager.GetActiveScene().buildIndex == 3)
+        {
+            player.transform.localPosition = new Vector3(51, 0, 34);
+        }
     }
     protected void Components()
     {
@@ -35,7 +44,7 @@ public class ThirdPerson_Mode : ThirdPersonController
         #region Get Components
         anim = GetComponent<Animator>();
         player = GetComponent<CharacterController>();
-        pause = GameObject.Find("Pause Menu").GetComponent<PauseMenu>();
+        pause = FindObjectOfType<PauseMenu>();
         #endregion
         #region Set Components
         player.height = 2;
@@ -67,7 +76,7 @@ public class ThirdPerson_Mode : ThirdPersonController
     {
 
         ControllerCheck();
-        
+        Actions();
         MovePlayer();
     }
 
@@ -90,6 +99,7 @@ public class ThirdPerson_Mode : ThirdPersonController
                     cam.parent = GameObject.Find("Player 1").transform;
                     viewType = "ThirdPerson";
                     cam.localPosition = new Vector3(44.453f, 2.56f, 33.1f);
+
                    
                 }
                 FirstPerson();
@@ -101,7 +111,6 @@ public class ThirdPerson_Mode : ThirdPersonController
                     cam.parent = lookObject.transform;
                     viewType = "FirstPerson";
                     
-
                 }
                 ThirdPerson();
                 break;
@@ -116,12 +125,21 @@ public class ThirdPerson_Mode : ThirdPersonController
 
     void FirstPerson()
     {
-        float vertical = -cameraY * cam_rotateSpeed_Y * 2 * Time.deltaTime;
+        float vertical = cameraX * cam_rotateSpeed_Y  * 2 * Time.deltaTime;
+        float horizontal = -cameraY * cam_rotateSpeed_Y * 2 * Time.deltaTime;
 
-        cam.localPosition = new Vector3();
-        cam.localRotation = Quaternion.Euler(0, 0, 0);
-        transform.Rotate(0, horizontal,0 );
-        lookObject.Rotate(0,vertical,0);
+
+
+        cam.localRotation = Quaternion.Euler(cam.localRotation.x, lookObject.localRotation.y, cam.localRotation.z);
+        lookObject.Rotate(horizontal, 0, 0);
+
+
+
+        transform.Rotate(0, vertical, 0);
+        cam.Rotate(0, horizontal, 0);
+
+
+        cam.localPosition = Vector3.zero;
     }
 
     void ThirdPerson()

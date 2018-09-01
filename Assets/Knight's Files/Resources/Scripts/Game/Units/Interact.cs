@@ -4,10 +4,11 @@ using UnityEngine.AI;
 
 public class Unit_Interact : MonoBehaviour
 {
+    public Unit_Info stats;
+
     [HideInInspector]public float radius = 1;
     [HideInInspector] public NavMeshAgent nav;
 
-    public NavMeshObstacleShape shape;
 
     protected void Radius_Start()
     {
@@ -27,19 +28,18 @@ public class Unit_Interact : MonoBehaviour
             nav.areaMask = 5;
             nav.autoBraking = false;
         }
-        switch (shape)
+        if (stats.isProp)
         {
-            case NavMeshObstacleShape.Box:
-                gameObject.AddComponent<NavMeshObstacle>();
-                gameObject.GetComponent<NavMeshObstacle>().carving = true;
-                gameObject.AddComponent<BoxCollider>();
-                break;
-
-            case NavMeshObstacleShape.Capsule:
-                gameObject.AddComponent<CapsuleCollider>();
-                gameObject.GetComponent<CapsuleCollider>().height = 2.5f;
-                gameObject.GetComponent<CapsuleCollider>().center = new Vector3(0, 1, 0);
-                break;
+            gameObject.AddComponent<NavMeshObstacle>();
+            gameObject.GetComponent<NavMeshObstacle>().carving = true;
+            gameObject.AddComponent<BoxCollider>();
         }
+        else
+        {
+            gameObject.AddComponent<CapsuleCollider>();
+            gameObject.GetComponent<CapsuleCollider>().height = 2.5f;
+            gameObject.GetComponent<CapsuleCollider>().center = new Vector3(0, 1, 0);
+        }
+        
     }
 }

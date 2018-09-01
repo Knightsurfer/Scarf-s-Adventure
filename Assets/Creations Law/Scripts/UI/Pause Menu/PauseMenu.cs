@@ -14,7 +14,7 @@ public class PauseMenu : Controller {
     protected Image highlighter;
 
    protected Vector3 highlightPos;
-   public GameObject player;
+   protected GameObject player;
    protected Animator animators;
     #endregion
     #endregion
@@ -22,7 +22,14 @@ public class PauseMenu : Controller {
     private void Start()
     {
         pausePanel = GetComponent<Canvas>();
-        player = GameObject.Find("Characters");
+        player = GameObject.Find("Scarf");
+        if(player == null)
+        {
+            
+        }
+
+
+
         highlighter = GameObject.Find("Highlight").GetComponent<Image>();
         highlighter.rectTransform.position = new Vector3(244, 775, 0);
 
@@ -46,8 +53,14 @@ public class PauseMenu : Controller {
 
     public void PauseCheck()
     {
-        psController = player.GetComponentInChildren<ThirdPersonController>().psController;
-        xboxController = player.GetComponentInChildren<ThirdPersonController>().xboxController;
+        
+
+        psController = player.GetComponent<ThirdPerson_Mode>().psController;
+        xboxController = player.GetComponent<ThirdPerson_Mode>().xboxController;
+
+
+
+
 
         if (Input.GetKeyDown(KeyCode.Escape)||button_Start)
         {
@@ -115,6 +128,12 @@ public class PauseMenu : Controller {
 
 
             }
+            if(button_Jump && paused == true)
+            {
+                pausePanel.enabled = false;
+                paused = pausePanel.enabled;
+                GamePause();
+            }
         }
 
 
@@ -149,8 +168,18 @@ public class PauseMenu : Controller {
 
     protected void GamePause()
     {
-       player.GetComponentInChildren<ThirdPersonController>().enabled = !paused;
-       player.GetComponentInChildren<ThirdPersonController>().anim.enabled = !paused;
+        if(FindObjectOfType<RTS_Mode>().enabled == false)
+        {
+            player.GetComponent<ThirdPerson_Mode>().enabled = !paused;
+        }
+        if (FindObjectOfType<RTS_Mode>().enabled == true)
+        {
+            player.GetComponent<Unit_Controller>().enabled = !paused;
+        }
+
+
+       
+       player.GetComponent<Animator>().enabled = !paused;
     }
 
     public void RestartLevel()

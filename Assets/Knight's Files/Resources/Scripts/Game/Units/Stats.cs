@@ -5,7 +5,7 @@ public class Unit_Stats : Unit_Interact {
 
     #region Variables
     #region Main
-    public Unit_Info stats;
+    
     protected Command_Panel panel;
     protected Color selected = new Color(1, 1, 1);
     #endregion
