@@ -79,7 +79,10 @@ public class PauseBasic : Controller {
         {
             pausePanel.enabled = !pausePanel.enabled;
             paused = pausePanel.enabled;
-            Cursor.visible = pausePanel.enabled;
+            if (controller == "Keyboard")
+            {
+                Cursor.visible = pausePanel.enabled;
+            }
             GamePause();
         }
 

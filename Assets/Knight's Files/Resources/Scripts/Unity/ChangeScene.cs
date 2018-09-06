@@ -13,12 +13,26 @@ public class ChangeScene : Controller
 
     protected void Start()
     {
-        Cursor.visible = false;
+        ControllerDetect();
+        if (controller != "Keyboard")
+        {
+            Cursor.visible = false;
+        }
+
     }
 
     protected void Update()
     {
         ControllerCheck();
+        if (controller == "Keyboard")
+        {
+            Cursor.visible = true;
+        }
+        if (controller != "Keyboard")
+        {
+            Cursor.visible = false;
+        }
+
         UpDownHandler();
 
         switch (selected)
@@ -32,8 +46,9 @@ public class ChangeScene : Controller
                 menuButtons[1].GetComponent<Image>().color = menuButtons[1].colors.normalColor;
                 menuButtons[2].GetComponent<Image>().color = menuButtons[2].colors.normalColor;
 
-                if (button_Jump)
+                if (button_Attack)
                 {
+                    
                     StartGame();
                 }
                 break;
@@ -71,7 +86,7 @@ public class ChangeScene : Controller
 
     public void StartGame ()
     {
-        Cursor.visible = false;
+        
         SceneManager.LoadScene(1);
     }
 

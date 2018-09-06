@@ -35,7 +35,7 @@ public class ThirdPerson_Mode : ThirdPersonController
         lookObject = GameObject.Find("Look Object").transform;
         Components();
 
-        if (SceneManager.GetActiveScene().buildIndex == 3)
+        if (SceneManager.GetActiveScene().buildIndex == 1)
         {
             player.transform.localPosition = new Vector3(51, 0, 34);
         }
