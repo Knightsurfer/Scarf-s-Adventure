@@ -1,201 +1,399 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
-public class PauseMenu : Controller {
+public class PauseMenu : PauseBasic {
 
-    #region Variables
-    #region Pause Check
-    [HideInInspector] public bool paused;
-    protected Canvas pausePanel;
-    #endregion
-    #region Pause Menu
-    public int selected;
-    protected Image highlighter;
-
-   protected Vector3 highlightPos;
-   protected GameObject player;
-   protected Animator animators;
-    #endregion
-    #endregion
-
-    private void Start()
+    #region Start
+    protected void Start()
     {
-        pausePanel = GetComponent<Canvas>();
-        player = GameObject.Find("Scarf");
-        if(player == null)
-        {
-            
-        }
+        BasicStart();
+    }
+    #endregion
 
-
-
-        highlighter = GameObject.Find("Highlight").GetComponent<Image>();
-        highlighter.rectTransform.position = new Vector3(244, 775, 0);
-
+    #region Update
+    protected void Update()
+    {
+        BasicUpdate();
+        MenuChoose();
     }
 
-
-
-
-
-
-
-    private void Update()
+    protected void MenuChoose()
     {
         
-        ControllerCheck();
-        PauseCheck();
-        SelectedMenu1();
-    }
-
-
-
-    public void PauseCheck()
-    {
-        
-
-        psController = player.GetComponent<ThirdPerson_Mode>().psController;
-        xboxController = player.GetComponent<ThirdPerson_Mode>().xboxController;
-
-
-
-
-
-        if (Input.GetKeyDown(KeyCode.Escape)||button_Start)
-        {
-          
-          pausePanel.enabled = !pausePanel.enabled;
-          paused = pausePanel.enabled;
-          GamePause();
-            
-
-
-
-
-        }
-    }
-
-    void SelectedMenu1()
-    {
         if (paused)
         {
-            highlighter.rectTransform.position = highlightPos;
-
-            UpDownHandler();
-
-           
-            switch (selected)
+            
+            switch (currentMenu)
             {
-
-                case -1:
-                    selected = 6;
+                case "Main Menu":
+                    MainMenu();
                     break;
 
-                case 0:
-                    highlightPos = new Vector3(244, 775, 0);
+
+                case "Items Menu":
+                    ItemsMenu();
                     break;
 
-                case 1:
-                    highlightPos = new Vector3(244, 703, 0);
+                case "Equip Menu":
+                    EquipMenu();
                     break;
 
-                case 2:
-                    highlightPos = new Vector3(244, 629, 0);
+                case "Ability Menu":
+                    AbilityMenu();
                     break;
 
-                case 3:
-                    highlightPos = new Vector3(244, 555, 0);
+                case "Custom Menu":
+                    CustomMenu();
                     break;
 
-                case 4:
-                    highlightPos = new Vector3(244, 485, 0);
+                case "Status Menu":
+                    StatusMenu();
                     break;
 
-                case 5:
-                    highlightPos = new Vector3(244, 412, 0);
+                case "Journal Menu":
+                    JournalMenu();
                     break;
 
-                case 6:
-                    highlightPos = new Vector3(244, 344, 0);
+                case "Config Menu":
+                    ConfigMenu();
                     break;
 
-                case 7:
-                    selected = 0;
-                    break;
 
-                
+
 
 
             }
-            if(button_Jump && paused == true)
+        }
+    }
+
+    #endregion
+
+    void MainMenu()
+    {
+        if (!mainCanvas.enabled)
+        {
+            mainCanvas.enabled = true;
+        }
+        
+            UpDownHandler(0,6);
+        switch (selected)
+        {
+
+            case 0:
+                if (button_Attack)
+                {
+                    mainCanvas.enabled = false;
+                    selected = 0;
+                    currentMenu = "Items Menu";
+                }
+                break;
+
+
+
+            case 1:
+                if (button_Attack)
+                {
+                    mainCanvas.enabled = false;
+                    selected = 0;
+                    currentMenu = "Equip Menu";
+                }
+                break;
+
+
+            case 2:
+                if (button_Attack)
+                {
+                    mainCanvas.enabled = false;
+                    selected = 0;
+                    currentMenu = "Ability Menu";
+                }
+                break;
+
+
+
+            case 3:
+                if (button_Attack)
+                {
+                    mainCanvas.enabled = false;
+                    selected = 0;
+                    currentMenu = "Custom Menu";
+                }
+                break;
+
+
+
+            case 4:
+                if (button_Attack)
+                {
+                    mainCanvas.enabled = false;
+                    selected = 0;
+                    currentMenu = "Status Menu";
+                }
+                break;
+
+            case 5:
+                if (button_Attack)
+                {
+                    mainCanvas.enabled = false;
+                    selected = 0;
+                    currentMenu = "Journal Menu";
+                }
+                break;
+
+
+            case 6:
+                if (button_Attack)
+                {
+                    mainCanvas.enabled = false;
+                    selected = 0;
+                    currentMenu = "Config Menu";
+                }
+                break;
+
+        }
+            if (button_Jump && paused == true)
             {
                 pausePanel.enabled = false;
                 paused = pausePanel.enabled;
                 GamePause();
             }
-        }
-
-
+        
     }
 
-
-
-
-
-    void UpDownHandler()
+    void ItemsMenu()
     {
-        if (direction == "up")
+        if (!itemCanvas.enabled)
         {
-            if (d_Up == false)
+            itemCanvas.enabled = true;
+        }
+        UpDownHandler(0,4);
+
+        switch (selected)
+        {
+            case 0:
+
+                break;
+
+            case 1:
+
+                break;
+
+            case 2:
+
+                break;
+
+            case 3:
+
+                break;
+
+            case 4:
+
+                break;
+
+        }
+        if (button_Jump && paused == true)
+        {
+            selected = 0;
+            itemCanvas.enabled = false;
+            currentMenu = "Main Menu";
+        }        
+    }
+    void EquipMenu()
+    {
+        if (!equipCanvas.enabled)
+        {
+            equipCanvas.enabled = true;
+        }
+            UpDownHandler(0,3);
+            switch (selected)
             {
-                d_Up = true;
+                case 0:
+                   
+                    break;
 
-                selected--;
+                case 1:
+
+                    break;
+
+                case 2:
+
+                    break;
+
+                case 3:
+
+                    break;
             }
-        }
 
-        if (direction == "down")
+        if (button_Jump && paused == true)
         {
-            if (d_Down == false)
-            {
-                d_Down = true;
-
-                selected++;
-            }
+            selected = 0;
+            equipCanvas.enabled = false;
+            currentMenu = "Main Menu";
         }
     }
-
-    protected void GamePause()
+    void AbilityMenu()
     {
-        if(FindObjectOfType<RTS_Mode>().enabled == false)
+        if (!equipCanvas.enabled)
         {
-            player.GetComponent<ThirdPerson_Mode>().enabled = !paused;
+            equipCanvas.enabled = true;
         }
-        if (FindObjectOfType<RTS_Mode>().enabled == true)
+        UpDownHandler(0, 3);
+        switch (selected)
         {
-            player.GetComponent<Unit_Controller>().enabled = !paused;
+            case 0:
+
+                break;
+
+            case 1:
+
+                break;
+
+            case 2:
+
+                break;
+
+            case 3:
+
+                break;
         }
 
-
-       
-       player.GetComponent<Animator>().enabled = !paused;
+        if (button_Jump && paused == true)
+        {
+            selected = 0;
+            equipCanvas.enabled = false;
+            currentMenu = "Main Menu";
+        }
     }
-
-    public void RestartLevel()
+    void CustomMenu()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (!equipCanvas.enabled)
+        {
+            equipCanvas.enabled = true;
+        }
+        UpDownHandler(0, 3);
+        switch (selected)
+        {
+            case 0:
+
+                break;
+
+            case 1:
+
+                break;
+
+            case 2:
+
+                break;
+
+            case 3:
+
+                break;
+        }
+
+        if (button_Jump && paused == true)
+        {
+            selected = 0;
+            equipCanvas.enabled = false;
+            currentMenu = "Main Menu";
+        }
     }
-    public void QuitGame()
+    void StatusMenu()
     {
-        Application.Quit();
+        if (!equipCanvas.enabled)
+        {
+            equipCanvas.enabled = true;
+        }
+        UpDownHandler(0, 3);
+        switch (selected)
+        {
+            case 0:
+
+                break;
+
+            case 1:
+
+                break;
+
+            case 2:
+
+                break;
+
+            case 3:
+
+                break;
+        }
+
+        if (button_Jump && paused == true)
+        {
+            selected = 0;
+            equipCanvas.enabled = false;
+            currentMenu = "Main Menu";
+        }
     }
+    void JournalMenu()
+    {
+        if (!equipCanvas.enabled)
+        {
+            equipCanvas.enabled = true;
+        }
+        UpDownHandler(0, 3);
+        switch (selected)
+        {
+            case 0:
 
+                break;
 
+            case 1:
 
+                break;
 
+            case 2:
 
+                break;
 
+            case 3:
 
+                break;
+        }
+
+        if (button_Jump && paused == true)
+        {
+            selected = 0;
+            equipCanvas.enabled = false;
+            currentMenu = "Main Menu";
+        }
+    }
+    void ConfigMenu()
+    {
+        if (!equipCanvas.enabled)
+        {
+            equipCanvas.enabled = true;
+        }
+        UpDownHandler(0, 3);
+        switch (selected)
+        {
+            case 0:
+
+                break;
+
+            case 1:
+
+                break;
+
+            case 2:
+
+                break;
+
+            case 3:
+
+                break;
+        }
+
+        if (button_Jump && paused == true)
+        {
+            selected = 0;
+            equipCanvas.enabled = false;
+            currentMenu = "Main Menu";
+        }
+    }
 
 }

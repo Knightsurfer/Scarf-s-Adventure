@@ -23,11 +23,15 @@ public class ThirdPerson_Mode : ThirdPersonController
     protected Transform cam;
     #endregion
 
+    
+
 
 
     #region Start
     protected void Start()
     {
+        ControllerDetect();
+
         lookObject = GameObject.Find("Look Object").transform;
         Components();
 
@@ -74,8 +78,15 @@ public class ThirdPerson_Mode : ThirdPersonController
 
     protected void Update()
     {
+        
+
+
 
         ControllerCheck();
+
+
+
+
         Actions();
         MovePlayer();
     }

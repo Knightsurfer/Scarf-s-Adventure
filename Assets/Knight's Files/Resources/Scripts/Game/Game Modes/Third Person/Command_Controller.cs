@@ -9,6 +9,8 @@ public class Command_Controller : Controller
 
     void AssignMenu()
     {
+        ControllerDetect();
+
         player = GameObject.Find("Characters");
         menuItems[0] = GameObject.Find("Command Item 1");
         menuItems[1] = GameObject.Find("Command Item 2");
@@ -27,17 +29,10 @@ public class Command_Controller : Controller
 
 	void Update ()
     {
-        ControlerTypeCheck();
+        
         ControllerCheck();
         Menu();
 	}
-
-
-    void ControlerTypeCheck()
-    {
-        psController = player.GetComponentInChildren<ThirdPersonController>().psController;
-        xboxController = player.GetComponentInChildren<ThirdPersonController>().xboxController;
-    }
 
 
     protected void Menu()

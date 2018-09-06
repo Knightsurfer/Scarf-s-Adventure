@@ -6,10 +6,16 @@ using UnityEngine.UI;
 
 public class Controller : MonoBehaviour {
 
+    protected string[] currentControllers = new string[] { };
+    protected string selectedController;
+    public string controller;
+
+  
+
+
 
     protected bool testMode;
-    public bool xboxController;
-    public bool psController;
+
 
 
     #region Text Test
@@ -75,6 +81,73 @@ public class Controller : MonoBehaviour {
 
     [HideInInspector]
     public string direction = "none";
+
+
+
+    protected void ControllerDetect()
+    {
+
+
+       
+        currentControllers = Input.GetJoystickNames();
+
+        selectedController = currentControllers[currentControllers.Length - 1];
+
+
+        if (currentControllers.Length == 0 && currentControllers[0] == "" || currentControllers.Length > 0 && currentControllers[currentControllers.Length - 1] == "")
+        {
+            selectedController = "Keyboard";
+        }
+
+
+
+
+        if (currentControllers[0] != "")
+        {
+            selectedController = currentControllers[0];
+        }
+
+        
+
+
+        switch(selectedController)
+        {
+            case "Wireless Controller":
+                controller = "PS4";
+                break;
+
+            case "Controller (Xbox 360 Wireless Receiver for Windows)":
+                controller = "Xbox";
+                break;
+
+            case "Keyboard":
+                controller = "Keyboard";
+                break;
+
+        }
+
+
+
+
+        if (selectedController == "Wireless Controller")
+        {
+            controller = "PS4";
+        }
+
+        if (selectedController == "Controller (Xbox 360 Wireless Receiver for Windows)")
+        {
+            controller = "Xbox";
+        }
+
+
+
+
+
+        
+    }
+
+
+
     private void Start()
     {
         if (testMode)
@@ -83,10 +156,17 @@ public class Controller : MonoBehaviour {
         }
     }
 
+
+    
+
+
+
+
+
+
     private void Update()
     {
         ControllerCheck();
-        
 
         if (SceneManager.GetActiveScene().buildIndex == 2)
         {
@@ -103,13 +183,21 @@ public class Controller : MonoBehaviour {
 
     protected void ControllerCheck()
     {
-        if (xboxController)
+        ControllerDetect();
+
+        switch(controller)
         {
-            XboxConversion();
-        }
-        if (psController)
-        {
-            Ps4Conversion();
+            case "PS4":
+                Ps4Conversion();
+                break;
+
+            case "Xbox":
+                XboxConversion();
+                break;
+
+            case "Keyboard":
+                KeyboardConversion();
+                break;
         }
     }
 
@@ -315,7 +403,89 @@ public class Controller : MonoBehaviour {
 
 
 
+    void KeyboardConversion()
+    {
+        #region Move
+        if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        {
+            moveY = 1;
+        }
+        if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.UpArrow))
+        {
+            moveY = 0;
+        }
 
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        {
+            moveY = -1;
+        }
+        if (Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            moveY = 0;
+        }
+
+
+
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            moveX = -1;
+        }
+        if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftArrow))
+        {
+            moveX = 0;
+        }
+
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            moveX = 1;
+        }
+        if (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.RightArrow))
+        {
+            moveX = 0;
+        }
+        #endregion
+
+        #region Camera
+        cameraX = Input.GetAxis("Mouse X");
+        cameraY = Input.GetAxis("Mouse Y");
+        #endregion
+
+        #region D-Y
+        if (Input.GetAxis("Mouse ScrollWheel") > 0)
+        {
+            direction = "up";
+        }
+
+
+        if (Input.GetAxis("Mouse ScrollWheel") < 0)
+        {
+            direction = "down";
+        }
+
+        if (Input.GetAxis("Mouse ScrollWheel") == 0)
+        {
+            d_Up = false;
+            d_Down = false;
+            direction = "none";
+        }
+        #endregion
+
+
+        #region Actions
+
+        button_Jump = Input.GetMouseButtonDown(1);
+        button_Attack = Input.GetMouseButtonDown(0);
+        button_Action = Input.GetKeyDown(KeyCode.E);
+
+
+        button_Start = Input.GetKeyDown(KeyCode.Escape);
+        button_Select = Input.GetKeyDown(KeyCode.Backspace);
+        #endregion
+
+
+      
+
+    }
 
 
 

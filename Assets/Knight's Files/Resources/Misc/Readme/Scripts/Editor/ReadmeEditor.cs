@@ -22,38 +22,38 @@ public class ReadmeEditor : Editor {
 
     static ReadmeEditor()
 	{
-		EditorApplication.delayCall += SelectReadmeAutomatically;
+		//EditorApplication.delayCall += SelectReadmeAutomatically;
 	}
 	
-	static void SelectReadmeAutomatically()
-	{
-		if (!SessionState.GetBool(kShowedReadmeSessionStateName, false ))
-		{
-            #pragma warning disable 0219
-            var readme = SelectReadme();
-            SessionState.SetBool(kShowedReadmeSessionStateName, true);
-            #pragma warning restore 0219
-        }
-    }
+	//static void SelectReadmeAutomatically()
+	//{
+		//if (!SessionState.GetBool(kShowedReadmeSessionStateName, false ))
+		//{
+            //#pragma warning disable 0219
+            //var readme = SelectReadme();
+            //SessionState.SetBool(kShowedReadmeSessionStateName, true);
+            //#pragma warning restore 0219
+        //}
+   // }
 	
-	[MenuItem("Help/Project Readme")]
-	static Readme SelectReadme() 
-	{
-		var ids = AssetDatabase.FindAssets("Changelog t:Readme");
-		if (ids.Length == 1)
-		{
-			var readmeObject = AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GUIDToAssetPath(ids[0]));
-			
-			Selection.objects = new UnityEngine.Object[]{readmeObject};
-			
-			return (Readme)readmeObject;
-		}
-		else
-		{
-			Debug.Log("Couldn't find a readme");
-			return null;
-		}
-	}
+	//[MenuItem("Help/Project Readme")]
+	//static Readme SelectReadme() 
+	//{
+		//var ids = AssetDatabase.FindAssets("Changelog t:Readme");
+		//if (ids.Length == 1)
+		//{
+		//	var readmeObject = AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GUIDToAssetPath(ids[0]));
+		//	
+		//	Selection.objects = new UnityEngine.Object[]{readmeObject};
+		//	
+		//	return (Readme)readmeObject;
+		//}
+		//else
+		//{
+		//	Debug.Log("Couldn't find a readme");
+		//	return null;
+	//	}
+	//}
 	
 	protected override void OnHeaderGUI()
 	{
