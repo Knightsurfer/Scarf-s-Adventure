@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ThirdPersonController : Controller {
 
@@ -162,13 +163,19 @@ public class ThirdPersonController : Controller {
             chest = other;
         }
 
+        if(other.name == "Sprite Light")
+        {
+            other.enabled = false;
+            other.GetComponent<SpriteAI>().triggered = true;
+            
+        }
+
         
 
     }
 
     private void OnTriggerExit(Collider other)
     {
-
         Debug.Log("You left " + other.name);
         chest = null;
 

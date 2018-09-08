@@ -83,6 +83,7 @@
     <Compile Include="Assets\Knight's Files\Resources\UI\RTS\Scripts\Item_Info.cs" />
     <Compile Include="Assets\Knight's Files\Resources\UI\RTS\Scripts\Unit_Info.cs" />
     <Compile Include="Assets\Sean's Files\Scripts\CameraFly.cs" />
+    <Compile Include="Assets\SpriteAI.cs" />
     <None Include="Assets\Knight's Files\Resources\Scripts\Unity\Shaders\Outline.shader" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/Projects/Unity/3D/Scarf's Adventure/Scarfs-Adventure/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
