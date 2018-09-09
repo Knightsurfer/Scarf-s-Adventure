@@ -10,7 +10,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>
     </RootNamespace>
-    <ProjectGuid>{44F6A1CD-DBEF-830B-7A65-4F6876E4C4AF}</ProjectGuid>
+    <ProjectGuid>{7CBE78E1-B8D8-28AA-9BE0-19DB556C447A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
@@ -67,16 +67,16 @@
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Unity\Editor\Script_Inspector.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Unity\Editor\Unit_Stats_Viewer.cs" />
     <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>D:/Projects/Unity/3D/Scarf's Adventure/Scarfs-Adventure/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+      <HintPath>D:/Projects/Unity/3D/Scarf's Adventure/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>D:/Projects/Unity/3D/Scarf's Adventure/Scarfs-Adventure/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>D:/Projects/Unity/3D/Scarf's Adventure/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>D:/Projects/Unity/3D/Scarf's Adventure/Scarfs-Adventure/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>D:/Projects/Unity/3D/Scarf's Adventure/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>D:/Projects/Unity/3D/Scarf's Adventure/Scarfs-Adventure/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>D:/Projects/Unity/3D/Scarf's Adventure/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.2.6f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -369,7 +369,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj">
-      <Project>{E14D9714-81EC-947C-8D9A-C7A057CDDDF4}</Project>
+      <Project>{479A8060-2E3C-4A6F-8081-4B3B8BCF253A}</Project>
       <Name>Assembly-CSharp</Name>
     </ProjectReference>
   </ItemGroup>
