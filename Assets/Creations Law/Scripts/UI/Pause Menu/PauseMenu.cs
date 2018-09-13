@@ -5,10 +5,9 @@ public class PauseMenu : PauseBasic {
     #region Start
     protected void Start()
     {
-        if (testMode == true)
-        {
+        
             BasicStart();
-        }
+        
     }
     #endregion
 
@@ -17,10 +16,9 @@ public class PauseMenu : PauseBasic {
     {
         
             BasicUpdate();
-        if (testMode == true)
-        {
+        
             MenuChoose();
-        }
+        
     }
 
     protected void MenuChoose()
@@ -76,12 +74,13 @@ public class PauseMenu : PauseBasic {
 
     void MainMenu()
     {
-        if (!mainCanvas.enabled)
+        
+        if (!mainCanvas.enabled && mainCanvas != null)
         {
-            mainCanvas.enabled = true;
+            mainCanvas.enabled = !mainCanvas.enabled;
         }
         
-            UpDownHandler(0,6);
+        UpDownHandler(0,6);
         switch (selected)
         {
 

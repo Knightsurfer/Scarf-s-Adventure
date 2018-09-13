@@ -8,14 +8,14 @@ public class PauseBasic : Controller {
     #region Variables
     #region Pause Check
     [HideInInspector] public bool paused;
-    protected Canvas pausePanel;
+    public Canvas pausePanel;
     #endregion
     #region Pause Menu
     public int selected;
-    protected Image highlighter;
+    public Image highlighter;
 
     protected Vector3 highlightPos;
-    protected GameObject player;
+    public GameObject player;
     protected Animator animators;
     #endregion
     #region SelectedMenu
@@ -29,17 +29,17 @@ public class PauseBasic : Controller {
 
    protected int selectedMin;
    protected int selectedMax;
-   protected Text stageName;
-   protected Text worldName;
-    bool testmode = false;
+   public Text stageName;
+   public Text worldName;
+    
 
 
 
     #region Setting Variables
     protected void BasicStart ()
     {
-       
-            worldName = GameObject.Find("World Name").GetComponent<Text>();
+        
+        worldName = GameObject.Find("World Name").GetComponent<Text>();
             stageName = GameObject.Find("Level Section").GetComponent<Text>();
 
             ControllerDetect();
@@ -55,6 +55,7 @@ public class PauseBasic : Controller {
     
     protected void CanvasSearcher()
     {
+
         mainCanvas = GameObject.Find("Main Menu").GetComponent<Canvas>();
         itemCanvas = GameObject.Find("Item Menu").GetComponent<Canvas>();
         equipCanvas = GameObject.Find("Equip Menu").GetComponent<Canvas>();
@@ -79,32 +80,34 @@ public class PauseBasic : Controller {
     public void PauseCheck()
     {
 
-
-        if (button_Start)
-        {
-            if(!paused)
+        
+            if (button_Start)
             {
-                switch (SceneManager.GetActiveScene().buildIndex)
+                if (!paused)
                 {
-                    case 1:
-                        stageName.text = "|| Dream State: Tutorial";
-                        worldName.text = "Dream\nState";
-                        break;
+                    switch (SceneManager.GetActiveScene().buildIndex)
+                    {
+                        case 1:
+                            stageName.text = "|| Dream State: Tutorial";
+                            worldName.text = "Dream\nState";
+                            break;
+                    }
+                   
                 }
-               ;
+                pausePanel.enabled = !pausePanel.enabled;
+                paused = pausePanel.enabled;
+                if (controller == "Keyboard")
+                {
+                    Cursor.visible = pausePanel.enabled;
+                }
+                GamePause();
+
             }
-            pausePanel.enabled = !pausePanel.enabled;
-            paused = pausePanel.enabled;
-            if (controller == "Keyboard")
-            {
-                Cursor.visible = pausePanel.enabled;
-            }
-            GamePause();
-        }
+    }
         
 
         
-    }
+    
     protected void GamePause()
     {
         if (FindObjectOfType<RTS_Mode>().enabled == false)
