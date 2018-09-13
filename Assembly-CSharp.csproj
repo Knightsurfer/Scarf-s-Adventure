@@ -61,7 +61,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Cinema_Script.cs" />
     <Compile Include="Assets\Creations Law\Scripts\Settings.cs" />
     <Compile Include="Assets\Creations Law\Scripts\UI\Pause Menu\PauseBasic.cs" />
     <Compile Include="Assets\Creations Law\Scripts\UI\Pause Menu\PauseMenu.cs" />
@@ -69,21 +68,22 @@
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\3D Platformer\Platformer_Camera.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\3D Platformer\PlayerController.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\3D Platformer\ThirdPersonController.cs" />
+    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\Cinema_Script.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\RTS\Game Engine\RTS Package\Camera\Checks.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\RTS\Game Engine\RTS Package\Camera\Hybrid_Cam.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\RTS\Game Engine\RTS Package\Camera\RTS_Cam.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\RTS\Game Engine\RTS Package\Camera\RTS_Mode.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\RTS\Game Engine\RTS Package\UI\RTS Panel\Command_Panel.cs" />
+    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\SpriteAI.cs" />
+    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\Stats.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\Third Person\Command_Controller.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\Third Person\ThirdPerson_Mode.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Units\Interact.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Units\Stats.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Units\Unit_Controller.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Unity\ChangeScene.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Unity\Input\Controller.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\SpriteAI.cs" />
     <Compile Include="Assets\Knight's Files\Resources\UI\RTS\Scripts\Item_Info.cs" />
     <Compile Include="Assets\Knight's Files\Resources\UI\RTS\Scripts\Unit_Info.cs" />
+    <Compile Include="Assets\RTS Stuff\Command_Panel.cs" />
+    <Compile Include="Assets\RTS Stuff\RTS_Mode.cs" />
+    <Compile Include="Assets\RTS Stuff\Unit_Controller.cs" />
     <Compile Include="Assets\Sean's Files\Scripts\CameraFly.cs" />
     <None Include="Assets\Knight's Files\Resources\Scripts\Unity\Shaders\Outline.shader" />
     <Reference Include="UnityEditor.StandardEvents">

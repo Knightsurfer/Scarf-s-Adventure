@@ -86,29 +86,24 @@ public class Controller : MonoBehaviour {
 
     protected void ControllerDetect()
     {
-
-
-       
         currentControllers = Input.GetJoystickNames();
 
-        selectedController = currentControllers[currentControllers.Length - 1];
 
-
-        if (currentControllers.Length == 0 && currentControllers[0] == "" || currentControllers.Length > 0 && currentControllers[currentControllers.Length - 1] == "")
+        if (currentControllers.Length < 1 || currentControllers[0] == "")
         {
             selectedController = "Keyboard";
         }
 
-
-
-
-        if (currentControllers[0] != "")
+        if (currentControllers.Length > 0)
         {
-            selectedController = currentControllers[0];
+            selectedController = currentControllers[currentControllers.Length - 1];
+            if (currentControllers[0] != "")
+            {
+                selectedController = currentControllers[0];
+            }
         }
-
         
-
+        
 
         switch(selectedController)
         {

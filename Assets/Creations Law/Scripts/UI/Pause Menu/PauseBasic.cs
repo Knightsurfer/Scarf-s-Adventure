@@ -29,25 +29,30 @@ public class PauseBasic : Controller {
 
    protected int selectedMin;
    protected int selectedMax;
-
-
-
+   protected Text stageName;
+   protected Text worldName;
+    bool testmode = false;
 
 
 
     #region Setting Variables
     protected void BasicStart ()
     {
-        ControllerDetect();
+       
+            worldName = GameObject.Find("World Name").GetComponent<Text>();
+            stageName = GameObject.Find("Level Section").GetComponent<Text>();
 
-        pausePanel = GetComponent<Canvas>();
-        player = GameObject.Find("Scarf");
+            ControllerDetect();
 
-        highlighter = GameObject.Find("Highlight").GetComponent<Image>();
-        highlighter.rectTransform.position = new Vector3(244, 775, 0);
+            pausePanel = GetComponent<Canvas>();
+            player = GameObject.Find("Scarf");
 
-        CanvasSearcher();
-    }
+            highlighter = GameObject.Find("Highlight").GetComponent<Image>();
+            highlighter.rectTransform.position = new Vector3(244, 775, 0);
+
+            CanvasSearcher();
+        }
+    
     protected void CanvasSearcher()
     {
         mainCanvas = GameObject.Find("Main Menu").GetComponent<Canvas>();
@@ -77,6 +82,17 @@ public class PauseBasic : Controller {
 
         if (button_Start)
         {
+            if(!paused)
+            {
+                switch (SceneManager.GetActiveScene().buildIndex)
+                {
+                    case 1:
+                        stageName.text = "|| Dream State: Tutorial";
+                        worldName.text = "Dream\nState";
+                        break;
+                }
+               ;
+            }
             pausePanel.enabled = !pausePanel.enabled;
             paused = pausePanel.enabled;
             if (controller == "Keyboard")
@@ -85,7 +101,7 @@ public class PauseBasic : Controller {
             }
             GamePause();
         }
-
+        
 
         
     }
@@ -151,7 +167,6 @@ public class PauseBasic : Controller {
 
     protected void MenuScroller(int min,int max)
     {
-       
         if (selected < min)
             {
                 selected = max;
@@ -161,11 +176,14 @@ public class PauseBasic : Controller {
             selected = min;
             }
 
+        HighlightPos();
+    }
 
+
+    protected void HighlightPos()
+    {
         switch (selected)
         {
-
-
             case 0:
                 highlightPos = new Vector3(244, 775, 0);
                 break;
@@ -193,25 +211,8 @@ public class PauseBasic : Controller {
             case 6:
                 highlightPos = new Vector3(244, 344, 0);
                 break;
-
-
-
-
-
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
     public void RestartLevel()
     {

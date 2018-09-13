@@ -5,15 +5,22 @@ public class PauseMenu : PauseBasic {
     #region Start
     protected void Start()
     {
-        BasicStart();
+        if (testMode == true)
+        {
+            BasicStart();
+        }
     }
     #endregion
 
     #region Update
     protected void Update()
     {
-        BasicUpdate();
-        MenuChoose();
+        
+            BasicUpdate();
+        if (testMode == true)
+        {
+            MenuChoose();
+        }
     }
 
     protected void MenuChoose()
@@ -83,9 +90,11 @@ public class PauseMenu : PauseBasic {
                 {
                     mainCanvas.enabled = false;
                     selected = 0;
+                    HighlightPos();
                     currentMenu = "Items Menu";
                 }
-                break;
+                
+                    break;
 
 
 
@@ -94,8 +103,10 @@ public class PauseMenu : PauseBasic {
                 {
                     mainCanvas.enabled = false;
                     selected = 0;
+                    HighlightPos();
                     currentMenu = "Equip Menu";
                 }
+
                 break;
 
 
@@ -104,6 +115,7 @@ public class PauseMenu : PauseBasic {
                 {
                     mainCanvas.enabled = false;
                     selected = 0;
+                    HighlightPos();
                     currentMenu = "Ability Menu";
                 }
                 break;
@@ -115,6 +127,7 @@ public class PauseMenu : PauseBasic {
                 {
                     mainCanvas.enabled = false;
                     selected = 0;
+                    HighlightPos();
                     currentMenu = "Custom Menu";
                 }
                 break;
@@ -126,6 +139,7 @@ public class PauseMenu : PauseBasic {
                 {
                     mainCanvas.enabled = false;
                     selected = 0;
+                    HighlightPos();
                     currentMenu = "Status Menu";
                 }
                 break;
@@ -135,6 +149,7 @@ public class PauseMenu : PauseBasic {
                 {
                     mainCanvas.enabled = false;
                     selected = 0;
+                    HighlightPos();
                     currentMenu = "Journal Menu";
                 }
                 break;
@@ -145,6 +160,7 @@ public class PauseMenu : PauseBasic {
                 {
                     mainCanvas.enabled = false;
                     selected = 0;
+                    HighlightPos();
                     currentMenu = "Config Menu";
                 }
                 break;
@@ -165,6 +181,7 @@ public class PauseMenu : PauseBasic {
         {
             itemCanvas.enabled = true;
         }
+
         UpDownHandler(0,4);
 
         switch (selected)
@@ -193,6 +210,7 @@ public class PauseMenu : PauseBasic {
         if (button_Jump && paused == true)
         {
             selected = 0;
+            HighlightPos();
             itemCanvas.enabled = false;
             currentMenu = "Main Menu";
         }        
@@ -225,7 +243,8 @@ public class PauseMenu : PauseBasic {
 
         if (button_Jump && paused == true)
         {
-            selected = 0;
+            selected = 1;
+            HighlightPos();
             equipCanvas.enabled = false;
             currentMenu = "Main Menu";
         }
@@ -258,7 +277,8 @@ public class PauseMenu : PauseBasic {
 
         if (button_Jump && paused == true)
         {
-            selected = 0;
+            selected = 2;
+            HighlightPos();
             equipCanvas.enabled = false;
             currentMenu = "Main Menu";
         }
@@ -291,7 +311,8 @@ public class PauseMenu : PauseBasic {
 
         if (button_Jump && paused == true)
         {
-            selected = 0;
+            selected = 3;
+            HighlightPos();
             equipCanvas.enabled = false;
             currentMenu = "Main Menu";
         }
@@ -324,7 +345,8 @@ public class PauseMenu : PauseBasic {
 
         if (button_Jump && paused == true)
         {
-            selected = 0;
+            selected = 4;
+            HighlightPos();
             equipCanvas.enabled = false;
             currentMenu = "Main Menu";
         }
@@ -357,7 +379,8 @@ public class PauseMenu : PauseBasic {
 
         if (button_Jump && paused == true)
         {
-            selected = 0;
+            selected = 5;
+            HighlightPos();
             equipCanvas.enabled = false;
             currentMenu = "Main Menu";
         }
@@ -390,7 +413,8 @@ public class PauseMenu : PauseBasic {
 
         if (button_Jump && paused == true)
         {
-            selected = 0;
+            selected = 6;
+            HighlightPos();
             equipCanvas.enabled = false;
             currentMenu = "Main Menu";
         }

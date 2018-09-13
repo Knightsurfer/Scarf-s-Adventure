@@ -30,7 +30,18 @@ public class ThirdPersonController : Controller {
 
 
     #endregion
-    
+
+    protected GameObject buttonPrompt;
+
+
+
+
+
+
+
+
+
+
     protected void MovePlayer()
     {
         #region Move direction
@@ -156,10 +167,11 @@ public class ThirdPersonController : Controller {
     private void OnTriggerEnter(Collider other)
     {
 
-        Debug.Log("You picked " + other.name);
+        
 
         if (other.name == "chest")
         {
+            Debug.Log("You picked " + other.name);
             chest = other;
         }
 
@@ -167,8 +179,15 @@ public class ThirdPersonController : Controller {
         {
             other.enabled = false;
             other.GetComponent<SpriteAI>().triggered = true;
-            
         }
+
+
+        if(other.tag == "NPC")
+        {
+            buttonPrompt.transform.position = new Vector3(other.transform.position.x, other.transform.position.y + 1.8f, other.transform.position.z + 0.5f);
+        }
+
+
 
         
 
@@ -176,13 +195,25 @@ public class ThirdPersonController : Controller {
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("You left " + other.name);
-        chest = null;
+        
+            //Debug.Log("You left " + other.name);
+            
 
-        if (other.name == "chest")
-        {
-            other.GetComponent<Animator>().SetBool("Open", false);
-        }
+
+        
+            if (other.tag == "NPC")
+            {
+                buttonPrompt.transform.position = new Vector3();
+            }
+
+
+ 
+            if (other.name == "chest")
+            {
+                chest = null;
+                other.GetComponent<Animator>().SetBool("Open", false);
+            }
+        
 
     }
 

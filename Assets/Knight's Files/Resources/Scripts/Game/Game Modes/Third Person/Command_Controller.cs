@@ -33,7 +33,10 @@ public class Command_Controller : Controller
     {
         
         ControllerCheck();
-        Menu();
+        if (menuItems.Length > 0)
+        {
+            Menu();
+        }
 	}
 
 

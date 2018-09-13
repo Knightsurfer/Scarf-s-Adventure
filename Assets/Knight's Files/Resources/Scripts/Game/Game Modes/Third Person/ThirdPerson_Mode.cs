@@ -30,6 +30,7 @@ public class ThirdPerson_Mode : ThirdPersonController
     #region Start
     protected void Start()
     {
+        buttonPrompt = GameObject.Find("Prompt");
         ControllerDetect();
 
         lookObject = GameObject.Find("Look Object").transform;
@@ -155,7 +156,8 @@ public class ThirdPerson_Mode : ThirdPersonController
 
     void ThirdPerson()
     {
-        currentZoom -= cameraY * cam_rotateSpeed_Y / 2 * Time.deltaTime;
+        currentZoom -= cameraY * 3.5f * Time.deltaTime;
+        buttonPrompt.transform.LookAt(cam.transform.position);
 
         //neck.transform.localScale = new Vector3(1, 1, 1);
         currentZoom = Mathf.Clamp(currentZoom, 2f, 4f);
