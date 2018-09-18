@@ -4,162 +4,114 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class ThirdPerson_Mode : ThirdPersonController
+public class ThirdPerson_Mode : ThirdPerson_Interact
 {
     #region Variables
+    #region Main
+    private float horizontal;
+    #endregion
+    #region First Person
+    Transform lookObject;
+    #endregion
+    #region Third Person
     protected Vector3 offset;
     protected float cam_rotateSpeed_X = 180;
     protected float cam_rotateSpeed_Y = 80;
-
-    public float currentYaw = 210f;
+    public float currentYaw = 210f; //210
     protected float currentZoom = 2f;
-    protected GameObject neck;
-
-    public float lookY;
-
-    Transform lookObject;
     #endregion
-    #region Components
-    protected Transform cam;
     #endregion
 
-    
-
-
-
-    #region Start
-    protected void Start()
+    private void Start()
     {
-        buttonPrompt = GameObject.Find("Prompt");
-        ControllerDetect();
-
-        lookObject = GameObject.Find("Look Object").transform;
+        InteractStart();
+        ControllerStart();
         Components();
-
-        if (SceneManager.GetActiveScene().buildIndex == 4)
+    }
+    private void Update()
+    {
+        if(canMove == false)
         {
-            player.transform.localPosition = new Vector3(51, 0, 34);
+            if (GameObject.Find("Scarf").GetComponent<ThirdPerson_Mode>().currentYaw != 0)
+            {
+                GameObject.Find("Scarf").GetComponent<ThirdPerson_Mode>().currentYaw -= 1 *5;
+            }
+            else
+            {
+                canMove = true;
+            }
+        }
+
+
+
+        InteractUpdate();
+        
+            ControllerCheck();
+        if (canMove)
+        {
+            ControllerUpdate();
         }
     }
-    protected void Components()
+    private void LateUpdate()
     {
-        #region Add Components
-        gameObject.AddComponent<CharacterController>();
-        #endregion
-        #region Get Components
-        anim = GetComponent<Animator>();
-        player = GetComponent<CharacterController>();
-        pause = FindObjectOfType<PauseMenu>();
-        #endregion
-        #region Set Components
-        player.height = 2;
-        player.radius = 0.5f;
-        player.center = new Vector3(0, 1.1f, 0);
-        #endregion
+        
+            horizontal = cameraX * cam_rotateSpeed_X * Time.deltaTime;
+            rotator.Rotate(0, horizontal, 0);
+            currentYaw += cameraX * cam_rotateSpeed_X * Time.deltaTime;
+            switch (viewType)
+            {
+                case "FirstPerson":
+                    if (button_Select)
+                    {
+                        cam.parent = GameObject.Find("Player 1").transform;
+                        viewType = "ThirdPerson";
+                        cam.localPosition = new Vector3(44.453f, 2.56f, 33.1f);
+                    }
+                    FirstPerson();
+                    break;
 
+                case "ThirdPerson":
+                    if (button_Select)
+                    {
+                        cam.parent = lookObject.transform;
+                        viewType = "FirstPerson";
+                    }
+                    ThirdPerson();
+                    break;
+            }
+        
+    }
+
+
+   private void Components()
+    {
         #region Getting Variables
-        cam = Camera.main.transform;
         rotator = GameObject.Find("Rotator").transform;
+        lookObject = GameObject.Find("Look Object").transform;
         skeleton = GameObject.FindGameObjectWithTag("Skeleton").transform;
         #endregion
-        #region Set Variables
+
         offset = transform.position - cam.position;
         rotator.position = transform.position;
-        #endregion
     }
-    #endregion
-
-
-
-
-    float horizontal;
-
-
-
-
-    protected void Update()
-    {
-        
-
-
-
-        ControllerCheck();
-
-
-
-
-        Actions();
-        MovePlayer();
-    }
-
-    protected void LateUpdate()
-    {
-        horizontal = cameraX * cam_rotateSpeed_X * Time.deltaTime;
-        rotator.Rotate(0, horizontal, 0);
-
-        
-        
-
-
-
-        currentYaw += cameraX * cam_rotateSpeed_X * Time.deltaTime;
-        switch (viewType)
-        {
-            case "FirstPerson":
-                if (button_Select)
-                {
-                    cam.parent = GameObject.Find("Player 1").transform;
-                    viewType = "ThirdPerson";
-                    cam.localPosition = new Vector3(44.453f, 2.56f, 33.1f);
-
-                   
-                }
-                FirstPerson();
-                break;
-
-            case "ThirdPerson":
-                if (button_Select)
-                {
-                    cam.parent = lookObject.transform;
-                    viewType = "FirstPerson";
-                    
-                }
-                ThirdPerson();
-                break;
-
-
-
-
-        }
-    }
-
-
-
-    void FirstPerson()
+   private void FirstPerson()
     {
         float vertical = cameraX * cam_rotateSpeed_Y  * 2 * Time.deltaTime;
         float horizontal = -cameraY * cam_rotateSpeed_Y * 2 * Time.deltaTime;
 
-
-
         cam.localRotation = Quaternion.Euler(cam.localRotation.x, lookObject.localRotation.y, cam.localRotation.z);
         lookObject.Rotate(horizontal, 0, 0);
 
-
-
         transform.Rotate(0, vertical, 0);
         cam.Rotate(0, horizontal, 0);
-
-
         cam.localPosition = Vector3.zero;
     }
-
-    void ThirdPerson()
+   private void ThirdPerson()
     {
         currentZoom -= cameraY * 3.5f * Time.deltaTime;
-        buttonPrompt.transform.LookAt(cam.transform.position);
+        ButtonPrompt();
 
-        //neck.transform.localScale = new Vector3(1, 1, 1);
+
         currentZoom = Mathf.Clamp(currentZoom, 2f, 4f);
         cam.transform.position = player.transform.position - new Vector3(0, -1, -2) * currentZoom;
         cam.transform.LookAt(player.transform.position + Vector3.up * 2f);

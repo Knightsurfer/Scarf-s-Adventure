@@ -10,7 +10,7 @@ public class Cinema_Script : MonoBehaviour {
     public int start;
     Text speechLines;
 
-    private Vector3[] startLocation = new Vector3[] {new Vector3(87.12f,-74.65f,-206.31f), new Vector3(), new Vector3(), new Vector3(),new Vector3() };
+    private Vector3[] startLocation = new Vector3[] {new Vector3(87.12f,-74.65f,-206.31f), new Vector3(87, -74.7f, -206.3f), new Vector3(), new Vector3(),new Vector3() };
     private Quaternion[] startRotation = new Quaternion[] { Quaternion.Euler(45.67f,-3.7f,0), Quaternion.Euler(0,0,0), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, 0) };
 
 
@@ -45,7 +45,6 @@ public class Cinema_Script : MonoBehaviour {
                 if (transform.localPosition == destination[start])
                 {
                     transform.localPosition = startLocation[start - 1];
-                    transform.localRotation = startRotation[start - 1];
                     start++;
                 }
                 break;
@@ -59,16 +58,33 @@ public class Cinema_Script : MonoBehaviour {
                     transform.localPosition = startLocation[start - 1];
                     transform.localRotation = startRotation[start - 1];
                     start++;
+                    transform.localPosition = new Vector3(94.31001f, -75.3f,-207.32f);
+                    transform.localRotation = Quaternion.Euler(0,0,0);
+                }
+                break;
+
+            case 3:
+                GameObject.Find("Scarf(cinema)").GetComponent<Animator>().SetBool("StartMotion", true);
+                if (GameObject.Find("Scarf(cinema)").transform.localRotation == Quaternion.Euler(0.3f, 180, 0))
+                {
+                   
+                    GameObject.Find("Cinematic Objects").SetActive(false);
+                    GameObject.Find("Scarf").GetComponentInChildren<Animator>().enabled = true;
+                    GameObject.Find("Scarf").GetComponentInChildren<Camera>().enabled = true;
+                    GameObject.Find("Scarf").GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+                    GameObject.Find("Scarf").GetComponent<ThirdPerson_Mode>().enabled = true;
+
+                    
                 }
                 break;
         }
 
 
 
-        
 
-        
-        
+
+
+
     }
 
 

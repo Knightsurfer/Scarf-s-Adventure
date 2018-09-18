@@ -6,97 +6,86 @@ using UnityEngine.AI;
 public class ThirdPersonController : Controller {
 
     #region Variables
-    protected Vector3 moveDirection;
-    protected Vector3 controllerOffset = new Vector3(0, 1.1f, 0);
+    #region Rotation Math
     protected Quaternion theRotation;
-    protected float moveSpeed = 10;
-    protected float jumpForce = 14;
-    protected float gravity = 3;
     protected float player_rotateSpeed = 10;
     protected string viewType = "ThirdPerson";
     #endregion
+    #region Movement
+    protected Vector3 moveDirection;
+    protected float moveSpeed = 10;
+    protected float jumpForce = 14;
+    #endregion
+    #region Physics
+    protected float gravity = 3;
+    #endregion
+    #endregion
     #region Components
     [HideInInspector]public Animator anim;
-    protected CapsuleCollider capu;
     protected CharacterController player;
-    protected Transform rotator;
+    protected CapsuleCollider capu;
     protected Transform skeleton;
+    protected Transform rotator;
     protected PauseMenu pause;
-
-    Collider chest;
-
-
+    protected Transform cam;
 
 
 
     #endregion
 
-    protected GameObject buttonPrompt;
+    public bool canMove;
 
+    protected void ControllerStart ()
+    {
+        cam = Camera.main.transform;
+        anim = GetComponent<Animator>();
+        player = gameObject.AddComponent<CharacterController>();
+        pause = FindObjectOfType<PauseMenu>();
 
+        player.height = 2;
+        player.radius = 0.5f;
+        player.center = new Vector3(0, 1.1f, 0);
 
-
-
-
-
-
-
+    }
+    protected void ControllerUpdate()
+    {
+        MovePlayer();
+    }
 
     protected void MovePlayer()
     {
-        #region Move direction
+
+            Actions();
+            #region Move direction
             float yspeed = moveDirection.y;
             moveDirection = transform.forward * moveY + (transform.right * moveX);
             moveDirection = moveDirection.normalized * moveSpeed;
             moveDirection.y = yspeed;
             #endregion
-        
-        #region Gravity Handler
-        
-        moveDirection.y = moveDirection.y + (Physics.gravity.y * Time.deltaTime * gravity);
-        #endregion
+            moveDirection.y = moveDirection.y + (Physics.gravity.y * Time.deltaTime * gravity);
+            player.Move(moveDirection * Time.deltaTime);
 
-        Movement();
-        LevelBounds();
-        if (viewType == "ThirdPerson")
-        {
-            #region Rotation
-            if (moveX != 0 || moveY != 0)
+            if (viewType == "ThirdPerson")
             {
-                player.transform.rotation = Quaternion.Euler(0, rotator.rotation.eulerAngles.y + 30, 0);
-                Quaternion newRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, 90, moveDirection.z));
-                theRotation = newRotation;
+                #region Rotation
+                if (moveX != 0 || moveY != 0)
+                {
+                    player.transform.rotation = Quaternion.Euler(0, rotator.rotation.eulerAngles.y + 30, 0);
+                    Quaternion newRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, 90, moveDirection.z));
+                    theRotation = newRotation;
 
-                skeleton.rotation = Quaternion.Slerp(skeleton.rotation, newRotation, player_rotateSpeed * Time.deltaTime);
+                    skeleton.rotation = Quaternion.Slerp(skeleton.rotation, newRotation, player_rotateSpeed * Time.deltaTime);
+                }
+                #endregion
             }
+            #region Animator
+            anim.SetBool("OnGround", player.isGrounded);
+            anim.SetFloat("Speed", Mathf.Abs(moveX) + Mathf.Abs(moveY));
             #endregion
-           
-        }
-        #region Animator
-        anim.SetBool("OnGround", player.isGrounded);
-        anim.SetFloat("Speed", Mathf.Abs(moveX) + Mathf.Abs(moveY));
-        #endregion
-
+        
     }
-
-    protected void Movement()
-    {
-        player.Move(moveDirection * Time.deltaTime);
-    }
-
-
-    protected void LevelBounds()
-    {
-        if (transform.localPosition.y < -15)
-        {
-            transform.localPosition = new Vector3(47, 1, 38);
-        }
-    }
-
-
     protected void Actions()
     {
-
         if (player.isGrounded)
         {
             moveDirection.y = 0;
@@ -105,122 +94,7 @@ public class ThirdPersonController : Controller {
                 moveDirection.y = jumpForce;
             }
         }
-
-
-
-
-
-
-
-        if (chest != null)
-        {
-
-            if (button_Action)
-            {
-                    chest.GetComponent<Animator>().SetBool("Open", true);
-
-                if(anim.GetBool("Working") == true)
-                {
-                    anim.SetBool("Working", false);
-
-                }
-                else if (anim.GetBool("Working") == false)
-                {
-                    anim.SetBool("Working", true);
-                }
-
-
-
-
-
-            }
-
-            if (chest.GetComponent<Animator>().GetBool("Open") == true)
-            {
-                if (button_Attack)
-                {
-                    chest.GetComponent<Animator>().SetBool("Open", false);
-                }
-            }
-
-        }
-
-
-
-
-
-
-
-
     }
-
-
-
-
-
-
-
-
-
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-
-        
-
-        if (other.name == "chest")
-        {
-            Debug.Log("You picked " + other.name);
-            chest = other;
-        }
-
-        if(other.name == "Sprite Light")
-        {
-            other.enabled = false;
-            other.GetComponent<SpriteAI>().triggered = true;
-        }
-
-
-        if(other.tag == "NPC")
-        {
-            buttonPrompt.transform.position = new Vector3(other.transform.position.x, other.transform.position.y + 1.8f, other.transform.position.z + 0.5f);
-        }
-
-
-
-        
-
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        
-            //Debug.Log("You left " + other.name);
-            
-
-
-        
-            if (other.tag == "NPC")
-            {
-                buttonPrompt.transform.position = new Vector3();
-            }
-
-
- 
-            if (other.name == "chest")
-            {
-                chest = null;
-                other.GetComponent<Animator>().SetBool("Open", false);
-            }
-        
-
-    }
-
-
-
-
-
 
 }
 
