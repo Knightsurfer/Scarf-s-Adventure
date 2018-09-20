@@ -64,6 +64,8 @@
     <Compile Include="Assets\Creations Law\Scripts\Settings.cs" />
     <Compile Include="Assets\Creations Law\Scripts\UI\Pause Menu\PauseBasic.cs" />
     <Compile Include="Assets\Creations Law\Scripts\UI\Pause Menu\PauseMenu.cs" />
+    <Compile Include="Assets\Interactable.cs" />
+    <Compile Include="Assets\Knight's Files\Resources\Graphics\Models\Animations\Scarf\Sounds\SavingLoading.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Misc\Readme\Scripts\Readme.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\3D Platformer\Platformer_Camera.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\3D Platformer\PlayerController.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\Third Person\Command_Controller.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\Third Person\ThirdPerson_Interact.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\Third Person\ThirdPerson_Mode.cs" />
+    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Game Modes\Third Person\ThirdPerson_Start.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Units\Interact.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Unity\ChangeScene.cs" />
     <Compile Include="Assets\Knight's Files\Resources\Scripts\Unity\Input\Controller.cs" />

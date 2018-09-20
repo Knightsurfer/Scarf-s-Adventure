@@ -6,17 +6,15 @@ public class ThirdPerson_Interact : ThirdPersonController
     protected GameObject buttonPrompt;
     protected Collider chest;
 
+
+
     protected void InteractStart()
     {
         buttonPrompt = GameObject.Find("Prompt");
-
-        if (SceneManager.GetActiveScene().buildIndex == 4)
-        {
-            player.transform.localPosition = new Vector3(51, 0, 34);
-        }
     }
     protected void InteractUpdate()
     {
+
         ObjectBehaviour();
         LevelBounds();
     }
@@ -62,31 +60,54 @@ public class ThirdPerson_Interact : ThirdPersonController
 
 
     protected void OnTriggerEnter(Collider other)
-{
-    if (other.name == "Chest")
     {
-        chest = other;
+        if (other.name == "Chest")
+        {
+            chest = other;
+        }
+        if (other.name == "Door")
+        {
+            other.GetComponent<Animator>().SetBool("Approached", true);
+        }
+        if (other.name == "Sprite Light")
+        {
+            other.enabled = false;
+            other.GetComponent<SpriteAI>().triggered = true;
+        }
+        if (other.tag == "NPC")
+        {
+            buttonPrompt.transform.position = new Vector3(other.transform.position.x, other.transform.position.y + 1.8f, other.transform.position.z + 0.5f);
+        }
     }
-    if (other.name == "Sprite Light")
-    {
-        other.enabled = false;
-        other.GetComponent<SpriteAI>().triggered = true;
-    }
-    if (other.tag == "NPC")
-    {
-        buttonPrompt.transform.position = new Vector3(other.transform.position.x, other.transform.position.y + 1.8f, other.transform.position.z + 0.5f);
-    }
-}
     protected void OnTriggerExit(Collider other)
-{
-    if (other.tag == "NPC")
     {
-        buttonPrompt.transform.position = new Vector3();
+        if (other.name == "Door")
+        {
+            other.GetComponent<Animator>().SetBool("Approached", false);
+        }
+        if (other.tag == "NPC")
+        {
+            buttonPrompt.transform.position = new Vector3();
+        }
+        if (other.name == "Chest")
+        {
+            chest = null;
+            other.GetComponent<Animator>().SetBool("Open", false);
+        }
     }
-    if (other.name == "Chest")
+
+
+    protected void Punch()
     {
-        chest = null;
-        other.GetComponent<Animator>().SetBool("Open", false);
+
+
     }
-}
+
+
+
+
+
+
+
+
 }

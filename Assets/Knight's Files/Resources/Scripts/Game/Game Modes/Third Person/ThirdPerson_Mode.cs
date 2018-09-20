@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class ThirdPerson_Mode : ThirdPerson_Interact
+public class ThirdPerson_Mode : ThirdPerson_Start
 {
     #region Variables
     #region Main
@@ -24,6 +24,7 @@ public class ThirdPerson_Mode : ThirdPerson_Interact
 
     private void Start()
     {
+        StartingVariables();
         InteractStart();
         ControllerStart();
         Components();
