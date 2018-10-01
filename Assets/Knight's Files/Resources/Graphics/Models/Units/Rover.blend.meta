@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: d53983d779985dd41be3d530c448f35e
+labels:
+- Character
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -284,5 +286,5 @@ ModelImporter:
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
-  assetBundleName: 
+  assetBundleName: knights stuff
   assetBundleVariant: 

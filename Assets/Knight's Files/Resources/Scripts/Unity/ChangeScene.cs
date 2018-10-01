@@ -5,35 +5,36 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
-public class ChangeScene : Controller
+public class ChangeScene : MonoBehaviour
 {
 
     public int selected;
     public Button[] menuButtons;
+    public Gamepad gamepad;
 
     protected void Start()
     {
-        ControllerDetect();
-        if (controller != "Keyboard")
-        {
-            Cursor.visible = false;
-        }
-
+        gamepad = FindObjectOfType<Gamepad>();
     }
 
     protected void Update()
     {
-        ControllerCheck();
-        if (controller == "Keyboard")
+
+        if (gamepad.controller == "Keyboard")
         {
             Cursor.visible = true;
         }
-        if (controller != "Keyboard")
+        if (gamepad.controller != "Keyboard")
         {
             Cursor.visible = false;
         }
 
+
+
+
         UpDownHandler();
+
+
 
         switch (selected)
         {
@@ -46,10 +47,11 @@ public class ChangeScene : Controller
                 menuButtons[1].GetComponent<Image>().color = menuButtons[1].colors.normalColor;
                 menuButtons[2].GetComponent<Image>().color = menuButtons[2].colors.normalColor;
 
-                if (button_Attack)
+                if(gamepad.button_Attack)
                 {
-                    
                     StartGame();
+
+
                 }
                 break;
 
@@ -61,32 +63,25 @@ public class ChangeScene : Controller
 
             case 2:
                 menuButtons[0].GetComponent<Image>().color = menuButtons[0].colors.normalColor;
-                menuButtons[1].GetComponent<Image>().color = menuButtons[2].colors.normalColor;
-                menuButtons[2].GetComponent<Image>().color = menuButtons[1].colors.highlightedColor;
+                menuButtons[1].GetComponent<Image>().color = menuButtons[1].colors.normalColor;
+                menuButtons[2].GetComponent<Image>().color = menuButtons[2].colors.highlightedColor;
                 break;
 
             case 3:
                 selected = 0;
                 break;
         }
-
-
-
-
-
-
-
-
-
-
-        
     }
 
 
 
-    public void StartGame ()
+
+
+
+
+
+    public void StartGame()
     {
-        
         SceneManager.LoadScene(1);
     }
 
@@ -94,37 +89,37 @@ public class ChangeScene : Controller
 
     void UpDownHandler()
     {
-        if (direction == "up")
+        
+        if (gamepad.isGamepad)
         {
-            if (d_Up == false)
+            if (gamepad.direction == "up")
             {
-                d_Up = true;
-
-                selected--;
+                if (gamepad.d_Up == false)
+                {
+                    gamepad.d_Up = true;
+                    Debug.Log("Test");
+                    selected--;
+                }
             }
-        }
-
-        if (direction == "down")
-        {
-            if (d_Down == false)
+            if (gamepad.direction == "down")
             {
-                d_Down = true;
+                if (gamepad.d_Down == false)
+                {
+                    gamepad.d_Down = true;
 
-                selected++;
+                    selected++;
+                }
             }
+
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
+    private void MouseMenu(int selection)
+    {
+        if (gamepad.controller == "Keyboard")
+        {
+            selected = selection;
+        }
     }
+}
+

@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: c302e98810617a94696cdbbc39fd75c1
+labels:
+- Character
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -926,5 +928,5 @@ ModelImporter:
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
-  assetBundleName: 
+  assetBundleName: scarfs stuff
   assetBundleVariant: 

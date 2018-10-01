@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3635312b6b8f73a42be2979126a77989, type: 3}
   m_Name: NewItem
   m_EditorClassIdentifier: 
-  unitPortrait: {fileID: 0}
+  unitPortrait: {fileID: 21300000, guid: b9377e5715900eb458dacc317b9ccf22, type: 3}
   obtained: 0
   isChest: 0
+  itemContains: 

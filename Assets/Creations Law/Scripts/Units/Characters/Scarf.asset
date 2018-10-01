@@ -8,12 +8,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5eaa76ebd877b2a42b090d827788cb0a, type: 3}
+  m_Script: {fileID: 11500000, guid: 05bc3b55b4961584cbd91bea91ff5d77, type: 3}
   m_Name: Scarf
   m_EditorClassIdentifier: 
   unitPortrait: {fileID: 21300000, guid: b9377e5715900eb458dacc317b9ccf22, type: 3}
-  default_HP: 50
-  default_MP: 10
+  default_HP: 60
+  default_MP: 100
   default_EXP: 10
   startingLevel: 1
   isProp: 0

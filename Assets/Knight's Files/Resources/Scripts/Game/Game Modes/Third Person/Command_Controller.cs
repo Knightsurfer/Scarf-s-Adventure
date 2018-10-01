@@ -1,15 +1,16 @@
 ﻿
 using UnityEngine;
 
-public class Command_Controller : Controller
+public class Command_Controller : MonoBehaviour
 {
+    protected Gamepad gamepad;
     protected int selected;
     GameObject player;
     protected GameObject[] menuItems = new GameObject[6];
 
     void AssignMenu()
     {
-        ControllerDetect();
+        gamepad = FindObjectOfType<Gamepad>();
 
         player = GameObject.Find("Characters");
         menuItems[0] = GameObject.Find("Command Item 1");
@@ -32,7 +33,7 @@ public class Command_Controller : Controller
 	void Update ()
     {
         
-        ControllerCheck();
+
         if (menuItems.Length > 0)
         {
             Menu();
@@ -115,25 +116,28 @@ public class Command_Controller : Controller
 
     void UpDownHandler()
     {
-        if (direction == "up")
-        {
-            if (d_Up == false)
+       
+            if (gamepad.direction == "up")
             {
-                d_Up = true;
+                if (gamepad.d_Up == false)
+                {
+                    gamepad.d_Up = true;
 
-                selected--;
+                    selected--;
+                }
             }
-        }
 
-        if (direction == "down")
-        {
-            if (d_Down == false)
+
+            if (gamepad.direction == "down")
             {
-                d_Down = true;
+                if (gamepad.d_Down == false)
+                {
+                    gamepad.d_Down = true;
 
-                selected++;
+                    selected++;
+                }
             }
-        }
+        
     }
 
 

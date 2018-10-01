@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: faa72a1b7eb18e443946713e5268d4ad
+labels:
+- Character
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -11,7 +13,12 @@ ModelImporter:
     4300000: Cube
     7400000: Default Take
     9500000: //RootNode
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: ef7cabe60424bc147a7bc42667e3150d, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -42,7 +49,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0.1
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
@@ -69,7 +76,7 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
-  importAnimation: 1
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2
@@ -92,5 +99,5 @@ ModelImporter:
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
-  assetBundleName: 
+  assetBundleName: knights stuff
   assetBundleVariant: 

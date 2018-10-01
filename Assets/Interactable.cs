@@ -1,16 +1,160 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public class Interactable : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+public class Interactable : MonoBehaviour
+{
+    [HideInInspector] public int selectedType;
+    [HideInInspector] public int selectedLocked;
+    [HideInInspector] public int lockRequirement;
+    [HideInInspector] public int requiredAmount;
+    [HideInInspector] public int selectedItem;
+    [HideInInspector] public GameManager game;
+
+    private Gamepad gamepad;
+    
+    public Animator anim;
+    public Item item;
+
+    public string type;
+
+    public string contains;
+    public string[] items = new[] { "None","Key","NPC" };
+
+    public bool locked;
+    public bool obtained;
+
+    public bool hasInteracted;
+
+
+
+    private void Start()
+    {
+        game = FindObjectOfType<GameManager>();
+        gamepad = FindObjectOfType<Gamepad>();
+
+
+        if (type == "Chest")
+        {
+            GetComponentInChildren<MeshFilter>().mesh = item.mesh;
+            GetComponentInChildren<MeshRenderer>().material = item.material;
+        }
+
+
+
+
+
+
+
+
+
+    }
+
+    public int itemsObtained;
+    private void Update()
+    {
+        if (locked)
+        {
+            itemsObtained = 0;
+            foreach (Item item in game.items)
+            {
+                itemsObtained++;
+            }
+        }
+
+
+        switch(type)
+        {
+            case "Chest":
+                anim = GetComponentInChildren<Animator>();
+                if (hasInteracted && gamepad.button_Action)
+                {
+                    Chest(!anim.GetBool("Open"));
+                }
+               
+                if (obtained)
+                {
+                    if (selectedItem == 1)
+                    {
+                        bool wasPickedUp = PlayerInventory.instance.Add(item);
+                         if (wasPickedUp)
+                        {
+                            GetComponentInChildren<MeshRenderer>().enabled = false;
+                            selectedItem = 0;
+                        }
+                    }
+                }
+
+
+
+                break;
+
+            case "Door":
+                anim = GetComponentInChildren<Animator>();
+                if (hasInteracted && gamepad.button_Action)
+                {
+                    if (!anim.GetBool("Approached"))
+                    {
+                        Door();
+                    }
+                }
+                break;
+
+
+
+        }
+ 
+    }
+
+    private void Door()
+    {
+            if (!locked)
+            {
+                anim.SetBool("Approached", !anim.GetBool("Approached"));
+            }
+
+            if (locked == true && itemsObtained >= requiredAmount)
+            {
+                selectedLocked = 0;
+                locked = false;
+                game.items.RemoveAt(itemsObtained - 1);
+                
+                anim.SetBool("Approached", !anim.GetBool("Approached"));
+
+            }
+    }
+
+    
+    float elapsed;
+    float timerspeed = 2f;
+    private void Chest(bool open)
+    {
+        anim = GetComponent<Animator>();
+        anim.SetBool("Open", open);
+        
+        
+
+    }
+
+    public virtual void Item()
+    {
+        if (!hasInteracted)
+        {
+            bool wasPickedUp = PlayerInventory.instance.Add(item);
+            if (wasPickedUp)
+            {
+                Destroy(gameObject);
+            }
+            hasInteracted = true;
+        }
+    }
+
+
+
+
+
+  
+
 }
