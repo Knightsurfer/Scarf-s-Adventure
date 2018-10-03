@@ -9912,7 +9912,6 @@ MonoBehaviour:
   characterNames:
   - {fileID: 0}
   canMove: 0
-  gameMode: 
   paused: 0
   player: {fileID: 0}
 --- !u!114 &788693311
@@ -24445,6 +24444,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1936698636}
   - component: {fileID: 1936698635}
+  - component: {fileID: 1936698637}
+  - component: {fileID: 1936698638}
   m_Layer: 5
   m_Name: Game Manager
   m_TagString: GameController
@@ -24482,6 +24483,84 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1936698637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1936698634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1eb1805749a72e4eb87324fdff14832, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isTest: 0
+  controller: 
+  isGamepad: 0
+  direction: none
+  moveX: 0
+  moveY: 0
+  cameraX: 0
+  cameraY: 0
+  triggerL: 0
+  triggerR: 0
+  button_Jump: 0
+  button_Attack: 0
+  button_Action: 0
+  d_Up: 0
+  d_Down: 0
+  d_Left: 0
+  d_Right: 0
+  button_L: 0
+  button_R: 0
+  button_Start: 0
+  button_Select: 0
+  moveXT: {fileID: 0}
+  moveYT: {fileID: 0}
+  LTrigger: {fileID: 0}
+  RTrigger: {fileID: 0}
+  cameraXT: {fileID: 0}
+  cameraYT: {fileID: 0}
+  jumpButton: {fileID: 0}
+  attackButton: {fileID: 0}
+  startButton: {fileID: 0}
+  selectButton: {fileID: 0}
+  lButton: {fileID: 0}
+  rButton: {fileID: 0}
+  DUp: {fileID: 0}
+  DDown: {fileID: 0}
+  DLeft: {fileID: 0}
+  DRight: {fileID: 0}
+  Axis7: {fileID: 0}
+  Axis8: {fileID: 0}
+  Axis9: {fileID: 0}
+  Axis10: {fileID: 0}
+  Axis11: {fileID: 0}
+  Axis12: {fileID: 0}
+  Axis13: {fileID: 0}
+  Axis14: {fileID: 0}
+  Axis15: {fileID: 0}
+  Axis16: {fileID: 0}
+  Axis17: {fileID: 0}
+--- !u!114 &1936698638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1936698634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cce977c1d3b5e24a8a684c095e7311b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items: []
+  health: 
+  magic: 
+  exp: 
+  level: 
+  player: []
+  mode: Thirdperson
+  modeSelector: 0
 --- !u!1 &1936902642
 GameObject:
   m_ObjectHideFlags: 0

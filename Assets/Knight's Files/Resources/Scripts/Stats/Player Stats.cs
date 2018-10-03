@@ -64,19 +64,22 @@ public class PlayerStats : PlayerInventory
 
     protected void StatHandler()
     {
-        if (player[target].health > player[target].healthMax)
+        if (FindObjectOfType<ThirdPerson_Mode>())
         {
-            health = healthMax;
-        }
+            if (player[target].health > player[target].healthMax)
+            {
+                health = healthMax;
+            }
 
-        if (healthBar < .5)
-        {
-            healthBar = .5f;
-        }
+            if (healthBar < .5)
+            {
+                healthBar = .5f;
+            }
 
-        if (healthBar > player[target].healthMax)
-        {
-            healthBar = player[target].healthMax;
+            if (healthBar > player[target].healthMax)
+            {
+                healthBar = player[target].healthMax;
+            }
         }
     }
 
