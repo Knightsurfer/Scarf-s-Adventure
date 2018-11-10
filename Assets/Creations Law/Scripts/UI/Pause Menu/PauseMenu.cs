@@ -274,16 +274,22 @@ public class PauseBasic : MonoBehaviour
             {
                 anim.enabled = !paused;
             }
-
+            if (FindObjectOfType<RTS_Controls>())
+            {
                 if (FindObjectOfType<RTS_Controls>().enabled == false)
                 {
-                 player.GetComponent<ThirdPerson_Mode>().enabled = !paused;
-                  
+                    player.GetComponent<ThirdPerson_Mode>().enabled = !paused;
+
                 }
                 if (FindObjectOfType<RTS_Controls>().enabled == true)
                 {
                     player.GetComponent<Unit_Controller>().enabled = !paused;
                 }
+            }
+            else
+            {
+                player.GetComponent<ThirdPerson_Mode>().enabled = !paused;
+            }
         }
     }
 

@@ -38,8 +38,11 @@ public class Interactable : MonoBehaviour
 
         if (type == "Chest")
         {
-            GetComponentInChildren<MeshFilter>().mesh = item.mesh;
-            GetComponentInChildren<MeshRenderer>().material = item.material;
+            if (item != null)
+            {
+                GetComponentInChildren<MeshFilter>().mesh = item.mesh;
+                GetComponentInChildren<MeshRenderer>().material = item.material;
+            }
         }
 
 

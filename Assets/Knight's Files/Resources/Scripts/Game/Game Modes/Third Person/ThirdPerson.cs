@@ -10,11 +10,12 @@ public class ThirdPerson : ThirdPerson_Mode
 {
     private void Start()
     {
-
+       
         StartingVariables();
         InteractStart();
         ControllerStart();
         Components();
+        
     }
     private void Update()
     {
@@ -77,8 +78,8 @@ public class ThirdPerson_Mode : ThirdPerson_Stats
     {
         horizontal = gamepad.cameraX * cam_rotateSpeed_X * Time.deltaTime;
 
-        //rotator.Rotate(0, horizontal, 0);
-        rotator += horizontal;
+        
+        rotator =  currentYaw+150;
         if (canMove)
         {
             currentYaw += gamepad.cameraX * cam_rotateSpeed_X * Time.deltaTime;
@@ -166,15 +167,15 @@ public class ThirdPerson_Start : ThirdPerson_Interact
     {
         string currentScene = SceneManager.GetActiveScene().name;
 
+        
+
+
 
 
         playerModel = GameObject.FindGameObjectWithTag("Player");
 
         switch (currentScene)
         {
-
-
-
 
             case "Gameplay Test":
                 canMove = true;
@@ -187,7 +188,6 @@ public class ThirdPerson_Start : ThirdPerson_Interact
                 break;
                 */
         }
-
 
 
     }
