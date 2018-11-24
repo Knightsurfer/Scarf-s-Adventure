@@ -4,6 +4,20 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 
+//###################################//
+//                                                                              //
+//            REPLACEMENT MOUSEOVER                         //
+//                                                                            //
+//                                                                           //
+//#################################//
+//                                                                         //
+//    A better script for mousing over                      //
+//    than the default one that unity provides.         //
+//                                                                     //
+//                                                                    //
+/////////////////////////////////////////////////////////
+
+
 public class MouseOverButton : MonoBehaviour
 {
     public ChangeScene title;

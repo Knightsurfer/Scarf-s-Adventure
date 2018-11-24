@@ -5,6 +5,27 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
+
+//#################################//
+//                                                                          //
+//            CHANGE SCENE                                      //
+//                                                                        //
+//                                                                       //
+//###############################//
+//                                                                     //
+//    This script currently contains data for           //           
+//    the title screen but it will also control the     //
+//    scene changing,                                       //        
+//                                                                 //
+///////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
 public class ChangeScene : MonoBehaviour
 {
 

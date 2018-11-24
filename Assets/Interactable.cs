@@ -4,6 +4,23 @@ using System;
 using UnityEngine;
 
 
+//###################################//
+//                                                                              //
+//            INTERACTABLES                                         //
+//                                                                            //
+//                                                                           //
+//#################################//
+//                                                                          //
+//    Any item with this script attached                     //
+//    can be interacted with in some way.                //
+//                                                                      //
+//                                                                     //
+///////////////////////////////////////////////////////////
+
+
+
+
+
 public class Interactable : MonoBehaviour
 {
     [HideInInspector] public int selectedType;
@@ -27,14 +44,16 @@ public class Interactable : MonoBehaviour
     public bool obtained;
 
     public bool hasInteracted;
+    public int itemsObtained;
 
 
+    float elapsed;
+    float timerspeed = 2f;
 
     private void Start()
     {
         game = FindObjectOfType<GameManager>();
         gamepad = FindObjectOfType<Gamepad>();
-
 
         if (type == "Chest")
         {
@@ -44,18 +63,7 @@ public class Interactable : MonoBehaviour
                 GetComponentInChildren<MeshRenderer>().material = item.material;
             }
         }
-
-
-
-
-
-
-
-
-
     }
-
-    public int itemsObtained;
     private void Update()
     {
         if (locked)
@@ -117,7 +125,6 @@ public class Interactable : MonoBehaviour
             {
                 anim.SetBool("Approached", !anim.GetBool("Approached"));
             }
-
             if (locked == true && itemsObtained >= requiredAmount)
             {
                 selectedLocked = 0;
@@ -128,19 +135,11 @@ public class Interactable : MonoBehaviour
 
             }
     }
-
-    
-    float elapsed;
-    float timerspeed = 2f;
     private void Chest(bool open)
     {
         anim = GetComponent<Animator>();
         anim.SetBool("Open", open);
-        
-        
-
     }
-
     public virtual void Item()
     {
         if (!hasInteracted)
@@ -153,11 +152,5 @@ public class Interactable : MonoBehaviour
             hasInteracted = true;
         }
     }
-
-
-
-
-
-  
 
 }

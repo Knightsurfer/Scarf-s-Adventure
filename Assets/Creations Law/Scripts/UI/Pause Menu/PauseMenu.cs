@@ -3,6 +3,28 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+
+
+
+//#################################//
+//                                                                          //
+//            PAUSE MENU SCRIPTS                            //
+//                                                                        //
+//                                                                       //
+//###############################//
+//                                                                     //
+//    Pause menu related scripts are kept here.    //           
+//                                                                   //
+/////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
 public class PauseMenu : PauseBasic {
 
     #region Start
@@ -88,12 +110,6 @@ public class PauseMenu : PauseBasic {
         }
 
     }
-
-
-
-
-
-
 
     void ItemsMenu()
     {
@@ -270,26 +286,7 @@ public class PauseBasic : MonoBehaviour
         //Disables all movement of the player when paused.
         if (GameObject.FindGameObjectWithTag("Player"))
         {
-           foreach(Animator anim in FindObjectsOfType<Animator>())
-            {
-                anim.enabled = !paused;
-            }
-            if (FindObjectOfType<RTS_Controls>())
-            {
-                if (FindObjectOfType<RTS_Controls>().enabled == false)
-                {
-                    player.GetComponent<ThirdPerson_Mode>().enabled = !paused;
-
-                }
-                if (FindObjectOfType<RTS_Controls>().enabled == true)
-                {
-                    player.GetComponent<Unit_Controller>().enabled = !paused;
-                }
-            }
-            else
-            {
                 player.GetComponent<ThirdPerson_Mode>().enabled = !paused;
-            }
         }
     }
 
@@ -368,10 +365,6 @@ public class PauseBasic : MonoBehaviour
 
                     case 6:
                         break;
-
-
-
-
                 }
                 break;
 

@@ -3,7 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-
+//###################################//
+//                                                                              //
+//            NPC SCRIPTS                                             //
+//                                                                            //
+//                                                                           //
+//#################################//
+//                                                                         //
+//    This will have scripts involving                        //
+//    various AI routines in the future.                   //
+//                                                                     //
+//                                                                    //
+/////////////////////////////////////////////////////////
 
 public class SpriteAI : MonoBehaviour
 {
@@ -22,39 +33,27 @@ public class SpriteAI : MonoBehaviour
 
 	void Update ()
     {
-        
         if (triggered)
         {
             triggered = false;
             phase++;
         }
-
         if(remainingDistance == 2)
         {
             GetComponent<SphereCollider>().enabled = true;
         }
 
-
-
-
         switch(phase)
         {
-
             case 1:
                 Move(93,transform.position.y,- 260);
                 remainingDistance = (int)nav.remainingDistance;
                 break;
 
-
             case 2:
                 Move(155,transform.position.y,-264);
                 remainingDistance = (int)nav.remainingDistance;
                 break;
-
-            
-                
-
-
         }
 	}
 
@@ -62,13 +61,4 @@ public class SpriteAI : MonoBehaviour
     {
         nav.SetDestination(new Vector3(x, y, z));
     }
-
-
-
-
-
-
-
-
-
 }

@@ -1,11 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+
+
+//##################################//
+//                                                                           //
+//            CINEMA SCRIPTS                                     //
+//                                                                          //
+//                                                                         //
+//################################//
+//                                                                        //
+//    Ingame Cinematics are programmed here.      //            
+//                                                                      //
+///////////////////////////////////////////////////////////
 
 public class Cinema_Script : MonoBehaviour {
-
 
     public int start;
     Text speechLines;
@@ -13,13 +21,8 @@ public class Cinema_Script : MonoBehaviour {
     readonly Vector3[] startLocation = new Vector3[] {new Vector3(87.12f,-74.65f,-206.31f), new Vector3(87, -74.7f, -206.3f), new Vector3(), new Vector3(),new Vector3() };
     readonly Quaternion[] startRotation = new Quaternion[] { Quaternion.Euler(45.67f,-3.7f,0), Quaternion.Euler(0,0,0), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, 0) };
 
-
     readonly Vector3[] destination = new Vector3[] { new Vector3(), new Vector3(94.63f, -72.33f, -211.64f), new Vector3(102.16f,-74.65f,-205.34f), new Vector3(), new Vector3() };
    
-
-
-
-
     void Start ()
     {
         speechLines = GameObject.Find("Speech Lines").GetComponent<Text>();
@@ -31,8 +34,6 @@ public class Cinema_Script : MonoBehaviour {
             FindObjectOfType<PauseMenu>().canMove = false;
         }
     }
-
-    // Update is called once per frame
     void Update()
     {
         speechLines.text = "Text Line " + start;
@@ -81,16 +82,7 @@ public class Cinema_Script : MonoBehaviour {
                 }
                 break;
         }
-
-
-
-
-
-
-
     }
-
-
     void StartingLocations()
     {
         transform.localPosition = startLocation[start];

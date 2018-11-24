@@ -1,6 +1,27 @@
 ﻿
 using UnityEngine;
 
+//###################################//
+//                                                                              //
+//            COMMAND MENU                                         //
+//                                                                            //
+//                                                                           //
+//#################################//
+//                                                                          //
+//    This handles the Kingdom Hearts style              //
+//    command menu for executing actions.             //
+//                                                                      //
+//                                                                     //
+///////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
 public class Command_Controller : MonoBehaviour
 {
     protected Gamepad gamepad;
