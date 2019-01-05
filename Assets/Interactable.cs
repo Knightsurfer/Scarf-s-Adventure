@@ -44,11 +44,12 @@ public class Interactable : MonoBehaviour
     public bool obtained;
 
     public bool hasInteracted;
+    public bool botOverride;
     public int itemsObtained;
 
 
-    float elapsed;
-    float timerspeed = 2f;
+   readonly float elapsed;
+   // float timerspeed = 2f;
 
     private void Start()
     {
@@ -104,7 +105,7 @@ public class Interactable : MonoBehaviour
 
             case "Door":
                 anim = GetComponentInChildren<Animator>();
-                if (hasInteracted && gamepad.button_Action)
+                if (hasInteracted && gamepad.button_Action || hasInteracted && botOverride)
                 {
                     if (!anim.GetBool("Approached"))
                     {

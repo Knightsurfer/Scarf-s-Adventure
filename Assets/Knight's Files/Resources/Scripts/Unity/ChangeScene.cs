@@ -26,41 +26,33 @@ using UnityEngine.SceneManagement;
 
 
 
-public class ChangeScene : MonoBehaviour
+public class ChangeScene : UIControls
 {
+   
 
-    public int selected;
     public Button[] menuButtons;
-    public Gamepad gamepad;
 
-    protected void Start()
+    protected override void Start()
     {
-        gamepad = FindObjectOfType<Gamepad>();
+        base.Start();
     }
 
-    protected void Update()
+    protected override void Update()
     {
-
-        if (gamepad.controller == "Keyboard")
-        {
-            Cursor.visible = true;
-        }
-        if (gamepad.controller != "Keyboard")
-        {
-            Cursor.visible = false;
-        }
+        base.Update();
 
 
 
 
-        UpDownHandler();
+
+        UpDownHandler(0,3);
 
 
 
-        switch (selected)
+        switch (selectedItem)
         {
             case -1:
-                selected = 2;
+                selectedItem = 2;
                 break;
 
             case 0:
@@ -89,7 +81,7 @@ public class ChangeScene : MonoBehaviour
                 break;
 
             case 3:
-                selected = 0;
+                selectedItem = 0;
                 break;
         }
     }
@@ -108,38 +100,13 @@ public class ChangeScene : MonoBehaviour
 
 
 
-    void UpDownHandler()
-    {
-        
-        if (gamepad.isGamepad)
-        {
-            if (gamepad.direction == "up")
-            {
-                if (gamepad.d_Up == false)
-                {
-                    gamepad.d_Up = true;
-                    Debug.Log("Test");
-                    selected--;
-                }
-            }
-            if (gamepad.direction == "down")
-            {
-                if (gamepad.d_Down == false)
-                {
-                    gamepad.d_Down = true;
-
-                    selected++;
-                }
-            }
-
-        }
-    }
+   
 
     private void MouseMenu(int selection)
     {
         if (gamepad.controller == "Keyboard")
         {
-            selected = selection;
+            selectedItem = selection;
         }
     }
 }

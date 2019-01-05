@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 222339804279018500}
   - component: {fileID: 114456856752316900}
   - component: {fileID: 114542928330530984}
+  - component: {fileID: 114770947773167780}
   m_Layer: 5
   m_Name: Item Slot
   m_TagString: Untagged
@@ -102,6 +103,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
+--- !u!114 &114770947773167780
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1554984638434464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cce977c1d3b5e24a8a684c095e7311b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items: []
+  health: 
+  magic: 
+  exp: 
+  level: 
+  player: []
+  mode: 
+  modeSelector: 0
 --- !u!114 &114854226290779584
 MonoBehaviour:
   m_ObjectHideFlags: 1

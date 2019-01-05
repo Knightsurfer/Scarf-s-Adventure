@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 
 //Handles Inventory
-public class PlayerInventory : MonoBehaviour
+public class PlayerInventory : StartSettings
 {
     #region singleton
     public static PlayerInventory instance;
@@ -56,33 +56,84 @@ public class PlayerInventory : MonoBehaviour
 }
 
 
+public class StartSettings : Gamepad
+{
+    public ThirdPerson[] player = new ThirdPerson[] { };
+
+    void Start()
+    {
+        player = FindObjectsOfType<ThirdPerson>();
+
+        switch ((SceneManager.GetActiveScene().buildIndex))
+        {
+            default:
+                player[0].canMove = true;
+                break;
+            case 5:
+                break;
+
+            case 3:
+                break;
+
+
+        }
+
+        switch ((SceneManager.GetActiveScene().buildIndex))
+        {
+            case 2:
+                player[0].transform.localPosition = new Vector3(85, 0, -4.555f);
+                player[0].transform.localRotation = Quaternion.Euler(0, -90, 0);
+                player[0].currentYaw = 88;
+                break;
+
+
+            case 3:
+                player[0].transform.localPosition = new Vector3(-0.7f, 0, 64);
+                player[0].transform.localRotation = Quaternion.Euler(0, 180, 0);
+                player[0].currentYaw = 210;
+                break;
+
+            case 4:
+                player[0].transform.localPosition = new Vector3(0, 0, 64);
+                player[0].transform.localRotation = Quaternion.Euler(0, 90, 0);
+                
+                player[0].currentYaw = -85;
+                break;
+        }
+    }
+
+}
+
+
 //Controls Player Stats
 public class PlayerStats : PlayerInventory
 {
-    public int[] health = new int[] { };
-    public int[] magic = new int[] { };
-    public int[] exp = new int[] { };
-    public int[] level = new int[] { };
+    public int[] health = new int[4];
+    public int[] magic = new int[4];
+    public int[] exp = new int[4];
+    public int[] level = new int[4];
 
-    readonly int target;
+    protected int target;
     protected float healthBar;
-    protected int[] healthMax = new int[] { };
-    public ThirdPerson_Mode[] player = new ThirdPerson_Mode[] { };
+    public int[] healthMax = new int[4];
 
-
+    public string[] title = new string[] { };
 
     protected void Stats_Update()
     {
-        player = FindObjectsOfType<ThirdPerson_Mode>();
-        if (FindObjectOfType<ThirdPerson_Mode>())
+        player = FindObjectsOfType<ThirdPerson>();
+        if (player.Length > 0)
         {
             foreach (ThirdPerson_Mode c in player)
             {
-                player[target].health = c.health;
-                player[target].healthMax = c.healthMax;
+                title[target] = c.name;
+                health[target] = c.health;
+                healthMax[target] = c.healthMax;
 
+                target++;
             }
-            player = FindObjectsOfType<ThirdPerson_Mode>();
+            target = 0;
+            player = FindObjectsOfType<ThirdPerson>();
             if (player.Length > 0)
             {
                 GameObject.Find("Health Meter").GetComponent<Image>().fillAmount = .050f + GetHealthPercent();
@@ -108,10 +159,25 @@ public class PlayerStats : PlayerInventory
             case "Die":
                 player[target].health -= player[target].health;
                 break;
+
+               
         }
+
+        if (player[target].health < 0)
+        {
+            player[target].health = 0;
+        }
+
+        if (player[target].health > player[target].healthMax)
+        {
+            player[target].health = player[target].healthMax;
+        }
+
     }
     protected void StatHandler()
     {
+        
+        
         if (FindObjectOfType<ThirdPerson_Mode>())
         {
             if (player[target].health > player[target].healthMax)
@@ -129,6 +195,7 @@ public class PlayerStats : PlayerInventory
                 healthBar = player[target].healthMax;
             }
         }
+        
     }
     public float GetHealthPercent()
     {
@@ -141,15 +208,10 @@ public class GameManager : PlayerStats
     public string mode;
     public int modeSelector;
     bool thirdPerson;
-
-
-    public void Start()
+    
+    private void Update()
     {
-
-    }
-
-    void Update()
-    {
+        GamepadUpdate();
         Test_Functions();
         Stats_Update();
         Shortcuts();

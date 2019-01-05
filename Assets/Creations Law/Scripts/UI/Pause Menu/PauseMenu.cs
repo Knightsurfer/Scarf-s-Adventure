@@ -27,26 +27,30 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : PauseBasic {
 
+    
+    
+
     #region Start
-    protected void Start()
+    protected override void Start()
     {
+        base.Start();
         BasicStart();
     }
     #endregion
     #region Update
-    protected void Update()
+    protected new void Update()
     {
+        
         BasicUpdate();
         MenuChoose();
         if (paused)
         {
-            if (gamepad.isGamepad)
-            {
+            
                 if (gamepad.button_Jump && paused == true)
                 {
                     CancelMenu();
                 }
-            }
+            
         }
     }
 
@@ -76,36 +80,53 @@ public class PauseMenu : PauseBasic {
 
     #endregion
 
+
+
+
     //Menus
     void MainMenu()
     {
-
-        UpDownHandler(0, 6);
+        
+            UpDownHandler(0, 7);
+        
+        
         if (!mainCanvas.enabled && mainCanvas != null)
         {
             mainCanvas.enabled = !mainCanvas.enabled;
         }
         if (gamepad.isGamepad)
         {
-            if (selected == -100)
-                selected = 0;
-            selectedItem = menuItems[selected].GetComponentInChildren<Text>().text;
+            if (selectedItem == -100)
+            {
+                selectedItem = 0;
+            }
+            selectedMenuItem = menuItems[selectedItem].GetComponentInChildren<Text>().text;
 
-            if (gamepad.isGamepad && gamepad.button_Attack)
+            if (gamepad.button_Attack)
             {
                 SelectedMenu();
-                selected = 0;
+                selectedItem = 0;
                 HighlightPos();
-
             }
-
+        
 
         }
         else
         {
             if(!mouseSelected)
             {
-                selected = -100;
+                selectedItem = -100;
+            }
+        }
+
+
+        if(!gamepad.isGamepad)
+        {
+            if (gamepad.button_Attack)
+            {
+                SelectedMenu();
+                selectedItem = 0;
+                HighlightPos();
             }
         }
 
@@ -142,19 +163,27 @@ public class PauseMenu : PauseBasic {
         UpDownHandler(0, 3);
     }
 
+
+
+  
+
+
+
 }
-public class PauseBasic : MonoBehaviour
+public class PauseBasic : UIControls
 {
-    protected GameObject[] menuItems = new GameObject[8];
-    protected string selectedItem;
+
+
+    protected GameObject[] menuItems = new GameObject[9];
+    protected string selectedMenuItem;
     protected GameObject menuNotifier;
-    public GameObject[] characterStats = new GameObject[1];
-    public GameObject[] characterNames = new GameObject[1];
+    protected Text[] characterStats = new Text[4];
+    protected Text[] characterNames = new Text[4];
     protected GameManager game;
 
     public bool canMove;
+    Animator[] animators;
 
-    protected Gamepad gamepad;
     protected bool mouseSelected;
 
     
@@ -166,7 +195,7 @@ public class PauseBasic : MonoBehaviour
     public GameObject player;
     #endregion
     #region Pause Menu   //Variables that dictates what item is selected or what world the player is in.
-    protected int selected = -100;
+    
     protected int selectedMin;
     protected int selectedMax;
     protected Vector3 highlightPos;
@@ -188,37 +217,36 @@ public class PauseBasic : MonoBehaviour
     #endregion
     protected void BasicStart()
     {
-
-        gamepad = FindObjectOfType<Gamepad>();
-
-        
             if (gamepad.isGamepad)
             {
-                selected = 0;
+                selectedItem = 0;
             }
+            animators = FindObjectsOfType<Animator>();
+
+
+
         
 
-
-
-
-
         game = FindObjectOfType<GameManager>();
-        if (game.mode == "ThirdPerson")
+        foreach (ThirdPerson p in game.player)
         {
-            characterStats[0] = GameObject.Find("Player1 Stats");
-            characterNames[0] = GameObject.Find("Player1 Name");
+            characterStats[playercount] = GameObject.Find("Player" + playercount + " Stats").GetComponent<Text>();
+            characterNames[playercount] = GameObject.Find("Player" + playercount + " Name").GetComponent<Text>();
+
+
         }
 
-            menuItems[0] = GameObject.Find("Items");
+        menuItems[0] = GameObject.Find("Items");
             menuItems[1] = GameObject.Find("Equipment");
             menuItems[2] = GameObject.Find("Abilities");
             menuItems[3] = GameObject.Find("Customize");
             menuItems[4] = GameObject.Find("Status");
             menuItems[5] = GameObject.Find("Journal");
             menuItems[6] = GameObject.Find("Config");
-            menuItems[7] = GameObject.Find("Spare(7)");
+            menuItems[7] = GameObject.Find("Quit");
+            menuItems[8] = GameObject.Find("Spare(7)");
 
-            menuNotifier = GameObject.Find("Menu Title");
+        menuNotifier = GameObject.Find("Menu Title");
         
 
         //Makes sure all the assets are in the level.
@@ -281,22 +309,29 @@ public class PauseBasic : MonoBehaviour
 
         }
     }
+    int animCount;
     protected void GamePause()
     {
         //Disables all movement of the player when paused.
         if (GameObject.FindGameObjectWithTag("Player"))
         {
-                player.GetComponent<ThirdPerson_Mode>().enabled = !paused;
+            game.player[0].GetComponent<ThirdPerson_Mode>().enabled = !paused;
+            foreach (Animator anim in animators)
+            {
+                animators[animCount].enabled = !paused;
+                animCount++;
+            }
+            animCount = 0;
         }
     }
-
+    
 
     protected void SelectedMenu()
     {
         switch (currentMenu)
         {
             case "Main Menu":
-                switch (selected)
+                switch (selectedItem)
                 {
                     case 0:
                         currentMenu = "Items";
@@ -315,7 +350,7 @@ public class PauseBasic : MonoBehaviour
 
                         menuItems[5].transform.localPosition = new Vector3(195, 102, 0);
                         menuItems[6].transform.localPosition = new Vector3(195, 67.6f, 0);
-                        menuItems[7].transform.localPosition = new Vector3(195, 32.3f, 0);
+                        menuItems[8].transform.localPosition = new Vector3(195, 32.3f, 0);
 
 
                         menuItems[5].GetComponent<Image>().color = new Color(0.160f, 0.122f, 0.122f, 0.635f);
@@ -323,7 +358,7 @@ public class PauseBasic : MonoBehaviour
 
 
 
-                        print(menuItems[0].GetComponent<Image>().color);
+                        //print(menuItems[0].GetComponent<Image>().color);
                         break;
 
                     case 1:
@@ -344,7 +379,7 @@ public class PauseBasic : MonoBehaviour
 
                         menuItems[5].transform.localPosition = new Vector3(195, 102, 0);
                         menuItems[6].transform.localPosition = new Vector3(195, 67.6f, 0);
-                        menuItems[7].transform.localPosition = new Vector3(195, 32.3f, 0);
+                        menuItems[8].transform.localPosition = new Vector3(195, 32.3f, 0);
 
 
                         menuItems[5].GetComponent<Image>().color = new Color(0.160f, 0.122f, 0.122f, 0.635f);
@@ -364,6 +399,11 @@ public class PauseBasic : MonoBehaviour
                         break;
 
                     case 6:
+                        break;
+
+                    case 7:
+                        SceneManager.LoadScene(0);
+                        Destroy(GameObject.Find("Game Manager"));
                         break;
                 }
                 break;
@@ -400,7 +440,7 @@ public class PauseBasic : MonoBehaviour
 
                 menuItems[5].transform.localPosition = new Vector3(2.7f, -71.8f, 0);
                 menuItems[6].transform.localPosition = new Vector3(2.7f, -104.7f, 0);
-                menuItems[7].transform.localPosition = new Vector3(-37, 266, 0);
+                menuItems[8].transform.localPosition = new Vector3(-37, 266, 0);
 
 
                 menuItems[5].GetComponent<Image>().color = new Color(0.160f, 0.122f, 0.122f, 1.000f);
@@ -424,7 +464,7 @@ public class PauseBasic : MonoBehaviour
                 menuItems[4].transform.localPosition = new Vector3(2.7f, -37, 0);
                 menuItems[5].transform.localPosition = new Vector3(2.7f, -71.8f, 0);
                 menuItems[6].transform.localPosition = new Vector3(2.7f, -104.7f, 0);
-                menuItems[7].transform.localPosition = new Vector3(-37, 266, 0);
+                menuItems[8].transform.localPosition = new Vector3(-37, 266, 0);
 
 
                 menuItems[5].GetComponent<Image>().color = new Color(0.160f, 0.122f, 0.122f, 1.000f);
@@ -434,112 +474,118 @@ public class PauseBasic : MonoBehaviour
         }
     }
 
+    protected ThirdPerson[] people = new ThirdPerson[4];
+    protected int peoplecount;
+    protected int playercount;
     protected void CharacterStats()
     {
-        if (game)
+        people = FindObjectsOfType<ThirdPerson>();
+
+
+
+        if (game.player.Length > 0)
         {
-            if (game.player.Length > 0)
+            foreach (ThirdPerson p in people)
             {
-                if (game.mode == "ThirdPerson")
+                characterStats[playercount] = GameObject.Find("Player" + playercount + " Stats").GetComponent<Text>();
+                characterNames[playercount] = GameObject.Find("Player" + playercount + " Name").GetComponent<Text>();
+
+
+                if (game.title[playercount] != "")
                 {
-                    characterNames[0].GetComponent<Text>().text = game.player[0].name;
-                    characterStats[0].GetComponent<Text>().text = 1 + "\n" + game.player[0].health + " / " + game.player[0].healthMax + "\n0 / 0";
+                    characterNames[playercount].GetComponentInParent<Canvas>().enabled = true;
                 }
+
+
+
+                characterNames[playercount].text = game.title[playercount];
+                characterStats[playercount].GetComponent<Text>().text = 1 + "\n" + game.player[playercount].health + " / " + game.player[playercount].healthMax + "\n0 / 0";
+
+                
+                playercount++;
             }
+            
+            playercount = 0;
+
+           
+
         }
     }
+
+
+
+
+
+
+    #region Completed Scripts
+
 
     protected void MouseMenu(int selection)
     {
-
-        if (selection != -100)
+        if (!gamepad.isGamepad)
         {
-            selected = selection;
-            mouseSelected = true;
-        }
-        else
-        {
-            mouseSelected = false;
-        }
 
-        UpDownHandler(0, 6);
+            if (selection != -100)
+            {
+                selectedItem = selection;
+                mouseSelected = true;
+            }
+            else
+            {
+                mouseSelected = false;
+            }
+        }
     }
+    #endregion
 
     #region Controls //The main controls behind menu scrolling on the pause menu.
-    protected void UpDownHandler(int min, int max)
+    protected override void UpDownHandler(int min, int max)
     {
-
-        if (gamepad.isGamepad)
-        {
-            if (gamepad.direction == "up")
-            {
-                if (gamepad.d_Up == false)
-                {
-                    gamepad.d_Up = true;
-
-                    selected--;
-                }
-            }
-            if (gamepad.direction == "down")
-            {
-                if (gamepad.d_Down == false)
-                {
-                    gamepad.d_Down = true;
-
-                    selected++;
-                }
-            }
-        }
-        highlighter.rectTransform.position = highlightPos;
+        base.UpDownHandler(min,max);
+      
+        highlighter.rectTransform.localPosition = highlightPos;
         MenuScroller(min, max);
+        
     }
-    protected void MenuScroller(int min, int max)
-    {
-        if (selected == min - 1)
-        {
-            selected = max;
-        }
-        if (selected == max + 1)
-        {
-            selected = min;
-        }
 
-        HighlightPos();
-    }
     protected void HighlightPos()
     {
-        switch (selected)
+        switch (selectedItem)
         {
             case 0:
-                highlightPos = new Vector3(244, 775, 0);
+                highlightPos = new Vector3(-417.7f, 258f, 0);
                 break;
 
             case 1:
-                highlightPos = new Vector3(244, 703, 0);
+                highlightPos = new Vector3(-417.7f, 223.3f, 0);
                 break;
 
             case 2:
-                highlightPos = new Vector3(244, 629, 0);
+                highlightPos = new Vector3(-417.7f, 187f, 0);
                 break;
 
             case 3:
-                highlightPos = new Vector3(244, 555, 0);
+                highlightPos = new Vector3(-417.7f, 151.7f, 0);
                 break;
 
             case 4:
-                highlightPos = new Vector3(244, 485, 0);
+                highlightPos = new Vector3(-417.7f, 118f, 0);
                 break;
 
             case 5:
-                highlightPos = new Vector3(244, 412, 0);
+                highlightPos = new Vector3(-417.7f, 83.4f, 0);
                 break;
 
             case 6:
-                highlightPos = new Vector3(244, 344, 0);
+                highlightPos = new Vector3(-417.7f, 51.1f, 0);
+                break;
+
+            case 7:
+                highlightPos = new Vector3(-417.7f, -12.7f, 0);
                 break;
 
             case -100:
-                highlightPos = new Vector3(-382, 276, 0);
+                highlightPos = new Vector3(-427, 401, 0);
                 break;
         }
     }

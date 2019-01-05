@@ -308,7 +308,7 @@ public class Viewer_Interactable : Editor
 
 #endregion
 
-
+/*
 [CustomEditor(typeof(_Item_Info))]
 public class Item_Viewer : Editor
 {
@@ -337,3 +337,4 @@ public class Item_Viewer : Editor
     }
 
 }
+*/
