@@ -2440,14 +2440,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc5f39c14aa28dc429092dd964c09cd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterStats:
-  - {fileID: 0}
-  characterNames:
-  - {fileID: 0}
-  canMove: 0
-  gameMode: 
+  xboxController: 0
+  psController: 0
   paused: 0
-  player: {fileID: 0}
+  pausePanel: {fileID: 0}
 --- !u!1 &416541606
 GameObject:
   m_ObjectHideFlags: 0
@@ -8521,6 +8517,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2983a4bfa72faf1408386b5bec3e1c21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  radius: 1
+  nav: {fileID: 0}
+  shape: 1
+  stats: {fileID: 11400000, guid: 0b94df2bf4a4b9b43b7f8a1984c4c469, type: 2}
+  unitName: 
+  portrait: {fileID: 0}
+  HP: 0
+  MP: 0
+  level: 0
+  EXP: 0
+  maxHP: 0
+  maxMP: 0
+  maxEXP: 0
+  Dead: 0
 --- !u!1 &1455685163
 GameObject:
   m_ObjectHideFlags: 0

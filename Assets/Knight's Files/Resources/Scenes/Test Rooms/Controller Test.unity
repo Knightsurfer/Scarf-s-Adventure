@@ -278,7 +278,7 @@ GameObject:
   - component: {fileID: 219584068}
   - component: {fileID: 219584067}
   m_Layer: 5
-  m_Name: Axis 11
+  m_Name: Axis 17
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -503,7 +503,7 @@ GameObject:
   - component: {fileID: 306075143}
   - component: {fileID: 306075142}
   m_Layer: 5
-  m_Name: Axis 10
+  m_Name: Axis 16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1282,57 +1282,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 880777016}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1eb1805749a72e4eb87324fdff14832, type: 3}
+  m_Script: {fileID: 11500000, guid: 65bd5fe9c2c8f65448217f8c26caa40c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTest: 1
-  controller: 
-  isGamepad: 0
-  direction: none
-  moveX: 0
-  moveY: 0
-  cameraX: 0
-  cameraY: 0
-  triggerL: 0
-  triggerR: 0
-  button_Jump: 0
-  button_Attack: 0
-  button_Action: 0
-  d_Up: 0
-  d_Down: 0
-  d_Left: 0
-  d_Right: 0
-  button_L: 0
-  button_R: 0
-  button_Start: 0
-  button_Select: 0
-  moveXT: {fileID: 1315409657}
-  moveYT: {fileID: 234926012}
-  LTrigger: {fileID: 446388108}
-  RTrigger: {fileID: 2014502316}
-  cameraXT: {fileID: 1611776417}
-  cameraYT: {fileID: 451815818}
-  jumpButton: {fileID: 2087767718}
-  attackButton: {fileID: 510906571}
-  startButton: {fileID: 414259689}
-  selectButton: {fileID: 2027941520}
-  lButton: {fileID: 1581745377}
-  rButton: {fileID: 154249980}
-  DUp: {fileID: 480781693}
-  DDown: {fileID: 413071895}
-  DLeft: {fileID: 236818126}
-  DRight: {fileID: 815418271}
-  Axis7: {fileID: 0}
-  Axis8: {fileID: 0}
-  Axis9: {fileID: 0}
-  Axis10: {fileID: 0}
-  Axis11: {fileID: 0}
-  Axis12: {fileID: 0}
-  Axis13: {fileID: 0}
-  Axis14: {fileID: 0}
-  Axis15: {fileID: 0}
-  Axis16: {fileID: 0}
-  Axis17: {fileID: 0}
+  xboxController: 1
+  psController: 0
 --- !u!4 &880777018
 Transform:
   m_ObjectHideFlags: 0
@@ -1432,7 +1386,7 @@ GameObject:
   - component: {fileID: 1103285356}
   - component: {fileID: 1103285355}
   m_Layer: 5
-  m_Name: Axis 8
+  m_Name: Axis 14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2042,7 +1996,7 @@ GameObject:
   - component: {fileID: 1740914323}
   - component: {fileID: 1740914322}
   m_Layer: 5
-  m_Name: Axis 9
+  m_Name: Axis 15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

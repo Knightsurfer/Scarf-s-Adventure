@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{479A8060-2E3C-4A6F-8081-4B3B8BCF253A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scarf's Adventure", "Assembly-CSharp.csproj", "{479A8060-2E3C-4A6F-8081-4B3B8BCF253A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{7CBE78E1-B8D8-28AA-9BE0-19DB556C447A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scarf's Adventure", "Assembly-CSharp-Editor.csproj", "{7CBE78E1-B8D8-28AA-9BE0-19DB556C447A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
