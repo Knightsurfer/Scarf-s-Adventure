@@ -45,18 +45,24 @@ EditorBuildSettings:
     path: 
     guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Knight's Files/Resources/Scenes/Demo Scenes/Demo Screen.unity
+    path: Assets/Creations Law/Game Assets/Scenes/Level Data/Demo Scenes/Demo Screen.unity
     guid: 1073f0b18a3ca364d9a56734ee38e38b
   - enabled: 1
-    path: Assets/Knight's Files/Resources/Scenes/Demo Scenes/Controller Test.unity
+    path: Assets/Creations Law/Game Assets/Scenes/Level Data/Demo Scenes/Controller
+      Test.unity
     guid: 6230d237350395b4690d8c24e62cd750
   - enabled: 1
-    path: Assets/Knight's Files/Resources/Scenes/Test Rooms/Gameplay Test.unity
+    path: Assets/Creations Law/Game Assets/Scenes/Level Data/Test Rooms/Gameplay Test.unity
     guid: 9fd0949f40fa8214fbf0f1c27e2dfbca
   - enabled: 1
-    path: Assets/Knight's Files/Resources/Scenes/Actual Levels/DreamState.unity
+    path: Assets/Creations Law/Game Assets/Scenes/Level Data/Actual Levels/DreamState.unity
     guid: 8e9779384e4cfe14d87e14315f58dcf9
   - enabled: 1
-    path: Assets/Knight's Files/Resources/Scenes/Actual Levels/Crystal Mines.unity
+    path: Assets/Creations Law/Game Assets/Scenes/Level Data/Actual Levels/Crystal
+      Mines.unity
     guid: 91531deafcf10974f94bb30bb93c115b
+  - enabled: 1
+    path: Assets/Creations Law/Game Assets/Scenes/Level Data/Actual Levels/Creations
+      Law - Title.unity
+    guid: b4b2c1e90d77e4545ae0b59971d56df3
   m_configObjects: {}

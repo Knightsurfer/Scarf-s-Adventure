@@ -61,26 +61,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Creations Law\Scripts\UI\Pause Menu\PauseMenu.cs" />
-    <Compile Include="Assets\Interactable.cs" />
-    <Compile Include="Assets\Item.cs" />
-    <Compile Include="Assets\ItemSlot.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Graphics\Models\Animations\Scarf\Sounds\SavingLoading.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Misc\Readme\Scripts\Readme.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\AI Behaviour\Cinema_Script.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\AI Behaviour\SpriteAI.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Controllers\BotReciever.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Controllers\Command_Controller.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Controllers\Gamepad.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Controllers\Level_Select.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Controllers\Misc_Scripts.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Controllers\ThirdPerson.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Misc\3D Platformer\Platformer_Camera.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Misc\3D Platformer\PlayerController.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Scripts\Game\Stats\GameManager.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Scripts\Unity\ChangeScene.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\UI\RTS\Scripts\Scriptable_Objects.cs" />
-    <None Include="Assets\Knight's Files\Resources\Scripts\Unity\Shaders\Outline.shader" />
+    <Compile Include="Assets\Creations Law\Game Assets\SavingLoading.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Scripts\Game\Controllers\Character Scripts\BotReciever.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Scripts\Game\Controllers\Character Scripts\SpriteAI.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Scripts\Game\Controllers\Character Scripts\ThirdPerson.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Scripts\Game\Controllers\Main Controls\Gamepad.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Scripts\Game\Controllers\Other\Cinema_Script.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Scripts\Game\Controllers\UI\Command_Controller.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Scripts\Game\Controllers\UI\Misc_Scripts.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Scripts\Game\GameManager.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Scripts\Game\Misc\3D Platformer\Platformer_Camera.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Scripts\Game\Misc\3D Platformer\PlayerController.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Scripts\Game\Navigation\ChangeScene.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Scripts\Game\Navigation\Level_Select.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Scripts\Interactable.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Scripts\ItemSlot.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Scripts\UI\Pause Menu\PauseMenu.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\UI\RTS\Scripts\Scriptable_Objects.cs" />
+    <Compile Include="Assets\Creations Law\Unity Assets\Scripts\Item.cs" />
+    <Compile Include="Assets\Creations Law\Unity Assets\Scripts\Readme\Scripts\Readme.cs" />
+    <None Include="Assets\Creations Law\Unity Assets\Shaders\Outline.shader" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

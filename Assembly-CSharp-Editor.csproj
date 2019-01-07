@@ -61,9 +61,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Knight's Files\Resources\Misc\Readme\Scripts\Editor\ReadmeEditor.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Misc\Readme\Scripts\Editor\ReadmeMaker.cs" />
-    <Compile Include="Assets\Knight's Files\Resources\Scripts\Unity\Editor\Script_Inspector.cs" />
+    <Compile Include="Assets\Creations Law\Unity Assets\Editor\Script_Inspector.cs" />
+    <Compile Include="Assets\Creations Law\Unity Assets\Scripts\Readme\Scripts\Editor\ReadmeEditor.cs" />
+    <Compile Include="Assets\Creations Law\Unity Assets\Scripts\Readme\Scripts\Editor\ReadmeMaker.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
