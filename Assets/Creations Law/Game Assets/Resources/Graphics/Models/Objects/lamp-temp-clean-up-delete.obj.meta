@@ -19,17 +19,18 @@ ModelImporter:
     3300002: initialShadingGroup_polySurface1
     4300000: initialShadingGroup_initialShadingGroup1_pCylinder1_polySurface1
     4300002: initialShadingGroup_polySurface1
+    11100000: //RootNode
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: initialShadingGroup_initialShadingGroup1_pCylinder1_polySurface1Mat
-    second: {fileID: 2100000, guid: ef7cabe60424bc147a7bc42667e3150d, type: 2}
+    second: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: initialShadingGroup_polySurface1Mat
-    second: {fileID: 2100000, guid: ef7cabe60424bc147a7bc42667e3150d, type: 2}
+    second: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   materials:
     importMaterials: 1
     materialName: 0
@@ -101,7 +102,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1

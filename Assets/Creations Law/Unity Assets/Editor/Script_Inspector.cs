@@ -21,7 +21,7 @@ public class Viewer_GameManager : Editor
 {
     protected int debugView;
     protected bool Initialized;
-    ThirdPerson_Mode[] people = new ThirdPerson_Mode[] { };
+    Thirdperson_Mode[] people = new Thirdperson_Mode[] { };
     GameManager unit;
 
     void Init()
@@ -46,7 +46,7 @@ public class Viewer_GameManager : Editor
 
     protected void Inspector()
     {
-        people = FindObjectsOfType<ThirdPerson_Mode>();
+        people = FindObjectsOfType<Thirdperson_Mode>();
 
 
         SettingsViewer();
@@ -64,7 +64,7 @@ public class Viewer_GameManager : Editor
         if (party)
         {
 
-            foreach (ThirdPerson_Mode p in people)
+            foreach (Thirdperson_Mode p in people)
             {
                 GUILayout.BeginVertical("In BigTitle");
 
