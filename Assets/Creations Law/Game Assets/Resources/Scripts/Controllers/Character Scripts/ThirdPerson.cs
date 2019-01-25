@@ -6,22 +6,22 @@ using UnityEngine.SceneManagement;
 
 
 //The Main Startup Class. (Nothing is really required from this class.)
-public class ThirdPerson : Thirdperson_Mode
+public class ThirdPerson : Thirdperson_PartyHandler
 {
-    BotReciever partyMember;
-    BotReciever botStuff;
+    
 
     public void Start()
     {
        
         StartingVariables();
         InteractStart();
-        ControllerStart();
+        PlayerStart();
         Components();
         
     }
     private void Update()
     {
+        LevelBounds();
         if (!canMove)
         {
             if (currentYaw != 0)
@@ -48,11 +48,29 @@ public class ThirdPerson : Thirdperson_Mode
 
 
         InteractUpdate();
-        ControllerUpdate();
+        PlayerUpdate();
         
     }
 
 
+    protected void LevelBounds()
+    {
+        if (transform.localPosition.y < -15)
+        {
+            transform.position = GameObject.Find("Player 1").transform.position;
+            health = health - 45;
+        }
+    }
+
+
+
+
+}
+
+public class Thirdperson_PartyHandler : Thirdperson_Mode
+{
+    BotReciever partyMember;
+ 
     protected void PartySwitcher()
     {
         if (Input.GetKeyDown(KeyCode.Q))
@@ -69,7 +87,7 @@ public class ThirdPerson : Thirdperson_Mode
                 GetComponent<BotReciever>().WaypointPassed = 0;
                 GetComponent<BotReciever>().range = 20;
 
-               partyMember.gameObject.AddComponent<ThirdPerson>();
+                partyMember.gameObject.AddComponent<ThirdPerson>();
                 Destroy(partyMember.botAI);
                 partyMember.bot.enabled = true;
                 Destroy(partyMember);
@@ -79,11 +97,9 @@ public class ThirdPerson : Thirdperson_Mode
         }
     }
 
-
-
-
-
 }
+
+
 
 //Camera Control.
 public class Thirdperson_Mode : Thirdperson_Stats
@@ -99,7 +115,7 @@ public class Thirdperson_Mode : Thirdperson_Stats
     protected Vector3 offset;
     protected float cam_rotateSpeed_X = 180;
     protected float cam_rotateSpeed_Y = 80;
-    public float currentYaw = 210f; //210
+    [HideInInspector] public float currentYaw = 210f; //210
     protected float currentZoom = 2f;
     #endregion
     #endregion
@@ -195,11 +211,11 @@ public class Thirdperson_Stats : Thirdperson_Start
 //Controls the starting position of the player.
 public class Thirdperson_Start : Thirdperson_Interact
 {
-    public GameObject playerModel;
+ 
     protected void StartingVariables()
     {
         string currentScene = SceneManager.GetActiveScene().name;
-        playerModel = gameObject;
+
         switch (currentScene)
         {
             case "Gameplay Test":
@@ -216,7 +232,7 @@ public class Thirdperson_Start : Thirdperson_Interact
 }
 
 //Handles Interaction.
-public class Thirdperson_Interact : ThirdpersonController
+public class Thirdperson_Interact : Thirdperson_PlayerController
 {
     public Interactable focus;
     protected GameObject buttonPrompt;
@@ -238,19 +254,13 @@ public class Thirdperson_Interact : ThirdpersonController
     protected void InteractUpdate()
     {
         ObjectBehaviour();
-        LevelBounds();
+        
     }
     protected void ButtonPrompt()
     {
         //buttonPrompt.transform.LookAt(cam.transform.position);
     }
-    protected void LevelBounds()
-    {
-        if (transform.localPosition.y < -15)
-        {
-            transform.localPosition = new Vector3(47, 1, 38);
-        }
-    }
+    
     protected void ObjectBehaviour()
     {
         if (chest != null)
@@ -293,12 +303,26 @@ public class Thirdperson_Interact : ThirdpersonController
                 case "Door":
                     interaction.hasInteracted = true;
                     break;
+
+                    
             }
         }
-        if (other.name == "Sprite Light")
+        switch (other.name)
         {
-            other.enabled = false;
-            other.GetComponent<SpriteAI>().triggered = true;
+            case "Ledge":
+                if (!collisionDetected && !player.isGrounded)
+                {
+                    anim.SetBool("Hanging", true);
+                    collisionDetected = true;
+                    moveType = "Hanging";
+                    
+                }
+                break;
+            case "Sprite Light":
+                other.enabled = false;
+                other.GetComponent<SpriteAI>().triggered = true;
+                break;
+
         }
         if (other.tag == "NPC")
         {
@@ -337,7 +361,6 @@ public class Thirdperson_Interact : ThirdpersonController
             buttonPrompt.transform.position = new Vector3();
         }
     }
-
     #region Interaction Detection
     private void SetFocus(Interactable newFocus)
     {
@@ -351,36 +374,20 @@ public class Thirdperson_Interact : ThirdpersonController
 }
 
 //Handles the controller component that moves the player.
-public class ThirdpersonController : MonoBehaviour
-{
-    #region Variables
-    #region Rotation Math
-    protected Quaternion theRotation;
-    protected float player_rotateSpeed = 10;
-    protected string viewType = "ThirdPerson";
-    #endregion
-    #region Movement
-    protected Vector3 moveDirection;
-    protected float moveSpeed = 10;
-    protected float jumpForce = 14;
-    #endregion
-    #region Physics
-    protected float gravity = 3;
-    #endregion
-    #endregion
-    #region Components
-    [HideInInspector] public Animator anim;
-    public CharacterController player;
-    protected CapsuleCollider capu;
-    public Transform skeleton;
-    protected float rotator = 150;
-    public PauseMenu pause;
-    public Transform cam;
-    public Gamepad gamepad;
-    #endregion
 
-    public bool canMove;
-    protected void ControllerStart()
+public class Thirdperson_PlayerController : Thirdperson_Camera
+{
+    [HideInInspector] public Animator anim;
+    [HideInInspector]public CharacterController player;
+    public string moveType = "Normal";
+    protected bool collisionDetected = true;
+    Vector3 playerPosition;
+    Vector3 playerDestination;
+
+
+
+
+    protected void PlayerStart()
     {
         gamepad = FindObjectOfType<Gamepad>();
         cam = Camera.main.transform;
@@ -393,7 +400,7 @@ public class ThirdpersonController : MonoBehaviour
         {
             player = gameObject.AddComponent<CharacterController>();
         }
-            pause = FindObjectOfType<PauseMenu>();
+        pause = FindObjectOfType<PauseMenu>();
 
         if (player)
         {
@@ -401,12 +408,70 @@ public class ThirdpersonController : MonoBehaviour
             player.radius = 0.5f;
             player.center = new Vector3(0, 1.1f, 0);
         }
-        }
-    protected void ControllerUpdate()
+    }
+    protected void PlayerUpdate()
     {
-            MovePlayer();
+        MovePlayer();
     }
     protected void MovePlayer()
+    {
+        if (player.isGrounded)
+        {
+            anim.applyRootMotion = true;
+            collisionDetected = false;
+            
+            moveType = "Normal";
+        }
+
+        switch (moveType)
+        {
+            case "Normal":
+                player.enabled = true;
+                anim.SetBool("Climbing", false);
+                NormalMovement();
+                break;
+
+            case "Hanging":
+                
+                player.enabled = false;
+                if(gamepad.button_Jump)
+                {
+                    moveType = "Normal";
+                    anim.SetBool("Hanging", false);
+                }
+                if (gamepad.moveY > 0.5f)
+                {
+
+                    anim.SetBool("Climbing", true);
+                    if (playerPosition == Vector3.zero)
+                    {
+                        playerPosition = transform.position;
+                    }
+                    playerDestination = new Vector3(playerPosition.x, playerPosition.y + 10, playerPosition.z);
+                    anim.SetBool("Hanging", false);
+
+                    
+
+                }
+
+                if (playerPosition != Vector3.zero)
+                {
+                    transform.position = Vector3.MoveTowards(playerPosition, playerDestination, 1);
+                    if (transform.position == playerDestination)
+                    {
+                        
+                        moveType = "Normal";
+
+                    }
+                }
+                break;
+               
+        }
+        
+
+    }
+
+    protected void NormalMovement()
     {
         Actions();
         #region Move direction
@@ -438,21 +503,29 @@ public class ThirdpersonController : MonoBehaviour
 
                     skeleton.rotation = Quaternion.Slerp(skeleton.rotation, newRotation, player_rotateSpeed * Time.deltaTime);
                 }
-                
+
             }
             #endregion
         }
         #region Animator
-        if (anim == null)
-        {
-            anim.SetBool("OnGround", player.isGrounded);
-        }
         if (canMove)
         {
+            anim.SetBool("OnGround", player.isGrounded);
             anim.SetFloat("Speed", Mathf.Abs(gamepad.moveX) + Mathf.Abs(gamepad.moveY));
         }
         #endregion
+
+
+
     }
+
+
+
+
+
+
+
+
     protected void Actions()
     {
         #region Jump
@@ -464,11 +537,54 @@ public class ThirdpersonController : MonoBehaviour
                 if (gamepad.button_Jump)
                 {
                     moveDirection.y = jumpForce;
+                    
                 }
+                anim.SetBool("OnGround", false);
+            }
+            else
+            {
+                anim.SetBool("OnGround", true);
+                
             }
         }
         #endregion
     }
+}
+
+
+public class Thirdperson_Camera : MonoBehaviour
+{
+    #region Variables
+    #region Rotation Math
+    protected Quaternion theRotation;
+    protected float player_rotateSpeed = 10;
+    protected string viewType = "ThirdPerson";
+    #endregion
+    #region Movement
+    protected Vector3 moveDirection;
+    protected float moveSpeed = 10;
+    protected float jumpForce = 14;
+    #endregion
+    #region Physics
+    protected float gravity = 3;
+    #endregion
+    #endregion
+    #region Components
+   
+    
+    protected CapsuleCollider capu;
+    protected Transform skeleton;
+    protected float rotator = 150;
+    protected PauseMenu pause;
+    protected Transform cam;
+    protected Gamepad gamepad;
+    #endregion
+
+    public bool canMove;
+    
+    
+    
+   
 
 }
 

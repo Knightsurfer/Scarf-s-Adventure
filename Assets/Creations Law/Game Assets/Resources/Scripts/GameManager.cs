@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -160,6 +160,8 @@ public class PlayerStats : PlayerInventory
     }
     protected void StatHandler()
     {
+        healthBar =  player[target].health;
+;
         if (FindObjectOfType<Thirdperson_Mode>())
         {
             if (player[target].health > player[target].healthMax)
@@ -273,22 +275,18 @@ public class StartSettings : Gamepad
         switch (SceneManager.GetActiveScene().buildIndex)
         {
             case 2:
-                player[0].transform.localPosition = new Vector3(85, 0, -4.555f);
                 player[0].transform.localRotation = Quaternion.Euler(0, -90, 0);
                 player[0].currentYaw = 88;
                 break;
 
 
             case 3:
-                player[0].transform.localPosition = new Vector3(-0.7f, 0, 64);
                 player[0].transform.localRotation = Quaternion.Euler(0, 180, 0);
                 player[0].currentYaw = 210;
                 break;
 
             case 4:
-                player[0].transform.localPosition = new Vector3(0, 0, 64);
                 player[0].transform.localRotation = Quaternion.Euler(0, 90, 0);
-
                 player[0].currentYaw = -85;
                 break;
         }

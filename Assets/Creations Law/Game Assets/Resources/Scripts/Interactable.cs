@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.AI;
 
 
 //###################################//
@@ -67,6 +68,7 @@ public class Interactable : MonoBehaviour
     }
     private void Update()
     {
+        
         if (locked)
         {
             itemsObtained = 0;
@@ -104,6 +106,7 @@ public class Interactable : MonoBehaviour
                 break;
 
             case "Door":
+                GetComponent<NavMeshObstacle>().enabled = locked;
                 anim = GetComponentInChildren<Animator>();
                 if (hasInteracted && gamepad.button_Action || hasInteracted && botOverride)
                 {

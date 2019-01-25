@@ -238,9 +238,9 @@ public class PauseBasic : UIControls
     protected void BasicUpdate()
     {
         //Checks for a controller and then checks if the game is paused.
-        if (FindObjectOfType<ThirdpersonController>())
+        if (FindObjectOfType<Thirdperson_Camera>())
         {
-            canMove = (FindObjectOfType<ThirdpersonController>().canMove);
+            canMove = (FindObjectOfType<Thirdperson_Camera>().canMove);
             player = GameObject.FindGameObjectWithTag("Player");
         }
         CharacterStats();
