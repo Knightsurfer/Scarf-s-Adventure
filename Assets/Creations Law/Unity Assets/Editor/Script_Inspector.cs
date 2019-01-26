@@ -20,9 +20,17 @@ using UnityEditor;
 public class Viewer_GameManager : Editor
 {
     protected int debugView;
+    protected int defaultView;
+    
+
+    protected int testInt;
+
     protected bool Initialized;
     Thirdperson_Mode[] people = new Thirdperson_Mode[] { };
+    BotReciever[] bots = new BotReciever[] { };
     GameManager unit;
+
+
 
     void Init()
     {
@@ -46,10 +54,41 @@ public class Viewer_GameManager : Editor
 
     protected void Inspector()
     {
-        people = FindObjectsOfType<Thirdperson_Mode>();
+        
+        defaultView = GUILayout.Toolbar(defaultView, new[] { "Game Settings", "Party", "Inventory" });
+
+        switch (defaultView)
+        {
+            case 0:
+                settings = true;
+                party = false;
+                break;
+
+            case 1:
+                settings = false;
+                party = true;
+                break;
+        }
+
+
+
+
+
+
+
+
+
 
 
         SettingsViewer();
+
+
+
+
+
+
+        people = FindObjectsOfType<Thirdperson_Mode>();
+        bots = FindObjectsOfType<BotReciever>();
         if (people.Length > 0)
         {
             PartyViewer();
@@ -57,13 +96,9 @@ public class Viewer_GameManager : Editor
     }
     private void PartyViewer()
     {
-        if (GUILayout.Button("Party"))
-        {
-            party = !party;
-        }
+
         if (party)
         {
-
             foreach (Thirdperson_Mode p in people)
             {
                 GUILayout.BeginVertical("In BigTitle");
@@ -91,35 +126,98 @@ public class Viewer_GameManager : Editor
 
                 GUILayout.EndVertical();
             }
+            foreach (BotReciever p in bots)
+            {
+                GUILayout.BeginVertical("In BigTitle");
 
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Label(p.name);
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.Space();
+
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Label("HP: ", GUILayout.Width(70));
+                GUILayout.Label(p.health.ToString());
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Label("MP: ", GUILayout.Width(70));
+                GUILayout.Label(p.magic.ToString());
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Label("Level: ", GUILayout.Width(70));
+                GUILayout.Label(p.level.ToString());
+                EditorGUILayout.EndHorizontal();
+
+                GUILayout.EndVertical();
+            }
         }
     }
 
     private void SettingsViewer()
     {
-        if (GUILayout.Button("Game Settings"))
-        {
-            settings = !settings;
-        }
         if (settings)
         {
+          
+
+            for (int i = 0; i <= Input.GetJoystickNames().Length - 1; i++)
+            {
+               
+            }
             GUILayout.BeginVertical("In BigTitle");
-
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.Label("Controller: ", GUILayout.Width(80));
-            if (FindObjectOfType<Gamepad>().controller != "")
+            foreach (string c in Input.GetJoystickNames())
             {
-                GUILayout.Label(FindObjectOfType<Gamepad>().controller);
-            }
-            if (FindObjectOfType<Gamepad>().controller == "")
-            {
-                GUILayout.Label("None");
-            }
-            EditorGUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Controller: ", GUILayout.Width(80));
+                switch (c)
+                {
+                    default:
+                        GUILayout.Label(c);
+                        break;
 
+                    case "":
+                        GUILayout.Label("None");
+                        break;
+
+                    case "Wireless Controller":
+                        GUILayout.Label("PS4");
+                        break;
+
+                    case "Controller (Xbox 360 Wireless Receiver for Windows)":
+                        GUILayout.Label("Xbox");
+                        break;
+
+                    case "Keyboard":
+                        GUILayout.Label("Keyboard");
+                        break;
+
+                    case "SFC30 Joystick":
+                        GUILayout.Label("Snes");
+                        break;
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+            GUILayout.EndVertical();
+
+            GUILayout.BeginVertical("In BigTitle");
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Game Mode: ", GUILayout.Width(80));
             unit.modeSelector = EditorGUILayout.Popup(unit.modeSelector, new string[] { "Third Person", "RTS" });
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Test Mode: ", GUILayout.Width(80));
+            switch (testInt)
+            {
+                case 0:
+                    unit.isTest = true;
+                    break;
+                case 1:
+                    unit.isTest = false;
+                    break;
+            }
+            testInt = EditorGUILayout.Popup(testInt, new string[] { "True", "False" });
             EditorGUILayout.EndHorizontal();
 
             GUILayout.EndVertical();
@@ -127,7 +225,7 @@ public class Viewer_GameManager : Editor
     }
     private void BaseStats()
     {
-        debugView = GUILayout.Toolbar(debugView, new[] { "Default", "Debug" });
+        debugView = GUILayout.Toolbar(debugView, new[] { "Default", "Debug" }, GUILayout.Height(40));
         switch (debugView)
         {
             case 0:

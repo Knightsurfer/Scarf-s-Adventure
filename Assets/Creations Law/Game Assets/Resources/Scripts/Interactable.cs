@@ -134,7 +134,7 @@ public class Interactable : MonoBehaviour
                 selectedLocked = 0;
                 locked = false;
                 game.items.RemoveAt(itemsObtained - 1);
-                
+                game.keys--;
                 anim.SetBool("Approached", !anim.GetBool("Approached"));
 
             }

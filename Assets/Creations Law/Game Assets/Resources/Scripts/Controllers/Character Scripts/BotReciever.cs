@@ -316,6 +316,17 @@ public class Bot_Variables : MonoBehaviour
     protected bool canMove;
     public bool playerIsPresent;
     public bool isPartyMember = true;
+
+   [HideInInspector] public int healthMax;
+   [HideInInspector] public int magicMax;
+   [HideInInspector] protected int exp;
+
+
+    public int level;
+    public int magic;
+    public int health;
+
+
     #endregion
     #region Waypoints
     public float distance;

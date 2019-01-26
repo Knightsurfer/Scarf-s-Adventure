@@ -19,10 +19,12 @@ public class GameManager : PlayerStats
     private void Update()
     {
         GamepadUpdate();
+        CountItems();
         Test_Functions();
         Stats_Update();
         Shortcuts();
         AutoSave();
+        
     }
     void Shortcuts()
     {
@@ -92,6 +94,18 @@ public class GameManager : PlayerStats
     }
 }
 
+public class ItemManager : StartSettings
+{
+    public int keys;
+    public int potions;
+
+    protected void CountItems()
+    {
+
+        
+
+    }
+}
 
 public class PlayerStats : PlayerInventory
 {
@@ -102,9 +116,9 @@ public class PlayerStats : PlayerInventory
 
     protected int target;
     protected float healthBar;
-    public int[] healthMax = new int[4];
+    [HideInInspector] public int[] healthMax = new int[4];
 
-    public string[] title = new string[] { };
+    [HideInInspector] public string[] title = new string[] { };
 
     protected void Stats_Update()
     {
@@ -185,7 +199,7 @@ public class PlayerStats : PlayerInventory
         return healthBar / player[0].healthMax;
     }
 }
-public class PlayerInventory : StartSettings
+public class PlayerInventory : ItemManager
 {
     #region singleton
     public static PlayerInventory instance;
@@ -212,7 +226,6 @@ public class PlayerInventory : StartSettings
 
     public bool Add(Item item)
     {
-
         if (!item.isDefaultItem)
         {
             if (items.Count >= space)
@@ -221,19 +234,29 @@ public class PlayerInventory : StartSettings
                 return false;
             }
             items.Add(item);
+            switch (item.name)
+            {
+                case "Key":
+                    keys++;
+                    break;
+
+                case "Potion":
+                    potions++;
+                    break;
+            }
             if (onItemChangedCallback != null)
             {
                 onItemChangedCallback.Invoke();
             }
         }
+
         return true;
     }
     public void Remove(Item item)
     {
         items.Remove(item);
+        
     }
-
-
 }
 public class StartSettings : Gamepad
 {

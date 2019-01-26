@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea575c7cc585e324fa660766ed5e3402, type: 3}
   m_Name: Key
   m_EditorClassIdentifier: 
-  name: Test
+  name: Key
   icon: {fileID: 21300000, guid: a46c92ac67378fa448848fed2f9ad0f8, type: 3}
   isDefaultItem: 0
   mesh: {fileID: 4300000, guid: faa72a1b7eb18e443946713e5268d4ad, type: 3}
