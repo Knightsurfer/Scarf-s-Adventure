@@ -1975,7 +1975,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 521285979}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0.061}
+  m_LocalPosition: {x: 0, y: -0.08301097, z: 0.061}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1592306285}
@@ -1996,15 +1996,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e34b8b5bd3791a469f1fb34c3966069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canMove: 0
   anim: {fileID: 0}
   player: {fileID: 0}
-  skeleton: {fileID: 0}
-  pause: {fileID: 0}
-  cam: {fileID: 0}
-  gamepad: {fileID: 0}
-  canMove: 0
+  moveType: Normal
   focus: {fileID: 0}
-  playerModel: {fileID: 0}
   healthMax: 100
   magicMax: 0
   level: 0

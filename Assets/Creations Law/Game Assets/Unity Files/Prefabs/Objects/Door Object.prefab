@@ -100,8 +100,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4035711859415306}
-  - component: {fileID: 1516819264}
-  - component: {fileID: 1516819263}
+  - component: {fileID: 1979067227}
   m_Layer: 0
   m_Name: Door Object
   m_TagString: Untagged
@@ -127,7 +126,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -90.00001, z: 0}
---- !u!208 &1516819264
+--- !u!208 &1979067227
 NavMeshObstacle:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -137,42 +136,12 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 1, y: 1.5, z: 0.5}
+  m_Extents: {x: 1.01, y: 1.445, z: 0.5}
   m_MoveThreshold: 0.1
   m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 1.6, y: 1.6, z: 0}
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 1.61, y: 1.58, z: 0}
   m_TimeToStationary: 0.5
---- !u!114 &1516819263
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1567089191638632}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51649fe34c436014c8f26d9932ce85be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectedType: 2
-  selectedLocked: 0
-  lockRequirement: 0
-  requiredAmount: 0
-  selectedItem: 0
-  game: {fileID: 0}
-  anim: {fileID: 0}
-  item: {fileID: 0}
-  type: Door
-  items:
-  - None
-  - Key
-  - NPC
-  locked: 0
-  obtained: 0
-  hasInteracted: 0
-  botOverride: 0
-  itemsObtained: 0
 --- !u!1 &1650110488559490
 GameObject:
   m_ObjectHideFlags: 0

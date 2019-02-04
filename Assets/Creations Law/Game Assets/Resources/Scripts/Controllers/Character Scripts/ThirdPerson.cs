@@ -128,16 +128,16 @@ public class Thirdperson_Mode : Thirdperson_Stats
     private void LateUpdate()
     {
         
-            horizontal = gamepad.cameraX * cam_rotateSpeed_X * Time.deltaTime;
+            horizontal = game.cameraX * cam_rotateSpeed_X * Time.deltaTime;
             rotator = currentYaw + 150;
             if (canMove)
             {
-                currentYaw += gamepad.cameraX * cam_rotateSpeed_X * Time.deltaTime;
+                currentYaw += game.cameraX * cam_rotateSpeed_X * Time.deltaTime;
             }
             switch (viewType)
             {
                 case "FirstPerson":
-                    if (gamepad.button_Select)
+                    if (game.button_Select)
                     {
                         cam.parent = GameObject.Find("Player 1").transform;
                         viewType = "ThirdPerson";
@@ -147,7 +147,7 @@ public class Thirdperson_Mode : Thirdperson_Stats
                     break;
 
                 case "ThirdPerson":
-                    if (gamepad.button_Select)
+                    if (game.button_Select)
                     {
                         cam.parent = lookObject.transform;
                         viewType = "FirstPerson";
@@ -170,8 +170,8 @@ public class Thirdperson_Mode : Thirdperson_Stats
     }
     private void FirstPerson()
     {
-        float vertical = gamepad.cameraX * cam_rotateSpeed_Y * 2 * Time.deltaTime;
-        float horizontal = -gamepad.cameraY * cam_rotateSpeed_Y * 2 * Time.deltaTime;
+        float vertical = game.cameraX * cam_rotateSpeed_Y * 2 * Time.deltaTime;
+        float horizontal = -game.cameraY * cam_rotateSpeed_Y * 2 * Time.deltaTime;
 
         cam.localRotation = Quaternion.Euler(cam.localRotation.x, lookObject.localRotation.y, cam.localRotation.z);
         lookObject.Rotate(horizontal, 0, 0);
@@ -182,7 +182,7 @@ public class Thirdperson_Mode : Thirdperson_Stats
     }
     private void ThirdPerson()
     {
-            currentZoom -= gamepad.cameraY * 3.5f * Time.deltaTime;
+            currentZoom -= game.cameraY * 3.5f * Time.deltaTime;
 
             currentZoom = Mathf.Clamp(currentZoom, 2f, 4f);
         
@@ -246,68 +246,41 @@ public class Thirdperson_Interact : Thirdperson_PlayerController
         {
             if (FindObjectsOfType<Interactable>()[i].type == "Chest")
             {
-                FindObjectsOfType<Interactable>()[i].SendMessage("Chest", FindObjectsOfType<Interactable>()[i].obtained);
-                FindObjectsOfType<Interactable>()[i].GetComponents<BoxCollider>()[1].enabled = !FindObjectsOfType<Interactable>()[i].obtained;
+                //FindObjectsOfType<Interactable>()[i].SendMessage("Chest", FindObjectsOfType<Interactable>()[i].obtained);
+                //FindObjectsOfType<Interactable>()[i].GetComponents<BoxCollider>()[1].enabled = !FindObjectsOfType<Interactable>()[i].obtained;
             }
         }
     }
     protected void InteractUpdate()
     {
-        ObjectBehaviour();
-        
+        Interact();
     }
     protected void ButtonPrompt()
     {
         //buttonPrompt.transform.LookAt(cam.transform.position);
     }
-    
-    protected void ObjectBehaviour()
+    protected void OnTriggerEnter(Collider interaction)
     {
-        if (chest != null)
+        if (interaction != null)
         {
-            if (gamepad.button_Action)
+            Interactable entity = interaction.GetComponentInParent<Interactable>();
+            switch (entity.type)
             {
-                chest.SendMessage("Chest", true);
-                anim.SetBool("Working", !anim.GetBool("Working"));
-            }
-            if (chest.GetComponent<Animator>().GetBool("Open") == true)
-            {
-                if (gamepad.button_Attack)
-                {
-                    chest.SendMessage("Open", false);
-                }
-            }
-        }
-    }
+                default:
+                    SetFocus(entity);
+                    break;
 
-   
-    protected void OnTriggerEnter(Collider other)
-    {
-        if (other.GetComponentInParent<Interactable>())
-        {
-            Interactable interaction = other.GetComponentInParent<Interactable>();
-            switch (interaction.type)
-            {
                 case "Item":
                     if (interaction != null)
                     {
-                        SetFocus(interaction);
-                        other.transform.parent.SendMessage("Item");
+                        SetFocus(entity);
+                        interaction.transform.parent.SendMessage("Item");
                     }
                     break;
-
-                case "Chest":
-                    interaction.hasInteracted = true;
-                    break;
-
-                case "Door":
-                    interaction.hasInteracted = true;
-                    break;
-
-                    
             }
+
         }
-        switch (other.name)
+        switch (interaction.name)
         {
             case "Ledge":
                 if (!collisionDetected && !player.isGrounded)
@@ -315,60 +288,100 @@ public class Thirdperson_Interact : Thirdperson_PlayerController
                     anim.SetBool("Hanging", true);
                     collisionDetected = true;
                     moveType = "Hanging";
-                    
+
                 }
                 break;
             case "Sprite Light":
-                other.enabled = false;
-                other.GetComponent<SpriteAI>().triggered = true;
+                interaction.enabled = false;
+                interaction.GetComponent<SpriteAI>().triggered = true;
                 break;
 
         }
-        if (other.tag == "NPC")
+        if (interaction.tag == "NPC")
         {
-            buttonPrompt.transform.position = new Vector3(other.transform.position.x, other.transform.position.y + 1.8f, other.transform.position.z + 0.5f);
+            buttonPrompt.transform.position = new Vector3(interaction.transform.position.x, interaction.transform.position.y + 1.8f, interaction.transform.position.z + 0.5f);
         }
     }
-    protected void OnTriggerExit(Collider other)
+    protected void OnTriggerExit(Collider interaction)
     {
-        if (other.GetComponentInParent<Interactable>())
+        if (interaction != null)
         {
-            Interactable interact = other.GetComponentInParent<Interactable>();
-            switch (interact.type)
+            Interactable entity = interaction.GetComponentInParent<Interactable>();
+            switch (entity.type)
             {
-                case "Item":
+                default:
                     RemoveFocus();
                     break;
 
-                case "Chest":
-                    interact.hasInteracted = false;
-                    break;
-
-                case "Door":
-                    interact.hasInteracted = false;
-                    if (!interact.locked)
-                    {
-                        if (interact.anim.GetBool("Approached"))
-                        {
-                            other.transform.parent.SendMessage("Door");
-                        }
-                    }
+                case "Item":
+                    RemoveFocus();
+                    entity.SendMessage("Item");
                     break;
             }
+            if (interaction.tag == "NPC")
+            {
+                buttonPrompt.transform.position = new Vector3();
+            }
         }
-        if (other.tag == "NPC")
-        {
-            buttonPrompt.transform.position = new Vector3();
-        }
+
     }
+
     #region Interaction Detection
     private void SetFocus(Interactable newFocus)
     {
         focus = newFocus;
+
+        switch(focus.type)
+        {
+            default:
+                focus.hasInteracted = true;
+                break;
+
+            case "Door":
+                break;
+
+
+            case "Chest":
+                break;
+
+            
+        }
+
+
+       
     }
     private void RemoveFocus()
     {
+        focus.hasInteracted = false;
+        if(focus.type  == "Door")
+        {
+            //focus.SendMessage("DoorClose");
+        }
         focus = null;
+    }
+
+    private void Interact()
+    {
+        if (focus != null)
+        {
+            if (game.button_Action)
+            {
+                switch (focus.type)
+                {
+                    case "Chest":
+                        focus.hasInteracted = !focus.hasInteracted;
+                        break;
+
+                    case "Door":
+                        focus.hasInteracted = true;
+                        break;
+
+                    case "Save Point":
+                        focus.hasInteracted = true;
+                        break;
+                }
+            }
+        }
     }
     #endregion
 }
@@ -389,7 +402,8 @@ public class Thirdperson_PlayerController : Thirdperson_Camera
 
     protected void PlayerStart()
     {
-        gamepad = FindObjectOfType<Gamepad>();
+        game = FindObjectOfType<GameManager>();
+
         cam = Camera.main.transform;
         anim = GetComponent<Animator>();
         if (GetComponent<CharacterController>())
@@ -434,12 +448,12 @@ public class Thirdperson_PlayerController : Thirdperson_Camera
             case "Hanging":
                 
                 player.enabled = false;
-                if(gamepad.button_Jump)
+                if(game.button_Jump)
                 {
                     moveType = "Normal";
                     anim.SetBool("Hanging", false);
                 }
-                if (gamepad.moveY > 0.5f)
+                if (game.moveY > 0.5f)
                 {
 
                     anim.SetBool("Climbing", true);
@@ -478,7 +492,7 @@ public class Thirdperson_PlayerController : Thirdperson_Camera
         float yspeed = moveDirection.y;
         if (canMove)
         {
-            moveDirection = transform.forward * gamepad.moveY + (transform.right * gamepad.moveX);
+            moveDirection = transform.forward * game.moveY + (transform.right * game.moveX);
 
             moveDirection = moveDirection.normalized * moveSpeed;
         }
@@ -495,7 +509,7 @@ public class Thirdperson_PlayerController : Thirdperson_Camera
             #region Rotation
             if (canMove)
             {
-                if (gamepad.moveX != 0 || gamepad.moveY != 0)
+                if (game.moveX != 0 || game.moveY != 0)
                 {
                     player.transform.rotation = Quaternion.Euler(0, rotator + 30, 0);
                     Quaternion newRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, 90, moveDirection.z));
@@ -511,7 +525,7 @@ public class Thirdperson_PlayerController : Thirdperson_Camera
         if (canMove)
         {
             anim.SetBool("OnGround", player.isGrounded);
-            anim.SetFloat("Speed", Mathf.Abs(gamepad.moveX) + Mathf.Abs(gamepad.moveY));
+            anim.SetFloat("Speed", Mathf.Abs(game.moveX) + Mathf.Abs(game.moveY));
         }
         #endregion
 
@@ -534,7 +548,7 @@ public class Thirdperson_PlayerController : Thirdperson_Camera
             if (player.isGrounded)
             {
                 moveDirection.y = 0;
-                if (gamepad.button_Jump)
+                if (game.button_Jump)
                 {
                     moveDirection.y = jumpForce;
                     
@@ -577,7 +591,7 @@ public class Thirdperson_Camera : MonoBehaviour
     protected float rotator = 150;
     protected PauseMenu pause;
     protected Transform cam;
-    protected Gamepad gamepad;
+    protected GameManager game;
     #endregion
 
     public bool canMove;

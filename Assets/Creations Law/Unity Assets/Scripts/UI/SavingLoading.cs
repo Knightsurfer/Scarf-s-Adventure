@@ -18,6 +18,13 @@ public class SavingLoading : MonoBehaviour
     public GameData gameData;
 
 
+
+
+
+
+
+
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -39,8 +46,17 @@ public class SavingLoading : MonoBehaviour
     }
 
 
+    protected void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnLevelFinishedLoading;
+    }
 
-    void OnLevelWasLoaded(int level)
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+    }
+
+    void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         player = FindObjectOfType<ThirdPerson>();
     }

@@ -22,34 +22,9 @@ using UnityEngine.AI;
 
 
 
-public class Interactable : MonoBehaviour
+public class Interactable : Interactive.I_Door
 {
-     public int selectedType;
-    [HideInInspector] public int selectedLocked;
-    [HideInInspector] public int lockRequirement;
-    [HideInInspector] public int requiredAmount;
-    [HideInInspector] public int selectedItem;
-    [HideInInspector] public GameManager game;
-
-    private Gamepad gamepad;
-    
-    public Animator anim;
-    public Item item;
-
-    public string type;
-
-
-    public string[] items = new[] { "None","Key","NPC" };
-
-    public bool locked;
-    public bool obtained;
-
-    public bool hasInteracted;
-    public bool botOverride;
-    public int itemsObtained;
-
-
-   readonly float elapsed;
+   
    // float timerspeed = 2f;
 
     private void Start()
@@ -68,93 +43,217 @@ public class Interactable : MonoBehaviour
     }
     private void Update()
     {
-        
-        if (locked)
-        {
-            itemsObtained = 0;
-            foreach (Item item in game.items)
-            {
-                itemsObtained++;
-            }
-        }
-
-
         switch(type)
         {
-            case "Chest":
-                anim = GetComponentInChildren<Animator>();
-                if (hasInteracted && gamepad.button_Action)
+            case "Door":
+                GetComponent<NavMeshObstacle>().enabled = locked;
+                if (hasInteracted)
                 {
+
+                    if (locked && game.keys < requiredAmount)
+                    {
+                        if (game.button_Action)
+                        {
+                            Debug.Log(locked);
+                            Debug.Log("You need a key!");
+                        }
+                    }
+
+                    if (locked && game.keys >= requiredAmount)
+                    {
+                        game.keys -= requiredAmount;
+                        locked = false;
+                    }
+
+                    if (!locked)
+                    {
+                        if (!anim.GetBool("Approached"))
+                        {
+                            Debug.Log(locked);
+                            anim.SetBool("Approached", true);
+                        }
+                    }
+                }
+                if (!hasInteracted)
+                {
+                    if (anim.GetBool("Approached"))
+                    {
+
+                        anim.SetBool("Approached", false);
+                    }
+                }
+                break;
+
+            case "Chest":
+
+                if (hasInteracted)
+                {
+                    if(anim.GetBool("Open"))
+                    {
+                        Chest(true);
+                        hasInteracted = false;
+                    }
+                    if (!anim.GetBool("Open"))
+                    {
+                        Chest(false);
+                        hasInteracted = false;
+                    }
+
+
                     Chest(!anim.GetBool("Open"));
                 }
-               
+
+
+
                 if (obtained)
                 {
                     if (selectedItem == 1)
                     {
                         bool wasPickedUp = PlayerInventory.instance.Add(item);
-                         if (wasPickedUp)
+                        if (wasPickedUp)
                         {
                             GetComponentInChildren<MeshRenderer>().enabled = false;
                             selectedItem = 0;
+                            
+                            obtained = true;
                         }
                     }
                 }
-
-
-
                 break;
 
-            case "Door":
-                GetComponent<NavMeshObstacle>().enabled = locked;
-                anim = GetComponentInChildren<Animator>();
-                if (hasInteracted && gamepad.button_Action || hasInteracted && botOverride)
+            case "Save Point":
+                if (hasInteracted && gamepad.button_Action)
                 {
-                    if (!anim.GetBool("Approached"))
-                    {
-                        Door();
-                    }
+                    FindObjectOfType<SaveMenu>().GetComponent<Canvas>().enabled = true;
                 }
                 break;
-
-
-
         }
- 
+
+
+
+        //    if (locked)
+        //{
+        //    itemsObtained = 0;
+        //    foreach (Item item in game.items)
+        //    {
+        //        itemsObtained++;
+        //    }
+
+        //}
+
+
+        //switch(type)
+        //{
+        //    
+
+
+
+        //    
+
+        //    case "Door":
+
+        //    
+        //        break;
+
+
+
+        //}
+
+
     }
 
-    private void Door()
-    {
-            if (!locked)
-            {
-                anim.SetBool("Approached", !anim.GetBool("Approached"));
-            }
-            if (locked == true && itemsObtained >= requiredAmount)
-            {
-                selectedLocked = 0;
-                locked = false;
-                game.items.RemoveAt(itemsObtained - 1);
-                game.keys--;
-                anim.SetBool("Approached", !anim.GetBool("Approached"));
 
-            }
-    }
-    private void Chest(bool open)
+}
+
+
+
+
+
+
+
+
+
+
+namespace Interactive
+{
+    public class I_Door : I_Item
     {
-        anim = GetComponent<Animator>();
-        anim.SetBool("Open", open);
+        
+
+
+
+
     }
-    public virtual void Item()
+
+    public class I_Item : I_Chest
     {
-        if (!hasInteracted)
+        public virtual void Item()
         {
-            bool wasPickedUp = PlayerInventory.instance.Add(item);
-            if (wasPickedUp)
+            if (!hasInteracted)
             {
-                Destroy(gameObject);
+                bool wasPickedUp = PlayerInventory.instance.Add(item);
+                if (wasPickedUp)
+                {
+                    Destroy(gameObject);
+                }
+                hasInteracted = true;
             }
-            hasInteracted = true;
         }
     }
 
+    public class I_Chest : Variables
+    { 
+        protected void Chest(bool open)
+        {
+            anim = GetComponent<Animator>();
+            anim.SetBool("Open", open);
+        }
+
+
+    }
+
+    public class Variables : InspectorVariables
+    {
+        private void Awake()
+        {
+            anim = GetComponentInChildren<Animator>();
+        }
+
+
+
+
+         public int requiredAmount;
+
+        [HideInInspector] public GameManager game;
+
+        protected Gamepad gamepad;
+
+        public Animator anim;
+        public Item item;
+
+        public string type;
+
+
+       
+
+        public bool locked;
+        public bool obtained;
+
+        public bool hasInteracted;
+        public bool botOverride;
+        public int itemsObtained;
+
+
+        readonly float elapsed;
+    }
+
+    public class InspectorVariables : MonoBehaviour
+    {
+        public int selectedType;
+         public int selectedLocked;
+
+        [HideInInspector] public int lockRequirement;
+        [HideInInspector] public int selectedItem;
+
+    }
 }

@@ -2,6 +2,8 @@
 using UnityEngine.AI;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
+using System.IO;
 
 
 
@@ -25,18 +27,16 @@ using UnityEngine.SceneManagement;
 
 
 
-public class PauseMenu : PauseBasic {
+public class PauseMenu : Menus {
 
     private void Awake()
     {
         base.Start();
         BasicStart();
+        WriteData();
     }
 
 
-    #region Start
-
-    #endregion
     #region Update
     protected new void Update()
     {
@@ -74,229 +74,20 @@ public class PauseMenu : PauseBasic {
 
     #endregion
 
-
-
-
     //Menus
-    void MainMenu()
-    {
-        UpDownHandler(0, 7);
-        if (!mainCanvas.enabled && mainCanvas != null)
-        {
-            mainCanvas.enabled = !mainCanvas.enabled;
-        }
-        if (gamepad.isGamepad)
-        {
-            if (selectedItem == -100)
-            {
-                selectedItem = 0;
-            }
-            selectedMenuItem = menuItems[selectedItem].GetComponentInChildren<Text>().text;
-            if (gamepad.button_Attack)
-            {
-                SelectedMenu();
-                selectedItem = 0;
-                HighlightPos();
-            }
-        }
-        else
-        {
-         if(!mouseSelected)
-            {
-                selectedItem = -100;
-            }
-        }
-        if(!gamepad.isGamepad)
-        {
-            if (gamepad.button_Attack)
-            {
-                SelectedMenu();
-                selectedItem = 0;
-                HighlightPos();
-            }
-        }
-    }
-    void ItemsMenu()
-    {
-        UpDownHandler(0, 4);
-    }
-    void EquipMenu()
-    {
-        UpDownHandler(0, 3);
-    }
-    void AbilityMenu()
-    {
-        UpDownHandler(0, 3);
-    }
-    void CustomMenu()
-    {
-        UpDownHandler(0, 3);
-    }
-    void StatusMenu()
-    {
-        UpDownHandler(0, 3);
-    }
-    void JournalMenu()
-    {
-        {
-            UpDownHandler(0, 3);
-        }
-    }
-    void ConfigMenu()
-    {
-        UpDownHandler(0, 3);
-    }
+
 }
-public class PauseBasic : UIControls
+
+public class Menus : Inventory
 {
+    protected Vector3[] menuTitlePos = new Vector3[] {
+        new Vector3(-418, 306, 0),
+        new Vector3(-427.3f, 403.7f, 0) };
 
-
-    protected GameObject[] menuItems = new GameObject[9];
-    protected string selectedMenuItem;
-    protected GameObject menuNotifier;
-    protected Text[] characterStats = new Text[4];
-    protected Text[] characterNames = new Text[4];
-    protected GameManager game;
-
-    public bool canMove;
-    Animator[] animators;
-
-    protected bool mouseSelected;
-
-    
-
-
-    #region Pause Check  //Variables for checking if the game is paused.
-    [HideInInspector] public bool paused;
-    protected Canvas pausePanel;
-    public GameObject player;
-    #endregion
-    #region Pause Menu   //Variables that dictates what item is selected or what world the player is in.
-    
-    protected int selectedMin;
-    protected int selectedMax;
-    protected Vector3 highlightPos;
-
-    protected Image highlighter;
-    protected Text stageName;
-    protected Text worldName;
-
-    readonly NavMeshAgent[] agents = new NavMeshAgent[] { };
-
-
-    #endregion
-    #region SelectedMenu //Variables that tell which menu screen to show.
-    protected string currentMenu = "Main Menu";
-
-    protected Canvas mainCanvas;
-    protected Canvas itemCanvas;
-    protected Canvas equipCanvas;
-    #endregion
-    protected void BasicStart()
+    protected void SelectMenu()
     {
-            if (gamepad.isGamepad)
-            {
-                selectedItem = 0;
-            }
-            animators = FindObjectsOfType<Animator>();
+        menuItems[8].SetActive(false);
 
-        game = FindObjectOfType<GameManager>();
-        foreach (ThirdPerson p in game.player)
-        {
-            characterStats[playercount] = GameObject.Find("Player" + playercount + " Stats").GetComponent<Text>();
-            characterNames[playercount] = GameObject.Find("Player" + playercount + " Name").GetComponent<Text>();
-
-
-        }
-
-        menuItems[0] = GameObject.Find("Items");
-            menuItems[1] = GameObject.Find("Equipment");
-            menuItems[2] = GameObject.Find("Abilities");
-            menuItems[3] = GameObject.Find("Customize");
-            menuItems[4] = GameObject.Find("Status");
-            menuItems[5] = GameObject.Find("Journal");
-            menuItems[6] = GameObject.Find("Config");
-            menuItems[7] = GameObject.Find("Quit");
-            menuItems[8] = GameObject.Find("Spare(7)");
-
-        menuNotifier = GameObject.Find("Menu Title");  
-        //Makes sure all the assets are in the level.
-        worldName = GameObject.Find("World Name").GetComponent<Text>();
-        stageName = GameObject.Find("Level Section").GetComponent<Text>();
-        highlighter = GameObject.Find("Highlight").GetComponent<Image>();
-        highlighter.rectTransform.position = new Vector3(244, 775, 0);
-
-        CanvasAssign();
-    }
-    protected void CanvasAssign()
-    {
-        //Assigns all the canvases used in the pause menu.
-        pausePanel = GetComponent<Canvas>();
-        mainCanvas = GameObject.Find("Main Menu").GetComponent<Canvas>();
-    }
-
-    protected void BasicUpdate()
-    {
-        //Checks for a controller and then checks if the game is paused.
-        if (FindObjectOfType<Thirdperson_Camera>())
-        {
-            canMove = (FindObjectOfType<Thirdperson_Camera>().canMove);
-            player = GameObject.FindGameObjectWithTag("Player");
-        }
-        CharacterStats();
-        if (canMove)
-        {
-            PauseCheck();
-        }
-    }
-    protected void PauseCheck()
-    {
-        //If start is pressed, pause or unpause the game and assign the title of the world.
-        foreach (ThirdPerson player in game.player)
-        {
-            player.anim.enabled = !paused;
-        }
-        if (gamepad.button_Start)
-        {
-            if (!paused)
-            {
-                switch (SceneManager.GetActiveScene().buildIndex)
-                {
-                    case 2:
-                        stageName.text = "|| Dream State: Tutorial";
-                        worldName.text = "Dream\nState";
-                        break;
-                }
-            }
-            pausePanel.enabled = !pausePanel.enabled;
-            paused = pausePanel.enabled;
-            if (gamepad.controller == "Keyboard")
-            {
-                Cursor.visible = pausePanel.enabled;
-            }
-            GamePause();
-
-        }
-    }
-    int animCount;
-    protected void GamePause()
-    {
-        //Disables all movement of the player when paused.
-        if (GameObject.FindGameObjectWithTag("Player"))
-        {
-            game.player[0].GetComponent<Thirdperson_Mode>().enabled = !paused;
-            foreach (Animator anim in animators)
-            {
-                animators[animCount].enabled = !paused;
-                animCount++;
-            }
-            animCount = 0;
-        }
-    }
-    
-
-    protected void SelectedMenu()
-    {
         switch (currentMenu)
         {
             case "Main Menu":
@@ -304,7 +95,7 @@ public class PauseBasic : UIControls
                 {
                     case 0:
                         currentMenu = "Items";
-                        menuNotifier.transform.localPosition = new Vector3(-333, 197, 0);
+                        menuNotifier.transform.localPosition = menuTitlePos[0];
                         menuNotifier.GetComponentInChildren<Text>().text = "    Items";
 
                         menuItems[0].GetComponentInChildren<Text>().text = "    Scarf";
@@ -376,13 +167,10 @@ public class PauseBasic : UIControls
                         break;
                 }
                 break;
-
-
         }
     }
     protected void CancelMenu()
     {
-        menuNotifier.transform.localPosition = new Vector3(-200, 279, 0);
         switch (currentMenu)
         {
             case "Main Menu":
@@ -392,6 +180,7 @@ public class PauseBasic : UIControls
                 break;
 
             case "Items":
+                menuNotifier.transform.localPosition = menuTitlePos[1];
                 currentMenu = "Main Menu";
 
                 menuItems[0].GetComponentInChildren<Text>().text = "    Items";
@@ -418,6 +207,7 @@ public class PauseBasic : UIControls
             case "Equipment":
                 currentMenu = "Main Menu";
 
+                #region Titles
                 menuItems[0].GetComponentInChildren<Text>().text = "    Items";
                 menuItems[1].GetComponentInChildren<Text>().text = "    Equipment";
                 menuItems[2].GetComponentInChildren<Text>().text = "    Abilities";
@@ -426,34 +216,331 @@ public class PauseBasic : UIControls
 
                 menuItems[5].GetComponentInChildren<Text>().text = "    Journal";
                 menuItems[6].GetComponentInChildren<Text>().text = "    Config";
-
-
-
+                #endregion
+                #region Positions
                 menuItems[4].transform.localPosition = new Vector3(2.7f, -37, 0);
                 menuItems[5].transform.localPosition = new Vector3(2.7f, -71.8f, 0);
                 menuItems[6].transform.localPosition = new Vector3(2.7f, -104.7f, 0);
                 menuItems[8].transform.localPosition = new Vector3(-37, 266, 0);
-
-
+                #endregion
+                #region Colours
                 menuItems[5].GetComponent<Image>().color = new Color(0.160f, 0.122f, 0.122f, 1.000f);
                 menuItems[6].GetComponent<Image>().color = new Color(0.160f, 0.122f, 0.122f, 1.000f);
+                #endregion
+
                 break;
 
         }
     }
 
-    protected ThirdPerson[] people = new ThirdPerson[4];
+
+    protected void MainMenu()
+    {
+
+        #region Player Stats
+        foreach (ThirdPerson p in game.player)
+        {
+            characterStats[playercount] = GameObject.Find("Player" + playercount + " Stats").GetComponent<Text>();
+            characterNames[playercount] = GameObject.Find("Player" + playercount + " Name").GetComponent<Text>();
+        }
+        #endregion
+        #region Canvas Controls
+        if (!mainCanvas.enabled && mainCanvas != null)
+        {
+            mainCanvas.enabled = !mainCanvas.enabled;
+        }
+        #endregion
+        #region Menu Selection Handler
+        UpDownHandler(0, 7);
+        if (gamepad.isGamepad)
+        {
+            if (selectedItem == -100)
+            {
+                selectedItem = 0;
+            }
+            selectedMenuItem = menuItems[selectedItem].GetComponentInChildren<Text>().text;
+            if (gamepad.button_Attack)
+            {
+                SelectMenu();
+                selectedItem = 0;
+                HighlightPos();
+            }
+        }
+        else
+        {
+            if (!mouseSelected)
+            {
+                selectedItem = -100;
+            }
+            if (gamepad.button_Attack)
+            {
+                SelectMenu();
+                selectedItem = 0;
+                HighlightPos();
+            }
+        }
+        #endregion
+    }
+    protected void ItemsMenu()
+    {
+        UpDownHandler(0, 4);
+    }
+    protected void EquipMenu()
+    {
+        UpDownHandler(0, 3);
+    }
+    protected void AbilityMenu()
+    {
+        UpDownHandler(0, 3);
+    }
+    protected void CustomMenu()
+    {
+        UpDownHandler(0, 3);
+    }
+    protected void StatusMenu()
+    {
+        UpDownHandler(0, 3);
+    }
+    protected void JournalMenu()
+    {
+        {
+            UpDownHandler(0, 3);
+        }
+    }
+    protected void ConfigMenu()
+    {
+        UpDownHandler(0, 3);
+    }
+}
+
+public class Inventory : PauseBasic
+{
+    int index;
+  
+
+    protected string[] scarfItems = { "---" };
+    protected string[] clownItems = { "---" };
+    protected string[] stockItems = { "Potion", "Key" };
+
+    
+    
+
+    public ThirdPerson[] chari = { };
+
+    protected void WriteData()
+    {
+        chari = FindObjectsOfType<ThirdPerson>();
+        
+
+
+
+        
+        foreach (ThirdPerson c in chari)
+        {
+            switch(c.name)
+            {
+                case "Scarf":
+                    foreach (string item in scarfItems)
+                    {
+                        game.Items.Write(c.name, "Item" + index, item);
+                        index++;
+                    }
+                    index = 0;
+                    break;
+
+                case "Clown":
+                    foreach (string item in clownItems)
+                    {
+                        game.Items.Write(c.name, "Item" + index, item);
+                        index++;
+                    }
+                    index = 0;
+                    break;
+
+                case "Stock":
+                    foreach (string item in stockItems)
+                    {
+                        game.Items.Write(c.name, "Item" + index, item);
+                        index++;
+                    }
+                    index = 0;
+                    break;
+            }
+
+            foreach (string item in stockItems)
+            {
+                game.Items.Write("Stock", "Item" + index, item);
+                index++;
+            }
+            index = 0;
+
+        }
+
+
+
+
+
+
+    }
+
+
+
+
+}
+
+public class PauseBasic : UIControls
+{
+    #region //Variables
+    #region Menu Variables //Events that exist in the pause menu.
+    protected Canvas pausePanel;
+    protected GameObject[] menuItems = new GameObject[9];
+    protected string selectedMenuItem;
+    protected GameObject menuNotifier;
+    protected Text[] characterStats = new Text[4];
+    protected Text[] characterNames = new Text[4];
+    protected bool mouseSelected;
+    [HideInInspector] public bool paused;
+    #endregion
+    #region Game Variables //Events that exist in the game world.
+    public bool canMove;
+    public GameObject player;
+    protected GameManager game;
+
+    protected int animCount;
+    protected Animator[] animators;
+    protected NavMeshAgent[] agents = new NavMeshAgent[] { };
+
+    protected ThirdPerson[] players = new ThirdPerson[4];
     protected int peoplecount;
     protected int playercount;
+    #endregion
+
+    #region Pause Menu     //Variables that dictates what item is selected or what world the player is in. 
+    protected int selectedMin;
+    protected int selectedMax;
+    protected Vector3 highlightPos;
+
+    protected Image highlighter;
+    protected Text stageName;
+    protected Text worldName;
+    #endregion
+    #region SelectedMenu   //Variables that tell which menu screen to show.
+    protected string currentMenu = "Main Menu";
+
+    protected Canvas mainCanvas;
+    protected Canvas itemCanvas;
+    protected Canvas equipCanvas;
+    #endregion
+    #endregion
+
+    protected void BasicStart() //Asigns all the variables to their respective objects when the level starts.
+    {
+       if (gamepad.isGamepad) //Determines if a gamepad is plugged in
+            {
+                selectedItem = 0;
+            }
+
+        #region Other Scripts         //When the game needs to grab a variable from somewhere else these are where they end up.
+        game = FindObjectOfType<GameManager>();
+        animators = FindObjectsOfType<Animator>();
+        #endregion
+        #region Select All Menu Items //All of the menu assets should go here. 
+        #region Buttons
+        menuItems[0] = GameObject.Find("Items");
+        menuItems[1] = GameObject.Find("Equipment");
+        menuItems[2] = GameObject.Find("Abilities");
+        menuItems[3] = GameObject.Find("Customize");
+        menuItems[4] = GameObject.Find("Status");
+        menuItems[5] = GameObject.Find("Journal");
+        menuItems[6] = GameObject.Find("Config");
+        menuItems[7] = GameObject.Find("Quit");
+        menuItems[8] = GameObject.Find("Spare(7)");
+        #endregion
+        #region Menu Assets
+        #region Selection Info
+        menuNotifier = GameObject.Find("Menu Title");
+        highlighter = GameObject.Find("Highlight").GetComponent<Image>();
+        #endregion
+        #region  World Based Assets
+        worldName = GameObject.Find("World Name").GetComponent<Text>();
+        stageName = GameObject.Find("Level Section").GetComponent<Text>();
+        #endregion
+        #endregion
+        #endregion
+
+        CanvasAssign();
+    }
+    protected void CanvasAssign() //Assigns all the canvases used in the pause menu.
+    {
+        pausePanel = GetComponent<Canvas>();
+        mainCanvas = GameObject.Find("Main Menu").GetComponent<Canvas>();
+    }
+
+    protected void BasicUpdate() //Sets variable values every frame.
+    {
+        if (FindObjectOfType<ThirdPerson>()) //Checks if there is a player present and if they can move.
+        {
+            canMove = (FindObjectOfType<ThirdPerson>().canMove);
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
+        if (canMove) //Checks if the player can make any game related movements.
+        {
+            PauseCheck();
+        }
+        CharacterStats();
+    } 
+    protected void PauseCheck() //If start is pressed, pause or unpause the game and assign the title of the world.
+    {
+        foreach (ThirdPerson player in game.player)
+        {
+            player.anim.enabled = !paused;
+        }
+        if (gamepad.button_Start)
+        {
+            if (!paused)
+            {
+                switch (SceneManager.GetActiveScene().buildIndex)
+                {
+                    case 2:
+                        stageName.text = "|| Test: Gameplay Test";
+                        worldName.text = "Test\nLevel";
+                        break;
+
+                    case 3:
+                        stageName.text = "|| Dream State: Tutorial";
+                        worldName.text = "Dream\nState";
+                        break;
+                }
+            }
+            if (!gamepad.isGamepad)
+            {
+                Cursor.visible = pausePanel.enabled;
+            }
+            pausePanel.enabled = !pausePanel.enabled;
+            paused = pausePanel.enabled;
+            GamePause();
+        }
+    }
+    protected void GamePause()  //Disables all movement of the player when paused.
+    {
+        if (GameObject.FindGameObjectWithTag("Player"))
+        {
+            game.player[0].GetComponent<Thirdperson_Mode>().enabled = !paused;
+            foreach (Animator anim in animators)
+            {
+                animators[animCount].enabled = !paused;
+                animCount++;
+            }
+            animCount = 0;
+        }
+    }
+    
     protected void CharacterStats()
     {
-        people = FindObjectsOfType<ThirdPerson>();
-
-
-
+        players = FindObjectsOfType<ThirdPerson>();
         if (game.player.Length > 0)
         {
-            foreach (ThirdPerson p in people)
+            foreach (ThirdPerson p in players)
             {
                 characterStats[playercount] = GameObject.Find("Player" + playercount + " Stats").GetComponent<Text>();
                 characterNames[playercount] = GameObject.Find("Player" + playercount + " Name").GetComponent<Text>();
@@ -461,6 +548,7 @@ public class PauseBasic : UIControls
 
                 if (game.title[playercount] != "")
                 {
+                   // Debug.Log(game.title[playercount]);
                     characterNames[playercount].GetComponentInParent<Canvas>().enabled = true;
                 }
 
@@ -479,16 +567,7 @@ public class PauseBasic : UIControls
 
         }
     }
-
-
-
-
-
-
-    #region Completed Scripts
-
-
-    protected void MouseMenu(int selection)
+    protected void MouseMenu(int selection) //Mouse Navigation
     {
         if (!gamepad.isGamepad)
         {
@@ -504,10 +583,9 @@ public class PauseBasic : UIControls
             }
         }
     }
-    #endregion
 
     #region Controls //The main controls behind menu scrolling on the pause menu.
-    protected override void UpDownHandler(int min, int max)
+    public override void UpDownHandler(int min, int max)
     {
         base.UpDownHandler(min,max);
         highlighter.rectTransform.localPosition = highlightPos;

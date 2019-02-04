@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SavePackage;
 
 //###################################//
 //                                                                              //
@@ -14,121 +15,154 @@ using UnityEngine;
 //                                                                    //
 /////////////////////////////////////////////////////////
 
-public class UIControls : MonoBehaviour
-{
-
-    public int selectedItem;
-    protected GameManager gamepad;
 
 
-    protected virtual void Start()
+
+
+
+    public class UIControls : MonoBehaviour
     {
-        gamepad = FindObjectOfType<GameManager>();
-    }
-    protected virtual void Update()
-    {
-        if (gamepad.controller == "Keyboard")
+
+        public int selectedItem;
+        public GameManager gamepad;
+
+
+        protected virtual void Start()
         {
-            Cursor.visible = true;
-        }
-        if (gamepad.controller != "Keyboard")
-        {
-            Cursor.visible = false;
-        }
-    }
-    protected virtual void UpDownHandler(int max, int min)
-    {
-        if (gamepad.isGamepad)
-        {
-            if (gamepad.direction == "up")
+            gamepad = FindObjectOfType<GameManager>();
+            if (gamepad.isGamepad) //Determines if a gamepad is plugged in
             {
-                if (gamepad.d_Up == false)
+            selectedItem = 0;
+            }
+        }
+        protected virtual void Update()
+        {
+            if (gamepad.controller == "Keyboard")
+            {
+                Cursor.visible = true;
+            }
+            if (gamepad.controller != "Keyboard")
+            {
+                Cursor.visible = false;
+            }
+        }
+
+        /// <summary>
+        ///  The main controls behind menu scrolling on the pause menu.
+        /// </summary>
+        /// <param name="min">The minimum value of what the menu can count down to.</param>
+        /// <param name="max">The maximum value of what the menu can count down to.</param>
+        public virtual void UpDownHandler(int max, int min)
+        {
+            if (gamepad.isGamepad)
+            {
+                if (gamepad.direction == "up")
                 {
-                    gamepad.d_Up = true;
-                    selectedItem--;
+                    if (gamepad.d_Up == false)
+                    {
+                        gamepad.d_Up = true;
+                        selectedItem--;
+                    }
+                }
+                if (gamepad.direction == "down")
+                {
+                    if (gamepad.d_Down == false)
+                    {
+                        gamepad.d_Down = true;
+                        selectedItem++;
+                    }
                 }
             }
-            if (gamepad.direction == "down")
+
+        }
+        /// <summary>
+        /// If the value goes over or under a certain threshold, select the respective max or min value.
+        /// </summary>
+        /// <param name="min">The minimum value of what the menu can count down to.</param>
+        /// <param name="max">The maximum value of what the menu can count down to.</param>
+        protected virtual void MenuScroller(int min, int max)
+        {
+            if (gamepad.isGamepad)
             {
-                if (gamepad.d_Down == false)
+                if (selectedItem < min)
                 {
-                    gamepad.d_Down = true;
-                    selectedItem++;
+                    selectedItem = max;
+                }
+                if (selectedItem > max)
+                {
+                    selectedItem = min;
                 }
             }
         }
     }
-    protected virtual void MenuScroller(int min, int max)
+
+
+
+    //###################################//
+    //                                                                              //
+    //            REPLACEMENT MOUSEOVER                         //
+    //                                                                            //
+    //                                                                           //
+    //#################################//
+    //                                                                         //
+    //    A better script for mousing over                      //
+    //    than the default one that unity provides.         //
+    //                                                                     //
+    //                                                                    //
+    /////////////////////////////////////////////////////////
+
+
+    /// <summary>
+    /// A replacement script for when the mouse cursor is hovering over a button.
+    /// </summary>
+    public class MouseOverButton : MonoBehaviour
     {
-        if (gamepad.isGamepad)
+        public PauseMenu pause;
+        public ChangeScene title;
+        public Level_Select level;
+        public SaveMenu save;
+        public int buttonNumber;
+
+        void Start()
         {
-            if (selectedItem < min)
-            {
-                selectedItem = max;
-            }
-            if (selectedItem > max)
-            {
-                selectedItem = min;
-            }
+            title = FindObjectOfType<ChangeScene>();
+            pause = FindObjectOfType<PauseMenu>();
+            level = FindObjectOfType<Level_Select>();
+            save = FindObjectOfType<SaveMenu>();
         }
-        
+
+        public void Switcher()
+        {
+            if (title != null)
+                title.SendMessage("MouseMenu", buttonNumber);
+
+            if (pause != null)
+                pause.SendMessage("MouseMenu", buttonNumber);
+
+            if (level != null)
+                level.SendMessage("MouseMenu", buttonNumber);
+
+            if (save != null)
+                save.SendMessage("MouseMenu", buttonNumber);
+
+        }
+        public void MenuOff()
+        {
+            if (title != null)
+                title.SendMessage("MouseMenu", buttonNumber);
+
+            if (pause != null)
+                pause.SendMessage("MouseMenu", -100);
+
+            if (level != null)
+                level.SendMessage("MouseMenu", -100);
+
+            if (save != null)
+                save.SendMessage("MouseMenu", 4);
+        }
     }
-}
 
-
-
-//###################################//
-//                                                                              //
-//            REPLACEMENT MOUSEOVER                         //
-//                                                                            //
-//                                                                           //
-//#################################//
-//                                                                         //
-//    A better script for mousing over                      //
-//    than the default one that unity provides.         //
-//                                                                     //
-//                                                                    //
-/////////////////////////////////////////////////////////
-
-public class MouseOverButton : MonoBehaviour
-{
-    public PauseMenu pause;
-    public ChangeScene title;
-    public Level_Select level;
-    public int buttonNumber;
-
-    void Start()
+    public class Misc_Scripts : MouseOverButton
     {
-        title = FindObjectOfType<ChangeScene>();
-        pause = FindObjectOfType<PauseMenu>();
-        level = FindObjectOfType<Level_Select>();
+
     }
-
-    public void Switcher()
-    {
-        if (title != null)
-            title.SendMessage("MouseMenu", buttonNumber);
-
-        if (pause != null)
-            pause.SendMessage("MouseMenu", buttonNumber);
-
-        if (level != null)
-            level.SendMessage("MouseMenu", buttonNumber);
-    }
-    public void MenuOff()
-    {
-        if (title != null)
-            title.SendMessage("MouseMenu", buttonNumber);
-
-        if (pause != null)
-            pause.SendMessage("MouseMenu", -100);
-
-        if (level != null)
-            level.SendMessage("MouseMenu", -100);
-    }
-}
-
-public class Misc_Scripts : MouseOverButton
-{
-
-}

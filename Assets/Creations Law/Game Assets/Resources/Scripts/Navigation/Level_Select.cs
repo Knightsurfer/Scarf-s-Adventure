@@ -30,7 +30,7 @@ public class Level_Select : UIControls {
 
 
 
-    protected override void UpDownHandler(int min, int max)
+    public override void UpDownHandler(int min, int max)
     {
         base.UpDownHandler(min, max);
         

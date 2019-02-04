@@ -39,36 +39,12 @@ public class ChangeScene : UIControls
     }
     protected override void Update()
     {
+        base.Update();
         UpDownHandler(0, 2);
-        if (gamepad.isGamepad)
-        {
-            if (selectedItem == -100)
-            {
-                selectedItem = 0;
-            }
-           
-            if (gamepad.button_Attack)
-            {
-                ButtonSwitcher();
-            }
-        }
-        else
-        {
-            if (!mouseSelected)
-            {
-                selectedItem = -100;
-            }
-        }
-        if (!gamepad.isGamepad)
-        {
-            if (gamepad.button_Attack)
-            {
-                ButtonSwitcher();
-            }
-        }
+   
         ConfirmSelection();
     }
-    protected override void UpDownHandler(int min, int max)
+    public override void UpDownHandler(int min, int max)
     {
         base.UpDownHandler(min, max);
         ButtonSwitcher();

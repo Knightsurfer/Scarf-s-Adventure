@@ -3,11 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
+using System.IO;
 
 
 //Handles Inventory
-public class GameManager : PlayerStats
+public class GameManager : LevelLoaded
 {
+    
+    public INIFile Items = new INIFile(appData + "\\Items.ini");
+    public INIFile LevelData = new INIFile(appData + "\\LevelData.ini");
+    public static string[] SavesDirectory = { appData + "\\Saves\\Save0", appData + "\\Saves\\Save1" };
+    public INIFile[] SavedStats = { new INIFile(SavesDirectory[0] + "\\stats.ini"), new INIFile(SavesDirectory[1] + "\\stats.ini") };
+
+
+
     public string mode;
     public int modeSelector;
     bool thirdPerson;
@@ -94,16 +104,72 @@ public class GameManager : PlayerStats
     }
 }
 
+public class LevelLoaded : PlayerStats
+{
+    protected void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnLevelFinishedLoading;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+    }
+
+    void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+    {
+        Start();
+    }
+
+    void Start()
+    {
+        UIDisplay();
+        Startup();
+    }
+}
+
+
+
+
 public class ItemManager : StartSettings
 {
-    public int keys;
+    Text keyCount;
+
+    public int keys = 0;
     public int potions;
+
+    protected void UIDisplay()
+    {
+       //keyCount = GameObject.Find("Key Count").GetComponentInChildren<Text>();
+        //Debug.Log(keys.ToString());
+    }
 
     protected void CountItems()
     {
-
-        
-
+        if (keyCount != null)
+        {
+            if (keys < 1)
+            {
+                keyCount.color = new Color(0.500f, 0.469f, 0.469f);
+                keys = 0;
+            }
+            if (keys > 98)
+            {
+                keys = 99;
+            }
+            if (keys > 0)
+            {
+                keyCount.color = new Color(250, 250, 250);
+            }
+            if (keys < 10)
+            {
+                keyCount.text = "0" + keys;
+            }
+            if (keys >= 10)
+            {
+                keyCount.text = keys.ToString();
+            }
+        }
     }
 }
 
@@ -127,10 +193,11 @@ public class PlayerStats : PlayerInventory
         {
             foreach (Thirdperson_Mode c in player)
             {
+                
                 title[target] = c.name;
                 health[target] = c.health;
                 healthMax[target] = c.healthMax;
-
+                
                 target++;
             }
             target = 0;
@@ -174,23 +241,27 @@ public class PlayerStats : PlayerInventory
     }
     protected void StatHandler()
     {
-        healthBar =  player[target].health;
-;
-        if (FindObjectOfType<Thirdperson_Mode>())
+        if (player.Length > 0)
         {
-            if (player[target].health > player[target].healthMax)
-            {
-                health = healthMax;
-            }
+            healthBar = player[target].health;
 
-            if (healthBar < .5)
+            
+            if (FindObjectOfType<Thirdperson_Mode>())
             {
-                healthBar = .5f;
-            }
+                if (player[target].health > player[target].healthMax)
+                {
+                    health = healthMax;
+                }
 
-            if (healthBar > player[target].healthMax)
-            {
-                healthBar = player[target].healthMax;
+                if (healthBar < .5)
+                {
+                    healthBar = .5f;
+                }
+
+                if (healthBar > player[target].healthMax)
+                {
+                    healthBar = player[target].healthMax;
+                }
             }
         }
     }
@@ -233,9 +304,12 @@ public class PlayerInventory : ItemManager
                 print("HOARDER");
                 return false;
             }
-            items.Add(item);
+            
             switch (item.name)
             {
+                default:
+                    items.Add(item);
+                    break;
                 case "Key":
                     keys++;
                     break;
@@ -264,60 +338,77 @@ public class StartSettings : Gamepad
     public BotReciever[] bots = new BotReciever[] { };
     public GameObject userInterface;
     protected SavingLoading saveSystem;
+    public static string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Scarfs Adventure\\Data";
 
-    void Start()
+
+
+    protected void Startup()
     {
+        
         saveSystem = GetComponent<SavingLoading>();
         player = FindObjectsOfType<ThirdPerson>();
 
-        switch ((SceneManager.GetActiveScene().buildIndex))
+
+        if (!Directory.Exists(appData))
+        {
+            Debug.Log("Created Directory:  " + appData);
+            Directory.CreateDirectory(appData);
+        }
+
+
+        switch (SceneManager.GetActiveScene().name)
         {
             default:
-               
-                player[0].canMove = true;
+                if (player.Length > 0)
+                {
+                    player[0].canMove = true;
+                }
                 break;
 
-            case 0:
+            case "DreamState":
+                break;
+
+            case "Demo Screen":
                 if (userInterface)
                 {
                     userInterface.SetActive(false);
                 }
                 break;
 
-            case 3:
-
+            case "Demo Screen 2":
+                if (userInterface)
+                {
+                    userInterface.SetActive(false);
+                }
                 break;
 
-            case 5:
+            case "":
                 if (userInterface)
                 {
                     userInterface.SetActive(false);
                 }
                 break;
         }
-        switch (SceneManager.GetActiveScene().buildIndex)
+        switch (SceneManager.GetActiveScene().name)
         {
-            case 2:
+            case "Gameplay Test":
                 player[0].transform.localRotation = Quaternion.Euler(0, -90, 0);
                 player[0].currentYaw = 88;
                 break;
 
 
-            case 3:
+            case "DreamState":
                 player[0].transform.localRotation = Quaternion.Euler(0, 180, 0);
                 player[0].currentYaw = 210;
                 break;
 
-            case 4:
+            case "Crystal Mines":
                 player[0].transform.localRotation = Quaternion.Euler(0, 90, 0);
                 player[0].currentYaw = -85;
                 break;
         }
     }
-    void OnLevelWasLoaded(int level)
-    {
-        Start();
-    }
+    
 }
 
 

@@ -76,9 +76,11 @@
     <Compile Include="Assets\Creations Law\Rejected Assets\3D Platformer\Platformer_Camera.cs" />
     <Compile Include="Assets\Creations Law\Rejected Assets\3D Platformer\PlayerController.cs" />
     <Compile Include="Assets\Creations Law\Rejected Assets\RTS\Scripts\Scriptable_Objects.cs" />
+    <Compile Include="Assets\Creations Law\Unity Assets\Scripts\INI\INI.cs" />
     <Compile Include="Assets\Creations Law\Unity Assets\Scripts\Item.cs" />
     <Compile Include="Assets\Creations Law\Unity Assets\Scripts\Readme\Scripts\Readme.cs" />
     <Compile Include="Assets\Creations Law\Unity Assets\Scripts\UI\Pause Menu\PauseMenu.cs" />
+    <Compile Include="Assets\Creations Law\Unity Assets\Scripts\UI\Pause Menu\SaveMenu.cs" />
     <Compile Include="Assets\Creations Law\Unity Assets\Scripts\UI\SavingLoading.cs" />
     <None Include="Assets\Creations Law\Unity Assets\Shaders\Outline.shader" />
     <Reference Include="Unity.TextMeshPro.Editor">

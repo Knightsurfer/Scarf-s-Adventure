@@ -23,7 +23,7 @@ public class Viewer_GameManager : Editor
     protected int defaultView;
     
 
-    protected int testInt;
+    protected int testInt = 1;
 
     protected bool Initialized;
     Thirdperson_Mode[] people = new Thirdperson_Mode[] { };
@@ -292,9 +292,10 @@ public class Viewer_Interactable : Editor
 
     protected void Inspector()
     {
+  
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Object Type: ", GUILayout.Width(80));
-        unit.selectedType = EditorGUILayout.Popup(unit.selectedType, new string[] { "Item", "Chest", "Door" });
+        unit.selectedType = EditorGUILayout.Popup(unit.selectedType, new string[] { "Item", "Chest", "Door", "Save Point" });
         EditorGUILayout.EndHorizontal();
 
         switch (unit.selectedType)
@@ -303,11 +304,14 @@ public class Viewer_Interactable : Editor
                 unit.type = "Item";
                 GUILayout.BeginVertical("In BigTitle");
                 EditorGUILayout.BeginHorizontal();
-                GUILayout.Label("Item: ", GUILayout.Width(70));
-                unit.item = (Item)EditorGUILayout.ObjectField(unit.item, typeof(Item), false);
+                ItemSelection();
                 EditorGUILayout.EndHorizontal();
+                
+
                 GUILayout.EndVertical();
                 break;
+
+               
 
             case 1:
                 unit.type = "Chest";
@@ -316,23 +320,18 @@ public class Viewer_Interactable : Editor
                 GUILayout.Label("Contains: ", GUILayout.Width(70));
                 unit.selectedItem = EditorGUILayout.Popup(unit.selectedItem, new string[] { "Empty", "Item", "NPC" });
                 EditorGUILayout.EndHorizontal();
-
-
-                switch(unit.selectedItem)
+                switch (unit.selectedItem)
                 {
+                    default:
+                        unit.item = null;
+                        break;
+
                     case 1:
-                        EditorGUILayout.BeginHorizontal();
-                        GUILayout.Label("Contains: ", GUILayout.Width(70));
-                        unit.item = (Item)EditorGUILayout.ObjectField(unit.item, typeof(Item), false);
-                        EditorGUILayout.EndHorizontal();
+
+                        ItemSelection();
                         break;
                 }
-
-
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label("Obtained: ", GUILayout.Width(70));
-                unit.obtained = EditorGUILayout.Toggle(unit.obtained);
-                EditorGUILayout.EndHorizontal();
+                
                 GUILayout.EndVertical();
                 break;
 
@@ -343,12 +342,72 @@ public class Viewer_Interactable : Editor
                 GUILayout.Label("Locked: ", GUILayout.Width(70));
                 unit.selectedLocked = EditorGUILayout.Popup(unit.selectedLocked, new string[] { "Unlocked", "Locked" });
                 EditorGUILayout.EndHorizontal();
+                EditorGUILayout.EndVertical();
+                switch(unit.selectedLocked)
+                {
+                    case 0:
+                        unit.locked = false;
+                        break;
+
+
+                    case 1:
+                        
+                        LockedDoor();
+                        break;
+                }
+
                 if (unit.selectedLocked == 1)
                 {
-                    EditorGUILayout.BeginHorizontal();
-                    GUILayout.Label("Lock Requirment: ", GUILayout.Width(110));
-                    unit.lockRequirement = EditorGUILayout.Popup(unit.lockRequirement, new string[] { "Item Requirement", "Enemies Defeated" });
-                    EditorGUILayout.EndHorizontal();
+                    
+                    
+
+                }
+                    break;
+                    
+            case 3:
+                unit.type = "Save Point";
+                //GUILayout.BeginVertical("In BigTitle");
+                //GUILayout.EndVertical();
+                break;
+
+        }
+
+
+
+
+
+
+
+
+
+
+        #region test
+
+
+        /*
+        switch (unit.selectedType)
+        {
+
+            case 0:
+                
+
+            case 1:
+               
+
+
+               
+
+
+
+
+            case 2:
+                unit.type = "Door";
+                GUILayout.BeginVertical("In BigTitle");
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Label("Locked: ", GUILayout.Width(70));
+                unit.selectedLocked = EditorGUILayout.Popup(unit.selectedLocked, new string[] { "Unlocked", "Locked" });
+                EditorGUILayout.EndHorizontal();
+                
                     EditorGUILayout.BeginHorizontal();
                     switch (unit.lockRequirement)
                     {
@@ -366,11 +425,19 @@ public class Viewer_Interactable : Editor
                 }
                 GUILayout.EndVertical();
                 break;
+
+            case 3:
+                
+                break;
+
+
+
+
         }
         switch (unit.selectedLocked)
         {
             case 0:
-                unit.locked = false;
+                
                 break;
 
             case 1:
@@ -380,7 +447,7 @@ public class Viewer_Interactable : Editor
         switch (unit.selectedItem)
         {
             case 0:
-                
+                unit.item = null;
                 break;
 
             case 1:
@@ -391,8 +458,52 @@ public class Viewer_Interactable : Editor
                 
                 break;
         }
+        */
+        #endregion
     }
-    void ObjectPicked()
+
+    void ItemSelection()
+    {
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Item: ", GUILayout.Width(70));
+        unit.item = (Item)EditorGUILayout.ObjectField(unit.item, typeof(Item), false);
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Obtained: ", GUILayout.Width(70));
+        unit.obtained = EditorGUILayout.Toggle(!unit.obtained);
+        EditorGUILayout.EndHorizontal();
+    }
+
+    void LockedDoor()
+    {
+        unit.locked = true;
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Lock Requirment: ", GUILayout.Width(110));
+        unit.lockRequirement = EditorGUILayout.Popup(unit.lockRequirement, new string[] { "Item Requirement", "Enemies Defeated" });
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+        switch (unit.lockRequirement)
+        {
+            case 0:
+                GUILayout.Label("Items Required: ", GUILayout.Width(110));
+                unit.requiredAmount = EditorGUILayout.IntField(unit.requiredAmount);
+                break;
+
+
+            case 1:
+                break;
+
+        }
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        
+        EditorGUILayout.EndHorizontal();
+
+
+    }
+
+        void ObjectPicked()
     {
         Item unit = (Item)target;
         string commandName = Event.current.commandName;
@@ -401,7 +512,9 @@ public class Viewer_Interactable : Editor
             unit = (Item)EditorGUIUtility.GetObjectPickerObject();
             Repaint();
         }
+        
     }
+
 }
 
 #endregion
