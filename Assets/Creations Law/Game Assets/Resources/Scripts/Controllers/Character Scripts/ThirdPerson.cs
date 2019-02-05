@@ -45,6 +45,8 @@ public class ThirdPerson : Thirdperson_PartyHandler
         }
         PartySwitcher();
 
+        Actions();
+
 
         InteractUpdate();
         PlayerUpdate();
