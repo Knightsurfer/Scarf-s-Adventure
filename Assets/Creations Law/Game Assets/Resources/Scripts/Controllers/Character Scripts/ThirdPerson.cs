@@ -15,7 +15,6 @@ public class ThirdPerson : Thirdperson_PartyHandler
        
         StartingVariables();
         InteractStart();
-        PlayerStart();
         Components();
         
     }
@@ -104,21 +103,7 @@ public class Thirdperson_PartyHandler : Thirdperson_Mode
 //Camera Control.
 public class Thirdperson_Mode : Thirdperson_Stats
 {
-    #region Variables
-    #region Main
-    private float horizontal;
-    #endregion
-    #region First Person
-    Transform lookObject;
-    #endregion
-    #region Third Person
-    protected Vector3 offset;
-    protected float cam_rotateSpeed_X = 180;
-    protected float cam_rotateSpeed_Y = 80;
-    [HideInInspector] public float currentYaw = 210f; //210
-    protected float currentZoom = 2f;
-    #endregion
-    #endregion
+   
     
 
     protected float timerspeed = 0f;
@@ -159,14 +144,8 @@ public class Thirdperson_Mode : Thirdperson_Stats
     }
     protected void Components()
     {
-        #region Getting Variables
-        //rotator = GameObject.Find("Rotator").transform;
-        lookObject = GameObject.Find("Look Object").transform;
-        skeleton = GetComponentInChildren<SkinnedMeshRenderer>().transform;
-        #endregion
+        
 
-        offset = transform.position - cam.position;
-        //rotator.position = transform.position;
     }
     private void FirstPerson()
     {
@@ -232,10 +211,10 @@ public class Thirdperson_Start : Thirdperson_Interact
 }
 
 //Handles Interaction.
-public class Thirdperson_Interact : Thirdperson_PlayerController
+public class Thirdperson_Interact : PlayerMovement
 {
-    public Interactable focus;
-    protected GameObject buttonPrompt;
+    
+    
     protected Collider chest;
     private readonly bool itemInteracted;
 
@@ -253,176 +232,29 @@ public class Thirdperson_Interact : Thirdperson_PlayerController
     }
     protected void InteractUpdate()
     {
-        Interact();
+        
     }
     protected void ButtonPrompt()
     {
         //buttonPrompt.transform.LookAt(cam.transform.position);
     }
-    protected void OnTriggerEnter(Collider interaction)
-    {
-        if (interaction != null)
-        {
-            Interactable entity = interaction.GetComponentInParent<Interactable>();
-            switch (entity.type)
-            {
-                default:
-                    SetFocus(entity);
-                    break;
 
-                case "Item":
-                    if (interaction != null)
-                    {
-                        SetFocus(entity);
-                        interaction.transform.parent.SendMessage("Item");
-                    }
-                    break;
-            }
-
-        }
-        switch (interaction.name)
-        {
-            case "Ledge":
-                if (!collisionDetected && !player.isGrounded)
-                {
-                    anim.SetBool("Hanging", true);
-                    collisionDetected = true;
-                    moveType = "Hanging";
-
-                }
-                break;
-            case "Sprite Light":
-                interaction.enabled = false;
-                interaction.GetComponent<SpriteAI>().triggered = true;
-                break;
-
-        }
-        if (interaction.tag == "NPC")
-        {
-            buttonPrompt.transform.position = new Vector3(interaction.transform.position.x, interaction.transform.position.y + 1.8f, interaction.transform.position.z + 0.5f);
-        }
-    }
-    protected void OnTriggerExit(Collider interaction)
-    {
-        if (interaction != null)
-        {
-            Interactable entity = interaction.GetComponentInParent<Interactable>();
-            switch (entity.type)
-            {
-                default:
-                    RemoveFocus();
-                    break;
-
-                case "Item":
-                    RemoveFocus();
-                    entity.SendMessage("Item");
-                    break;
-            }
-            if (interaction.tag == "NPC")
-            {
-                buttonPrompt.transform.position = new Vector3();
-            }
-        }
-
-    }
 
     #region Interaction Detection
-    private void SetFocus(Interactable newFocus)
-    {
-        focus = newFocus;
+    
 
-        switch(focus.type)
-        {
-            default:
-                focus.hasInteracted = true;
-                break;
-
-            case "Door":
-                break;
-
-
-            case "Chest":
-                break;
-
-            
-        }
-
-
-       
-    }
-    private void RemoveFocus()
-    {
-        focus.hasInteracted = false;
-        if(focus.type  == "Door")
-        {
-            //focus.SendMessage("DoorClose");
-        }
-        focus = null;
-    }
-
-    private void Interact()
-    {
-        if (focus != null)
-        {
-            if (game.button_Action)
-            {
-                switch (focus.type)
-                {
-                    case "Chest":
-                        focus.hasInteracted = !focus.hasInteracted;
-                        break;
-
-                    case "Door":
-                        focus.hasInteracted = true;
-                        break;
-
-                    case "Save Point":
-                        focus.hasInteracted = true;
-                        break;
-                }
-            }
-        }
-    }
+    
     #endregion
 }
 
 //Handles the controller component that moves the player.
 
-public class Thirdperson_PlayerController : Thirdperson_Camera
-{
-    [HideInInspector] public Animator anim;
-    [HideInInspector]public CharacterController player;
-    public string moveType = "Normal";
-    protected bool collisionDetected = true;
+public class PlayerMovement : PlayerActions
+{ 
     Vector3 playerPosition;
     Vector3 playerDestination;
 
 
-
-
-    protected void PlayerStart()
-    {
-        game = FindObjectOfType<GameManager>();
-
-        cam = Camera.main.transform;
-        anim = GetComponent<Animator>();
-        if (GetComponent<CharacterController>())
-        {
-            player = GetComponent<CharacterController>();
-        }
-        else
-        {
-            player = gameObject.AddComponent<CharacterController>();
-        }
-        pause = FindObjectOfType<PauseMenu>();
-
-        if (player)
-        {
-            player.height = 2;
-            player.radius = 0.5f;
-            player.center = new Vector3(0, 1.1f, 0);
-        }
-    }
     protected void PlayerUpdate()
     {
         MovePlayer();
@@ -532,73 +364,383 @@ public class Thirdperson_PlayerController : Thirdperson_Camera
 
 
     }
+}
 
 
 
-
-
-
-
-
+public class PlayerActions : CollisionDetection
+{
+    /// <summary>
+    /// An update method for all the actions scarf makes.
+    /// </summary>
     protected void Actions()
     {
-        #region Jump
+        Jump(game.jumpButton);
+        Interact(game.actionButton);
+    }
+
+    /// <summary>
+    /// When you press the jump button, this function is called.
+    /// </summary>
+    /// <param name="button"></param>
+    private void Jump(bool button)
+    {
         if (player)
         {
             if (player.isGrounded)
             {
                 moveDirection.y = 0;
-                if (game.button_Jump)
+                if (button)
                 {
                     moveDirection.y = jumpForce;
-                    
+
                 }
                 anim.SetBool("OnGround", false);
             }
             else
             {
                 anim.SetBool("OnGround", true);
-                
+
             }
         }
-        #endregion
+    }
+
+    /// <summary>
+    /// When you press the action button, then this function is called.
+    /// </summary>
+    /// <param name="button">assign a button input to the action.</param>
+    private void Interact(bool button)
+    {
+        if (focus != null)
+        {
+            if (button)
+            {
+                switch (focus.type)
+                {
+                    case "Chest":
+                        focus.hasInteracted = !focus.hasInteracted;
+                        break;
+
+                    case "Door":
+                        focus.hasInteracted = true;
+                        break;
+
+                    case "Save Point":
+                        focus.hasInteracted = true;
+                        break;
+                }
+            }
+        }
     }
 }
 
-
-public class Thirdperson_Camera : MonoBehaviour
+public class CollisionDetection : Thirdperson_Camera
 {
+    /// <summary>
+    /// When a collider set as a trigger touches the player, this function is called.
+    /// </summary>
+    /// <param name="interaction">The collider in question that triggers this event.</param>
+    protected void OnTriggerEnter(Collider interaction)
+    {
+        if (interaction != null)
+        {
+            Interactable entity = interaction.GetComponentInParent<Interactable>();
+            switch (entity.type)
+            {
+                default:
+                    SetFocus(entity);
+                    break;
+
+                case "Item":
+                    if (interaction != null)
+                    {
+                        SetFocus(entity);
+                        interaction.transform.parent.SendMessage("Item");
+                    }
+                    break;
+            }
+
+        }
+        switch (interaction.name)
+        {
+            case "Ledge":
+                if (!collisionDetected && !player.isGrounded)
+                {
+                    anim.SetBool("Hanging", true);
+                    collisionDetected = true;
+                    moveType = "Hanging";
+
+                }
+                break;
+            case "Sprite Light":
+                interaction.enabled = false;
+                interaction.GetComponent<SpriteAI>().triggered = true;
+                break;
+
+        }
+        if (interaction.tag == "NPC")
+        {
+            buttonPrompt.transform.position = new Vector3(interaction.transform.position.x, interaction.transform.position.y + 1.8f, interaction.transform.position.z + 0.5f);
+        }
+    }
+
+    /// <summary>
+    /// When a collider set as a trigger is no longer touching the player, this function is called.
+    /// </summary>
+    /// <param name="interaction">The collider in question that triggers this event.</param>
+    protected void OnTriggerExit(Collider interaction)
+    {
+        if (interaction != null)
+        {
+            Interactable entity = interaction.GetComponentInParent<Interactable>();
+            switch (entity.type)
+            {
+                default:
+                    RemoveFocus();
+                    break;
+
+                case "Item":
+                    RemoveFocus();
+                    entity.SendMessage("Item");
+                    break;
+            }
+            if (interaction.tag == "NPC")
+            {
+                buttonPrompt.transform.position = new Vector3();
+            }
+        }
+
+    }
+
+    /// <summary>
+    /// Brings the script attached to the object the player collided with into focus.
+    /// </summary>
+    /// <param name="newFocus"></param>
+    private void SetFocus(Interactable newFocus)
+    {
+        focus = newFocus;
+
+        switch (focus.type)
+        {
+            default:
+                focus.hasInteracted = true;
+                break;
+
+            case "Door":
+                break;
+
+
+            case "Chest":
+                break;
+
+
+        }
+
+
+
+    }
+
+    /// <summary>
+    /// Brings the script attached to the object the player collided with out of focus.
+    /// </summary>
+    private void RemoveFocus()
+    {
+        focus.hasInteracted = false;
+        if (focus.type == "Door")
+        {
+            //focus.SendMessage("DoorClose");
+        }
+        focus = null;
+    }
+}
+
+public class Thirdperson_Camera : Variables
+{
+
+
+
+    
+}
+
+public class Variables : MonoBehaviour
+{
+    private void Awake()
+    {
+        game = FindObjectOfType<GameManager>();
+        pause = FindObjectOfType<PauseMenu>();
+        cam = Camera.main.transform;
+        anim = GetComponent<Animator>();
+
+        #region Camera and player rotation 
+        lookObject = GameObject.Find("Look Object").transform;
+        skeleton = GetComponentInChildren<SkinnedMeshRenderer>().transform;
+        offset = transform.position - cam.position;
+        #endregion
+
+
+        #region Character controller settings.
+        if (GetComponent<CharacterController>())
+        {
+            player = GetComponent<CharacterController>();
+        }
+        else
+        {
+            player = gameObject.AddComponent<CharacterController>();
+        }
+        player.height = 2;
+        player.radius = 0.5f;
+        player.center = new Vector3(0, 1.1f, 0);
+        #endregion
+    }
+
+
+
+
+
     #region Variables
-    #region Rotation Math
-    protected Quaternion theRotation;
-    protected float player_rotateSpeed = 10;
+
+    #region Modes
+    /// <summary>
+    /// Which perspective you are playing from.
+    /// </summary>
     protected string viewType = "ThirdPerson";
-    #endregion
-    #region Movement
-    protected Vector3 moveDirection;
-    protected float moveSpeed = 10;
-    protected float jumpForce = 14;
+
+    /// <summary>
+    /// Determines if the player can move or not.
+    /// </summary>
+    public bool canMove;
     #endregion
     #region Physics
+    /// <summary>
+    /// Determines how intense gravity is.
+    /// </summary>
     protected float gravity = 3;
+
+    /// <summary>
+    /// When the controls need to change for a specific situation, this controls that.
+    /// </summary>
+    public string moveType = "Normal";
     #endregion
+    #region Movement
+    /// <summary>
+    /// Determines what direction the player is moving or wether the player is jumping.
+    /// </summary>
+    protected Vector3 moveDirection;
+
+    /// <summary>
+    /// Determines how fast the player is going.
+    /// </summary>
+    protected float moveSpeed = 10;
+
+    /// <summary>
+    /// Determines how high you go when you jump.
+    /// </summary>
+    protected float jumpForce = 14;
     #endregion
     #region Components
-   
-    
-    protected CapsuleCollider capu;
+    /// <summary>
+    /// The armature object.
+    /// </summary>
     protected Transform skeleton;
+
+    /// <summary>
+    /// Handles the rotation of the camera in thirdperson mode.
+    /// </summary>
     protected float rotator = 150;
+
+    /// <summary>
+    /// Grabs variables from the pause menu script.
+    /// </summary>
     protected PauseMenu pause;
+
+    /// <summary>
+    /// Camera component.
+    /// </summary>
     protected Transform cam;
+
+    /// <summary>
+    /// Grabs variables from the game manager.
+    /// </summary>
     protected GameManager game;
+
+    /// <summary>
+    /// The animator attached to the character.
+    /// </summary>
+    [HideInInspector] public Animator anim;
+
+    /// <summary>
+    /// The component that moves the player around, handles the collisions and also creates gravity.
+    /// </summary>
+    [HideInInspector] public CharacterController player;
     #endregion
+    #region Rotation Math
+    #region Rotation
+    /// <summary>
+    /// The handler for the actual angle the player rotates at.
+    /// </summary>
+    protected Quaternion theRotation;
 
-    public bool canMove;
-    
-    
-    
-   
+    /// <summary>
+    /// Horizontal axis for the camera to face.
+    /// </summary>
+    protected float horizontal;
 
+    /// <summary>
+    /// How fast the player is allowed to return.
+    /// </summary>
+    protected float player_rotateSpeed = 10;
+    #endregion
+    #region First Person
+    /// <summary>
+    /// Positions the camera when in first person mode.
+    /// </summary>
+    protected Transform lookObject;
+    #endregion
+    #region Third Person
+
+    /// <summary>
+    /// The camera position relative to the player and the camera rotation.
+    /// </summary>
+    protected Vector3 offset;
+    /// <summary>
+    /// The speed at which the camera moves on the horizontal axis.
+    /// </summary>
+    protected float cam_rotateSpeed_X = 180;
+
+    /// <summary>
+    /// The speed at which the camera moves on the vertical axis.
+    /// </summary>
+    protected float cam_rotateSpeed_Y = 80;
+
+    /// <summary>
+    /// The rotation of the camera in thirdperson mode.
+    /// </summary>
+    [HideInInspector] public float currentYaw = 210f; //210
+
+    /// <summary>
+    /// The distance the camera is set to in thirdperson mode.
+    /// </summary>
+    protected float currentZoom = 2f;
+    #endregion
+    #endregion
+    #region Collision Based
+    /// <summary>
+    /// Collision detection mostly meant for player movement. 
+    /// </summary>
+    protected bool collisionDetected = true;
+
+    /// <summary>
+    /// The interactable object that is currently in focus.
+    /// </summary>
+    public Interactable focus;
+
+    /// <summary>
+    /// When an action can be called this button object will hover next to the object in question.
+    /// </summary>
+    protected GameObject buttonPrompt;
+    #endregion
+    #endregion
 }
+
+
 

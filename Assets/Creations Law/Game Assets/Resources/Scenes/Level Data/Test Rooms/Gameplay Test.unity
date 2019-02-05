@@ -2844,7 +2844,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1567089191638632, guid: da380e5bd35147c44bd4cf952971b8ec, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4035711859415306, guid: da380e5bd35147c44bd4cf952971b8ec, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3565,8 +3565,6 @@ GameObject:
   - component: {fileID: 301809022}
   - component: {fileID: 301809024}
   - component: {fileID: 301809023}
-  - component: {fileID: 301809026}
-  - component: {fileID: 301809025}
   m_Layer: 13
   m_Name: Scarf
   m_TagString: Player
@@ -3604,17 +3602,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e34b8b5bd3791a469f1fb34c3966069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentYaw: 0
   canMove: 1
+  moveType: Normal
   anim: {fileID: 0}
   player: {fileID: 0}
-  moveType: Normal
   focus: {fileID: 0}
   healthMax: 100
   magicMax: 200
   level: 1
   magic: 0
   health: 100
-  currentYaw: 0
 --- !u!95 &301809024
 Animator:
   serializedVersion: 3
@@ -3635,33 +3633,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!136 &301809025
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 301809021}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  m_Radius: 12
-  m_Height: 1
-  m_Direction: 0
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &301809026
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 301809021}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 2, z: 0.5}
-  m_Center: {x: 0, y: 1, z: 0.3}
 --- !u!1 &308547839
 GameObject:
   m_ObjectHideFlags: 0
@@ -19314,7 +19285,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1563557315}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -26638,6 +26609,38 @@ Transform:
   m_Father: {fileID: 487080710}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2057783320 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1567089191638632, guid: da380e5bd35147c44bd4cf952971b8ec,
+    type: 3}
+  m_PrefabInstance: {fileID: 249547994}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2057783322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057783320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51649fe34c436014c8f26d9932ce85be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedType: 2
+  selectedLocked: 0
+  lockRequirement: 0
+  selectedItem: 0
+  requiredAmount: 0
+  game: {fileID: 0}
+  anim: {fileID: 0}
+  item: {fileID: 0}
+  type: Door
+  locked: 0
+  obtained: 1
+  hasInteracted: 0
+  botOverride: 0
+  itemsObtained: 0
 --- !u!1 &2064256455
 GameObject:
   m_ObjectHideFlags: 0
