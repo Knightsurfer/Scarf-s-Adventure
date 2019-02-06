@@ -43,8 +43,11 @@ public class PauseMenu : Menus {
         BasicUpdate();
         MenuChoose();
 
+        
+
         if (paused)
         {
+            FindObjectOfType<SaveMenu>().enabled = !paused;
                 if (gamepad.button_Jump && paused == true)
                 {
                     CancelMenu();

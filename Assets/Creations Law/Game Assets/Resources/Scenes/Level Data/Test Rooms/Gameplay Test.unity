@@ -3602,11 +3602,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e34b8b5bd3791a469f1fb34c3966069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentYaw: 0
   canMove: 1
   moveType: Normal
   anim: {fileID: 0}
   player: {fileID: 0}
+  currentYaw: 0
   focus: {fileID: 0}
   healthMax: 100
   magicMax: 200

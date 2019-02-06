@@ -45,12 +45,12 @@ public class ThirdPerson : Thirdperson_PartyHandler
         }
         PartySwitcher();
 
-        Actions();
+        
 
 
         InteractUpdate();
         PlayerUpdate();
-        
+        Actions();
     }
 
 
@@ -114,7 +114,7 @@ public class Thirdperson_Mode : Thirdperson_Stats
 
     private void LateUpdate()
     {
-        
+       
             horizontal = game.cameraX * cam_rotateSpeed_X * Time.deltaTime;
             rotator = currentYaw + 150;
             if (canMove)
@@ -259,6 +259,7 @@ public class PlayerMovement : PlayerActions
 
     protected void PlayerUpdate()
     {
+        canMove = !pause.paused;
         MovePlayer();
     }
     protected void MovePlayer()
@@ -321,7 +322,7 @@ public class PlayerMovement : PlayerActions
 
     protected void NormalMovement()
     {
-        Actions();
+        
         #region Move direction
         float yspeed = moveDirection.y;
         if (canMove)
@@ -377,8 +378,9 @@ public class PlayerActions : CollisionDetection
     /// </summary>
     protected void Actions()
     {
-        Jump(game.jumpButton);
-        Interact(game.actionButton);
+        
+        Jump(game.button_Jump);
+        Interact(game.button_Action);
     }
 
     /// <summary>
@@ -397,11 +399,11 @@ public class PlayerActions : CollisionDetection
                     moveDirection.y = jumpForce;
 
                 }
-                anim.SetBool("OnGround", false);
+                anim.SetBool("OnGround", true);
             }
             else
             {
-                anim.SetBool("OnGround", true);
+                anim.SetBool("OnGround", false);
 
             }
         }

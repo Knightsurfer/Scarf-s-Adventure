@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class Test : MonoBehaviour
 {
     protected float moveSpeed = 10;
     protected float jumpForce = 10;
