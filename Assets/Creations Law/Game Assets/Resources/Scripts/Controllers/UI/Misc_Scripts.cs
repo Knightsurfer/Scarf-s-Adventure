@@ -24,24 +24,24 @@ using SavePackage;
     {
 
         public int selectedItem;
-        public GameManager gamepad;
+        protected GameManager game;
 
 
         protected virtual void Start()
         {
-            gamepad = FindObjectOfType<GameManager>();
-            if (gamepad.isGamepad) //Determines if a gamepad is plugged in
+            game = FindObjectOfType<GameManager>();
+            if (game.isGamepad) //Determines if a gamepad is plugged in
             {
             selectedItem = 0;
             }
         }
         protected virtual void Update()
         {
-            if (gamepad.controller == "Keyboard")
+            if (game.controller == "Keyboard")
             {
                 Cursor.visible = true;
             }
-            if (gamepad.controller != "Keyboard")
+            if (game.controller != "Keyboard")
             {
                 Cursor.visible = false;
             }
@@ -54,21 +54,21 @@ using SavePackage;
         /// <param name="max">The maximum value of what the menu can count down to.</param>
         public virtual void UpDownHandler(int max, int min)
         {
-            if (gamepad.isGamepad)
+            if (game.isGamepad)
             {
-                if (gamepad.direction == "up")
+                if (game.direction == "up")
                 {
-                    if (gamepad.d_Up == false)
+                    if (game.d_Up == false)
                     {
-                        gamepad.d_Up = true;
+                        game.d_Up = true;
                         selectedItem--;
                     }
                 }
-                if (gamepad.direction == "down")
+                if (game.direction == "down")
                 {
-                    if (gamepad.d_Down == false)
+                    if (game.d_Down == false)
                     {
-                        gamepad.d_Down = true;
+                        game.d_Down = true;
                         selectedItem++;
                     }
                 }
@@ -82,7 +82,7 @@ using SavePackage;
         /// <param name="max">The maximum value of what the menu can count down to.</param>
         protected virtual void MenuScroller(int min, int max)
         {
-            if (gamepad.isGamepad)
+            if (game.isGamepad)
             {
                 if (selectedItem < min)
                 {

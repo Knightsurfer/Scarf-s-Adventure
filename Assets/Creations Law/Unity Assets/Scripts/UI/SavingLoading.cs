@@ -6,7 +6,7 @@ public class SavingLoading : MonoBehaviour
 {
     readonly string fileName = "Saving System.json";
     private string filePath;
-    public ThirdPerson player;
+    public PlayerController player;
 
     public static SavingLoading _instance;
     public static SavingLoading Instance
@@ -58,7 +58,7 @@ public class SavingLoading : MonoBehaviour
 
     void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
     {
-        player = FindObjectOfType<ThirdPerson>();
+        player = FindObjectOfType<PlayerController>();
     }
 
     public void SaveGame()

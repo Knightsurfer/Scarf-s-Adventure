@@ -27,7 +27,8 @@ using System.IO;
 
 
 
-public class PauseMenu : Menus {
+public class PauseMenu : Menus
+{
 
     private void Awake()
     {
@@ -43,15 +44,15 @@ public class PauseMenu : Menus {
         BasicUpdate();
         MenuChoose();
 
-        
+
 
         if (paused)
         {
             FindObjectOfType<SaveMenu>().enabled = !paused;
-                if (gamepad.button_Jump && paused == true)
-                {
-                    CancelMenu();
-                }      
+            if (game.button_Jump && paused == true)
+            {
+                CancelMenu();
+            }
         }
     }
     protected void MenuChoose()
@@ -68,7 +69,7 @@ public class PauseMenu : Menus {
                     ItemsMenu();
                     break;
 
-                    case "Equipment":
+                case "Equipment":
                     EquipMenu();
                     break;
             }
@@ -241,7 +242,7 @@ public class Menus : Inventory
     {
 
         #region Player Stats
-        foreach (ThirdPerson p in game.player)
+        foreach (PlayerController p in game.player)
         {
             characterStats[playercount] = GameObject.Find("Player" + playercount + " Stats").GetComponent<Text>();
             characterNames[playercount] = GameObject.Find("Player" + playercount + " Name").GetComponent<Text>();
@@ -255,14 +256,14 @@ public class Menus : Inventory
         #endregion
         #region Menu Selection Handler
         UpDownHandler(0, 7);
-        if (gamepad.isGamepad)
+        if (game.isGamepad)
         {
             if (selectedItem == -100)
             {
                 selectedItem = 0;
             }
             selectedMenuItem = menuItems[selectedItem].GetComponentInChildren<Text>().text;
-            if (gamepad.button_Attack)
+            if (game.button_Attack)
             {
                 SelectMenu();
                 selectedItem = 0;
@@ -275,7 +276,7 @@ public class Menus : Inventory
             {
                 selectedItem = -100;
             }
-            if (gamepad.button_Attack)
+            if (game.button_Attack)
             {
                 SelectMenu();
                 selectedItem = 0;
@@ -319,28 +320,28 @@ public class Menus : Inventory
 public class Inventory : PauseBasic
 {
     int index;
-  
+
 
     protected string[] scarfItems = { "---" };
     protected string[] clownItems = { "---" };
     protected string[] stockItems = { "Potion", "Key" };
 
-    
-    
 
-    public ThirdPerson[] chari = { };
+
+
+    public PlayerController[] chari = { };
 
     protected void WriteData()
     {
-        chari = FindObjectsOfType<ThirdPerson>();
-        
+        chari = FindObjectsOfType<PlayerController>();
 
 
 
-        
-        foreach (ThirdPerson c in chari)
+
+
+        foreach (PlayerController c in chari)
         {
-            switch(c.name)
+            switch (c.name)
             {
                 case "Scarf":
                     foreach (string item in scarfItems)
@@ -407,13 +408,13 @@ public class PauseBasic : UIControls
     #region Game Variables //Events that exist in the game world.
     public bool canMove;
     public GameObject player;
-    protected GameManager game;
+
 
     protected int animCount;
     protected Animator[] animators;
     protected NavMeshAgent[] agents = new NavMeshAgent[] { };
 
-    protected ThirdPerson[] players = new ThirdPerson[4];
+    protected PlayerController[] players = new PlayerController[4];
     protected int peoplecount;
     protected int playercount;
     #endregion
@@ -438,10 +439,10 @@ public class PauseBasic : UIControls
 
     protected void BasicStart() //Asigns all the variables to their respective objects when the level starts.
     {
-       if (gamepad.isGamepad) //Determines if a gamepad is plugged in
-            {
-                selectedItem = 0;
-            }
+        if (game.isGamepad) //Determines if a gamepad is plugged in
+        {
+            selectedItem = 0;
+        }
 
         #region Other Scripts         //When the game needs to grab a variable from somewhere else these are where they end up.
         game = FindObjectOfType<GameManager>();
@@ -481,9 +482,9 @@ public class PauseBasic : UIControls
 
     protected void BasicUpdate() //Sets variable values every frame.
     {
-        if (FindObjectOfType<ThirdPerson>()) //Checks if there is a player present and if they can move.
+        if (FindObjectOfType<PlayerController>()) //Checks if there is a player present and if they can move.
         {
-            canMove = (FindObjectOfType<ThirdPerson>().canMove);
+            canMove = (FindObjectOfType<PlayerController>().canMove);
             player = GameObject.FindGameObjectWithTag("Player");
         }
         if (canMove) //Checks if the player can make any game related movements.
@@ -491,14 +492,14 @@ public class PauseBasic : UIControls
             PauseCheck();
         }
         CharacterStats();
-    } 
+    }
     protected void PauseCheck() //If start is pressed, pause or unpause the game and assign the title of the world.
     {
-        foreach (ThirdPerson player in game.player)
+        foreach (PlayerController player in game.player)
         {
             player.anim.enabled = !paused;
         }
-        if (gamepad.button_Start)
+        if (game.button_Start)
         {
             if (!paused)
             {
@@ -515,7 +516,7 @@ public class PauseBasic : UIControls
                         break;
                 }
             }
-            if (!gamepad.isGamepad)
+            if (!game.isGamepad)
             {
                 Cursor.visible = pausePanel.enabled;
             }
@@ -528,7 +529,7 @@ public class PauseBasic : UIControls
     {
         if (GameObject.FindGameObjectWithTag("Player"))
         {
-            game.player[0].GetComponent<Thirdperson_Mode>().enabled = !paused;
+            game.player[0].GetComponent<PlayerController>().enabled = !paused;
             foreach (Animator anim in animators)
             {
                 animators[animCount].enabled = !paused;
@@ -537,42 +538,44 @@ public class PauseBasic : UIControls
             animCount = 0;
         }
     }
-    
+
     protected void CharacterStats()
     {
-        players = FindObjectsOfType<ThirdPerson>();
-        if (game.player.Length > 0)
+        players = FindObjectsOfType<PlayerController>();
+        if (game.player[0])
         {
-            foreach (ThirdPerson p in players)
+            if (game.player.Length > 0)
             {
-                characterStats[playercount] = GameObject.Find("Player" + playercount + " Stats").GetComponent<Text>();
-                characterNames[playercount] = GameObject.Find("Player" + playercount + " Name").GetComponent<Text>();
-
-
-                if (game.title[playercount] != "")
+                foreach (PlayerController p in game.player)
                 {
-                   // Debug.Log(game.title[playercount]);
-                    characterNames[playercount].GetComponentInParent<Canvas>().enabled = true;
+                    characterStats[playercount] = GameObject.Find("Player" + playercount + " Stats").GetComponent<Text>();
+                    characterNames[playercount] = GameObject.Find("Player" + playercount + " Name").GetComponent<Text>();
+
+
+                    if (game.characterNames[playercount] != "")
+                    {
+                        characterNames[playercount].GetComponentInParent<Canvas>().enabled = true;
+                    }
+
+
+
+                    characterNames[playercount].text = game.characterNames[playercount];
+                    characterStats[playercount].GetComponent<Text>().text = 1 + "\n" + game.player[playercount].health + " / " + game.player[playercount].healthMax + "\n0 / 0";
+
+
+                    playercount++;
                 }
 
+                playercount = 0;
 
 
-                characterNames[playercount].text = game.title[playercount];
-                characterStats[playercount].GetComponent<Text>().text = 1 + "\n" + game.player[playercount].health + " / " + game.player[playercount].healthMax + "\n0 / 0";
 
-                
-                playercount++;
             }
-            
-            playercount = 0;
-
-           
-
         }
     }
     protected void MouseMenu(int selection) //Mouse Navigation
     {
-        if (!gamepad.isGamepad)
+        if (!game.isGamepad)
         {
 
             if (selection != -100)
@@ -590,11 +593,10 @@ public class PauseBasic : UIControls
     #region Controls //The main controls behind menu scrolling on the pause menu.
     public override void UpDownHandler(int min, int max)
     {
-        base.UpDownHandler(min,max);
+        base.UpDownHandler(min, max);
         highlighter.rectTransform.localPosition = highlightPos;
         MenuScroller(min, max);
         SendMessage("HighlightPos");
-
     }
 
     protected void HighlightPos()

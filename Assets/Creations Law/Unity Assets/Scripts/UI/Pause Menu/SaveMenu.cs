@@ -24,7 +24,7 @@ using UnityEngine.SceneManagement;
     /// <summary>
     /// Startup for the save menu script.
     /// </summary>
-    public class SaveMenu : SavePackage.S_Menus {
+    public class SaveMenu : SavePackage.Menus {
      new void Start()
      {
         base.Start();
@@ -52,7 +52,7 @@ namespace SavePackage
     /// <summary>
     /// The display for each type of menu.
     /// </summary>
-    public class S_Menus : S_Checks
+    public class Menus : Checks
 {
     /// <summary>
     /// Tells the game which menu to display.
@@ -77,14 +77,14 @@ namespace SavePackage
     {
         #region Menu Selection Handler
         UpDownHandler(0, 2);
-        if (gamepad.isGamepad)
+        if (game.isGamepad)
         {
             if (selectedItem == 4)
             {
                 selectedItem = 0;
             }
             selectedMenuItem = menuItems[selectedItem].GetComponentInChildren<Text>().text;
-            if (gamepad.button_Attack)
+            if (game.button_Attack)
             {
                 SelectMenu();
                 selectedItem = 0;
@@ -97,7 +97,7 @@ namespace SavePackage
             {
                 selectedItem = 4;
             }
-            if (gamepad.button_Attack)
+            if (game.button_Attack)
             {
                 SelectMenu();
                 selectedItem = 0;
@@ -112,7 +112,7 @@ namespace SavePackage
     /// <summary>
     /// Checks for the name of the scene and if the menu is open.
     /// </summary>
-    public class S_Checks : S_Navigation
+    public class Checks : Navigation
     {
         /// <summary>
         /// //Checks if the save menu is open.
@@ -135,7 +135,7 @@ namespace SavePackage
                             break;
                     }
                 }
-                if (!gamepad.isGamepad)
+                if (!game.isGamepad)
                 {
                     Cursor.visible = savePanel.enabled;
                 }
@@ -162,7 +162,7 @@ namespace SavePackage
     /// <summary>
     /// Handles menu navigation.
     /// </summary>
-    public class S_Navigation : S_Variables
+    public class Navigation : Variables
     {
         Canvas[] saves;
         Text[] saveText;
@@ -221,7 +221,7 @@ namespace SavePackage
         /// </summary>
         protected void MenuCancel()
         {
-            if (menuOpen && gamepad.button_Jump && menuOpen)
+            if (menuOpen && game.button_Jump && menuOpen)
             {
                 switch (currentMenu)
                 {
@@ -246,7 +246,7 @@ namespace SavePackage
         /// </summary>
         protected void MouseMenu(int selection) //Mouse Navigation
         {
-            if (!gamepad.isGamepad)
+            if (!game.isGamepad)
             {
                 if (selection != 4)
                 {
@@ -276,7 +276,7 @@ namespace SavePackage
     /// <summary>
     /// All the important variables are stored here.
     /// </summary>
-    public class S_Variables : UIControls
+    public class Variables : UIControls
     {
        
         #region Menu Variables //Events that exist in the pause menu.
@@ -353,7 +353,6 @@ namespace SavePackage
         /// <summary>
         /// For grabbing the all variables stored within the game manager.
         /// </summary>
-        protected GameManager game;
         #endregion
 
         void Awake()

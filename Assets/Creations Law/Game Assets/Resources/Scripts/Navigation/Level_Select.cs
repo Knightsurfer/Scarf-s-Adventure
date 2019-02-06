@@ -79,13 +79,13 @@ public class Level_Select : UIControls {
     }
     protected void ConfirmSelection()
     {
-        if (gamepad.button_Attack)
+        if (game.button_Attack)
         {
             switch (selectedItem)
             {
                 default:
 
-                    gamepad.userInterface.SetActive(true);
+                    game.userInterface.SetActive(true);
                     SceneManager.LoadScene(selectedItem + 1);
                     break;
 
@@ -100,7 +100,7 @@ public class Level_Select : UIControls {
 
     protected void MouseMenu(int selection)
     {
-        if (!gamepad.isGamepad)
+        if (!game.isGamepad)
         {
             if (selection != -100)
             {

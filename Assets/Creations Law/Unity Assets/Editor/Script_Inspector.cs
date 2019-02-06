@@ -26,11 +26,15 @@ public class Viewer_GameManager : Editor
     protected int testInt = 1;
 
     protected bool Initialized;
-    Thirdperson_Mode[] people = new Thirdperson_Mode[] { };
+   
+    PlayerController[] people = new PlayerController[] { };
     BotReciever[] bots = new BotReciever[] { };
     GameManager unit;
 
-
+    private void OnEnable()
+    {
+        
+    }
 
     void Init()
     {
@@ -87,7 +91,7 @@ public class Viewer_GameManager : Editor
 
 
 
-        people = FindObjectsOfType<Thirdperson_Mode>();
+        people = FindObjectsOfType<PlayerController>();
         bots = FindObjectsOfType<BotReciever>();
         if (people.Length > 0)
         {
@@ -99,7 +103,7 @@ public class Viewer_GameManager : Editor
 
         if (party)
         {
-            foreach (Thirdperson_Mode p in people)
+            foreach (PlayerController p in people)
             {
                 GUILayout.BeginVertical("In BigTitle");
 
@@ -158,23 +162,19 @@ public class Viewer_GameManager : Editor
 
     private void SettingsViewer()
     {
+        
+       GameManager game = FindObjectOfType<GameManager>();
         if (settings)
         {
-          
-
-            for (int i = 0; i <= Input.GetJoystickNames().Length - 1; i++)
-            {
-               
-            }
-            GUILayout.BeginVertical("In BigTitle");
-            foreach (string c in Input.GetJoystickNames())
-            {
-                GUILayout.BeginHorizontal();
-                GUILayout.Label("Controller: ", GUILayout.Width(80));
-                switch (c)
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Controller: ", GUILayout.Width(80));
+ 
+                
+                
+                switch (game.controller)
                 {
                     default:
-                        GUILayout.Label(c);
+                        GUILayout.Label(game.controller);
                         break;
 
                     case "":
@@ -198,14 +198,10 @@ public class Viewer_GameManager : Editor
                         break;
                 }
                 EditorGUILayout.EndHorizontal();
-            }
-            GUILayout.EndVertical();
+        }
+           
 
-            GUILayout.BeginVertical("In BigTitle");
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.Label("Game Mode: ", GUILayout.Width(80));
-            unit.modeSelector = EditorGUILayout.Popup(unit.modeSelector, new string[] { "Third Person", "RTS" });
-            EditorGUILayout.EndHorizontal();
+           
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Test Mode: ", GUILayout.Width(80));
             switch (testInt)
@@ -220,8 +216,8 @@ public class Viewer_GameManager : Editor
             testInt = EditorGUILayout.Popup(testInt, new string[] { "True", "False" });
             EditorGUILayout.EndHorizontal();
 
-            GUILayout.EndVertical();
-        }
+            
+        
     }
     private void BaseStats()
     {
@@ -237,17 +233,7 @@ public class Viewer_GameManager : Editor
                 base.OnInspectorGUI();
                 break;
         }
-        switch (unit.modeSelector)
-        {
-            case 0:
-                unit.mode = "Thirdperson";
-                break;
-
-            case 1:
-                unit.mode = "RTS";
-                break;
-
-        }
+     
     }
 }
 #endregion

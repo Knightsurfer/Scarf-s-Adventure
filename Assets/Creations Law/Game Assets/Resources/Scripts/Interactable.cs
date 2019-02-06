@@ -109,7 +109,7 @@ public class Interactable : Interactive.I_Door
                 {
                     if (selectedItem == 1)
                     {
-                        bool wasPickedUp = PlayerInventory.instance.Add(item);
+                        bool wasPickedUp = GameHandler.PlayerInventory.instance.Add(item);
                         if (wasPickedUp)
                         {
                             GetComponentInChildren<MeshRenderer>().enabled = false;
@@ -191,7 +191,7 @@ namespace Interactive
         {
             if (!hasInteracted)
             {
-                bool wasPickedUp = PlayerInventory.instance.Add(item);
+                bool wasPickedUp = GameHandler.PlayerInventory.instance.Add(item);
                 if (wasPickedUp)
                 {
                     Destroy(gameObject);

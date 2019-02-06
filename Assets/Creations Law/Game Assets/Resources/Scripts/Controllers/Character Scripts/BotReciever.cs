@@ -144,7 +144,7 @@ public class Bot_Destinations : Bot_Components
                     else
                     {
                         range = 100;
-                        target = FindObjectOfType<ThirdPerson>().transform;
+                        target = FindObjectOfType<PlayerController>().transform;
                     }
                     break;
 
@@ -171,7 +171,7 @@ public class Bot_Destinations : Bot_Components
         }
         if (isPartyMember)
         {
-            target = FindObjectOfType<ThirdPerson>().transform;
+            target = FindObjectOfType<PlayerController>().transform;
         }
         else
         {
@@ -205,9 +205,9 @@ public class Bot_Destinations : Bot_Components
                     break;
             }
         }
-        if (other.GetComponent<ThirdPerson>())
+        if (other.GetComponent<PlayerController>())
         {
-            prey = other.GetComponent<ThirdPerson>();
+            prey = other.GetComponent<PlayerController>();
             target = prey.transform;
         }
     }
@@ -232,7 +232,7 @@ public class Bot_Destinations : Bot_Components
                     break;
             }
         }
-        if (other.GetComponent<ThirdPerson>())
+        if (other.GetComponent<PlayerController>())
         {
             prey = null;
             WaypointPassed = 1;
@@ -307,7 +307,7 @@ public class Bot_Components : Bot_Scripts
 public class Bot_Scripts : Bot_Variables
 {
     protected PauseMenu pause;
-    protected ThirdPerson prey;
+    protected PlayerController prey;
     protected Interactable focus;
 }
 public class Bot_Variables : MonoBehaviour

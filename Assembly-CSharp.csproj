@@ -62,8 +62,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\Character Scripts\BotReciever.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\Character Scripts\PlayerController.cs" />
     <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\Character Scripts\SpriteAI.cs" />
-    <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\Character Scripts\ThirdPerson.cs" />
     <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\Main Controls\Gamepad.cs" />
     <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\Other\Cinema_Script.cs" />
     <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\UI\Command_Controller.cs" />

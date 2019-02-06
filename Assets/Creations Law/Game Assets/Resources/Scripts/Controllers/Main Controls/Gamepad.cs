@@ -394,42 +394,42 @@ public class Controller : MonoBehaviour
     #region  Test Variables //For the control test scene that enables visual controller feedback.
     readonly private bool controllerTest;
 
-    [HideInInspector] public Text moveXT;
-    [HideInInspector] public Text moveYT;
+    private Text moveXT;
+    private Text moveYT;
 
-    [HideInInspector] public Text LTrigger;
-    [HideInInspector] public Text RTrigger;
-    [HideInInspector] public Text cameraXT;
-    [HideInInspector] public Text cameraYT;
-    [HideInInspector] public Text jumpButton;
-    [HideInInspector] public Text attackButton;
+    private Text LTrigger;
+    private Text RTrigger;
+    private Text cameraXT;
+    private Text cameraYT;
+    private Text jumpButton;
+    private Text attackButton;
 
-    [HideInInspector] public Text actionButton;
-    [HideInInspector] public Text kickButton;
+    private Text actionButton;
+    private Text kickButton;
 
-    [HideInInspector] public Text startButton;
-    [HideInInspector] public Text selectButton;
+    private Text startButton;
+    private Text selectButton;
 
-    [HideInInspector] public Text lButton;
-    [HideInInspector] public Text rButton;
+    private Text lButton;
+    private Text rButton;
 
-    [HideInInspector] public Text DUp;
-    [HideInInspector] public Text DDown;
-    [HideInInspector] public Text DLeft;
-    [HideInInspector] public Text DRight;
+    private Text DUp;
+    private Text DDown;
+    private Text DLeft;
+    private Text DRight;
 
 
-    [HideInInspector] public Text Axis7;
-    [HideInInspector] public Text Axis8;
-    [HideInInspector] public Text Axis9;
-    [HideInInspector] public Text Axis10;
-    [HideInInspector] public Text Axis11;
-    [HideInInspector] public Text Axis12;
-    [HideInInspector] public Text Axis13;
-    [HideInInspector] public Text Axis14;
-    [HideInInspector] public Text Axis15;
-    [HideInInspector] public Text Axis16;
-    [HideInInspector] public Text Axis17;
+    readonly Text Axis7;
+    readonly Text Axis8;
+    readonly Text Axis9;
+    readonly Text Axis10;
+    readonly Text Axis11;
+    readonly Text Axis12;
+    readonly Text Axis13;
+    readonly Text Axis14;
+    readonly Text Axis15;
+    readonly Text Axis16;
+    readonly Text Axis17;
     #endregion
   
 
