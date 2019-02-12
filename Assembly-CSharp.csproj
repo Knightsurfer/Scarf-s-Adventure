@@ -61,39 +61,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\Character Scripts\BotReciever.cs" />
-    <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\Character Scripts\PlayerController.cs" />
     <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\Character Scripts\SpriteAI.cs" />
-    <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\Main Controls\Gamepad.cs" />
-    <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\Other\Cinema_Script.cs" />
-    <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\UI\Command_Controller.cs" />
-    <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\UI\Misc_Scripts.cs" />
-    <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Interactable.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\UI\New Folder\GameManager.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\UI\New Folder\Gamepad.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\UI\New Folder\MenuChooser.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\UI\New Folder\MouseMenu.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\UI\New Folder\PlayerController.cs" />
     <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\ItemSlot.cs" />
-    <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Navigation\ChangeScene.cs" />
-    <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Navigation\Level_Select.cs" />
     <Compile Include="Assets\Creations Law\Rejected Assets\3D Platformer\Platformer_Camera.cs" />
-    <Compile Include="Assets\Creations Law\Rejected Assets\3D Platformer\Test.cs" />
     <Compile Include="Assets\Creations Law\Rejected Assets\RTS\Scripts\Scriptable_Objects.cs" />
     <Compile Include="Assets\Creations Law\Unity Assets\Scripts\INI\INI.cs" />
     <Compile Include="Assets\Creations Law\Unity Assets\Scripts\Item.cs" />
+    <Compile Include="Assets\Creations Law\Unity Assets\Scripts\Readme\Scripts\BotReciever.cs" />
     <Compile Include="Assets\Creations Law\Unity Assets\Scripts\Readme\Scripts\Readme.cs" />
-    <Compile Include="Assets\Creations Law\Unity Assets\Scripts\UI\Pause Menu\PauseMenu.cs" />
-    <Compile Include="Assets\Creations Law\Unity Assets\Scripts\UI\Pause Menu\SaveMenu.cs" />
-    <Compile Include="Assets\Creations Law\Unity Assets\Scripts\UI\SavingLoading.cs" />
+    <Compile Include="Assets\Interactable.cs" />
     <None Include="Assets\Creations Law\Unity Assets\Shaders\Outline.shader" />
-    <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
       <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
       <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
       <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
@@ -298,12 +285,6 @@
     </Reference>
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.0f2/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Advertisements">
-      <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/PackageCache/com.unity.ads@2.3.1/Runtime/UnityEngine.Advertisements.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Advertisements.Editor">
-      <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/PackageCache/com.unity.ads@2.3.1/Runtime/UnityEngine.Advertisements.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
       <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>

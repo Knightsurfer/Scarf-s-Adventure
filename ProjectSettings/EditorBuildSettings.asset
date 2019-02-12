@@ -5,53 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: Assets/Creations Law/Game Assets/Resources/Scenes/Level Data/UI Scenes/Title
-      New.unity
-    guid: b42c81e5c7a76534e866144e177da315
-  - enabled: 1
-    path: Assets/Creations Law/Game Assets/Resources/Scenes/Level Data/UI Scenes/Demo
-      Screen 2.unity
-    guid: 47d85750f53ff24498f46c96155bf4af
   - enabled: 1
     path: Assets/Creations Law/Game Assets/Resources/Scenes/Level Data/UI Scenes/Controller
       Test.unity

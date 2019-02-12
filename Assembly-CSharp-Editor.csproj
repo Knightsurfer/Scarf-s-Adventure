@@ -64,17 +64,11 @@
     <Compile Include="Assets\Creations Law\Unity Assets\Editor\Script_Inspector.cs" />
     <Compile Include="Assets\Creations Law\Unity Assets\Scripts\Readme\Scripts\Editor\ReadmeEditor.cs" />
     <Compile Include="Assets\Creations Law\Unity Assets\Scripts\Readme\Scripts\Editor\ReadmeMaker.cs" />
-    <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
       <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
       <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
       <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
@@ -321,15 +315,6 @@
     </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.Advertisements">
-      <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/PackageCache/com.unity.ads@2.3.1/Editor/UnityEditor.Advertisements.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Advertisements">
-      <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/PackageCache/com.unity.ads@2.3.1/Runtime/UnityEngine.Advertisements.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Advertisements.Editor">
-      <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/PackageCache/com.unity.ads@2.3.1/Runtime/UnityEngine.Advertisements.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
       <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>
