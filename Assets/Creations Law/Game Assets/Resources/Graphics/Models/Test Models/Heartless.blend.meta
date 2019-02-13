@@ -1,119 +1,59 @@
 fileFormatVersion: 2
-guid: cbb9dbc20b0fc1643b8b811ba1afcc89
+guid: b27b052ea4740a1429db5a74bc78385b
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
-    100000: Armature
-    100002: Armature_002
-    100004: Bone
-    100006: Bone_001
-    100008: Bone_002
-    100010: Bone_003
-    100012: Bone_004
-    100014: Bone_005
-    100016: Bone_006
-    100018: Bone_007
-    100020: Bone_008
-    100022: Bone_009
-    100024: Bone_010
-    100026: Bone_011
-    100028: Bone_012
-    100030: Bone_013
-    100032: Bone_014
-    100034: Bone_015
-    100036: Bone_016
-    100038: pSphere1
-    100040: pSphere1_001
-    100042: pSphere1_002
-    100044: pSphere1_003
-    100046: //RootNode
-    100048: pSphere1_000
-    100050: Armature_001
-    100052: Bone_0
-    100054: Bone_2
-    100056: Bone_3
-    100058: Bone_4
-    100060: Bone_5
-    100062: Bone_6
-    100064: Body
-    100066: Eyes
-    100068: Teeth
-    100070: Tongue
-    100072: Arm_Left
-    100074: Arm_Right
-    100076: Head_Antenna
-    100078: Leg_Left
-    100080: Leg_Right
-    100082: Skeleton
-    100084: Tongue_001
-    400000: Armature
-    400002: Armature_002
-    400004: Bone
-    400006: Bone_001
-    400008: Bone_002
-    400010: Bone_003
-    400012: Bone_004
-    400014: Bone_005
-    400016: Bone_006
-    400018: Bone_007
-    400020: Bone_008
-    400022: Bone_009
-    400024: Bone_010
-    400026: Bone_011
-    400028: Bone_012
-    400030: Bone_013
-    400032: Bone_014
-    400034: Bone_015
-    400036: Bone_016
-    400038: pSphere1
-    400040: pSphere1_001
-    400042: pSphere1_002
-    400044: pSphere1_003
-    400046: //RootNode
-    400048: pSphere1_000
-    400050: Armature_001
-    400052: Bone_0
-    400054: Bone_2
-    400056: Bone_3
-    400058: Bone_4
-    400060: Bone_5
-    400062: Bone_6
-    400064: Body
-    400066: Eyes
-    400068: Teeth
-    400070: Tongue
-    400072: Arm_Left
-    400074: Arm_Right
-    400076: Head_Antenna
-    400078: Leg_Left
-    400080: Leg_Right
-    400082: Skeleton
-    400084: Tongue_001
+    100000: Arm_Left
+    100002: Arm_Right
+    100004: Body
+    100006: Bone
+    100008: Bone_001
+    100010: Bone_002
+    100012: Bone_003
+    100014: Bone_004
+    100016: Bone_005
+    100018: Bone_4
+    100020: Bone_5
+    100022: Eyes
+    100024: Head_Antenna
+    100026: Leg_Left
+    100028: Leg_Right
+    100030: Skeleton
+    100032: Teeth
+    100034: Tongue
+    100036: Tongue_001
+    100038: //RootNode
+    400000: Arm_Left
+    400002: Arm_Right
+    400004: Body
+    400006: Bone
+    400008: Bone_001
+    400010: Bone_002
+    400012: Bone_003
+    400014: Bone_004
+    400016: Bone_005
+    400018: Bone_4
+    400020: Bone_5
+    400022: Eyes
+    400024: Head_Antenna
+    400026: Leg_Left
+    400028: Leg_Right
+    400030: Skeleton
+    400032: Teeth
+    400034: Tongue
+    400036: Tongue_001
+    400038: //RootNode
     2100000: initialShadingGroup
-    2300000: pSphere1_002
-    2300002: pSphere1_003
-    3300000: pSphere1_002
-    3300002: pSphere1_003
-    4300000: pSphere1_002
-    4300002: pSphere1_001
-    4300004: pSphere1_003
-    4300006: pSphere1
-    4300008: pSphere1_000
-    4300010: Eyes
-    4300012: Teeth
-    4300014: Body
-    4300016: Tongue
+    4300000: Eyes
+    4300002: Teeth
+    4300004: Body
+    4300006: Tongue
     7400000: Default Take
     9500000: //RootNode
-    13700000: pSphere1
-    13700002: pSphere1_001
-    13700004: pSphere1_000
-    13700006: pSphere1_002
-    13700008: pSphere1_003
-    13700010: Body
-    13700012: Eyes
-    13700014: Teeth
-    13700016: Tongue
+    13700000: Body
+    13700002: Eyes
+    13700004: Teeth
+    13700006: Tongue
     2186277476908879412: ImportLogs
   externalObjects:
   - first:
@@ -172,7 +112,7 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.4
+    previousCalculatedGlobalScale: 1
     hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
