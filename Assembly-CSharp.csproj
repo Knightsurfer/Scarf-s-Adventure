@@ -67,6 +67,7 @@
     <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\Main Controls\Gamepad.cs" />
     <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\Other\Cinema_Script.cs" />
     <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\UI\MenuChooser.cs" />
+    <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\UI\MenuCustom.cs" />
     <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Controllers\UI\MouseMenu.cs" />
     <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\GameManager.cs" />
     <Compile Include="Assets\Creations Law\Game Assets\Resources\Scripts\Interactable.cs" />

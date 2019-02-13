@@ -170,36 +170,7 @@ public class Viewer_GameManager : Editor
     {
         if (settings)
         {
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Controller: ", GUILayout.Width(80));
-
-            switch (unit.controller)
-            {
-                default:
-                    GUILayout.Label(unit.controller);
-                    break;
-
-                case "":
-                    GUILayout.Label("None");
-                    break;
-
-                case "Wireless Controller":
-                    GUILayout.Label("PS4");
-                    break;
-
-                case "Controller (Xbox 360 Wireless Receiver for Windows)":
-                    GUILayout.Label("Xbox");
-                    break;
-
-                case "Keyboard":
-                    GUILayout.Label("Keyboard");
-                    break;
-
-                case "SFC30 Joystick":
-                    GUILayout.Label("Snes");
-                    break;
-            }
-            EditorGUILayout.EndHorizontal();
+           
         }
     }
     private void ControllerViewer()
@@ -261,6 +232,39 @@ public class Viewer_GameManager : Editor
         }
         if (controllerTest)
         {
+            if(unit.controller != "Keyboard")
+            {
+                GUILayout.BeginHorizontal("In BigTitle");
+                GUILayout.Label("Controller: ", GUILayout.Width(80));
+
+                switch (unit.controller)
+                {
+                    default:
+                        GUILayout.Label(unit.controller);
+                        break;
+
+                    case "":
+                        GUILayout.Label("None");
+                        break;
+
+                    case "Wireless Controller":
+                        GUILayout.Label("PS4");
+                        break;
+
+                    case "Controller (Xbox 360 Wireless Receiver for Windows)":
+                        GUILayout.Label("Xbox");
+                        break;
+
+                    case "Keyboard":
+                        GUILayout.Label("Keyboard");
+                        break;
+
+                    case "SFC30 Joystick":
+                        GUILayout.Label("Snes");
+                        break;
+                }
+                EditorGUILayout.EndHorizontal();
+            }
             switch (unit.controller)
             {
                 default:

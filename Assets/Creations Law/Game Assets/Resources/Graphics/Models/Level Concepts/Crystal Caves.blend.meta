@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: fb254f48cec54eb478442d3c7e90e8cd
+labels:
+- Terrain
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:

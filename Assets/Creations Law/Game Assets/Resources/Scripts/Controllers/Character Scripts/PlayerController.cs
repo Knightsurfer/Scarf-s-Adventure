@@ -598,13 +598,13 @@ namespace PlayerPackage
         }
         #region Variables
         #region Stats
-        [HideInInspector] public int healthMax;
-        [HideInInspector] public int magicMax;
+        [HideInInspector] public int healthMax = 100;
+        [HideInInspector] public int magicMax = 100;
         [HideInInspector] protected int exp;
 
-        public int magic;
-        public int health;
-        public int level;
+        public int magic = 50;
+        public int health = 70;
+        public int level = 1;
         #endregion
         #region Modes
         /// <summary>

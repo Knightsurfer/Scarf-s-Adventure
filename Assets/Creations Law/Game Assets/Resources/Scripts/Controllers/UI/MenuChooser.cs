@@ -98,7 +98,7 @@ namespace SavePackage
 
                 HighlightPos();
 
-                Confirm();
+                ConfirmMenu();
                 CancelMenu();
             }
         }
@@ -119,12 +119,9 @@ namespace PausePackage
         {
 
         }
-        protected void PauseUpdate()
+        protected virtual void PauseUpdate()
         {
-            if (menuActivator && !menuOpen)
-            {
-                CharacterStatsUpdate();
-            }
+            
             PauseMenus();
         }
         protected void PauseMenus()
@@ -136,7 +133,7 @@ namespace PausePackage
 
                 HighlightPos();
 
-                Confirm();
+                ConfirmMenu();
                 CancelMenu();
             }
             if (GameObject.Find("Character Status"))
@@ -336,7 +333,7 @@ namespace UI
         /// <summary>
         /// Handles menu confirmation.
         /// </summary>
-        protected void Confirm()
+        protected virtual void ConfirmMenu()
         {
             if (game.button_Attack)
             {
@@ -380,7 +377,7 @@ namespace UI
         /// <summary>
         /// Handles menu cancellation.
         /// </summary>
-        protected void CancelMenu()
+        protected virtual void CancelMenu()
         {
             if (game.button_Jump)
             {
