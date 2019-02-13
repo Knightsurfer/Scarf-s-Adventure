@@ -1,9 +1,11 @@
 fileFormatVersion: 2
-guid: 980683f006e5d674981be905482707a0
+guid: ae551ca9ddb2b8f4b88bf6719fa4d50b
 TextureImporter:
   fileIDToRecycleName:
-    21300000: ScarfHP_0
-    21300002: ScarfHP_1
+    21300000: Untitled_0
+    21300002: Untitled_1
+    21300004: Untitled_2
+    21300006: Untitled_3
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -97,13 +99,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ScarfHP_0
+      name: Untitled_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1
         y: 0
-        width: 239
-        height: 214
+        width: 194
+        height: 229
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,19 +113,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c4e09ebcf680d954e8aed22faf4e71d4
+      spriteID: 25b7ac4b795f4694386190c93480fbb2
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScarfHP_1
+      name: Untitled_1
       rect:
         serializedVersion: 2
-        x: 239
+        x: 217
         y: 0
-        width: 239
-        height: 214
+        width: 194
+        height: 229
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,7 +133,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 202d71b94c4baa447ac8d6f134eb45cb
+      spriteID: 1c14e70f5f12cc240a607b6499154179
       vertices: []
       indices: 
       edges: []
@@ -139,7 +141,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 9772c1186d59b90428afeaf16ce8cef6
+    spriteID: 48cfb469b0ca2ef45aa6064dd2aedb47
     vertices: []
     indices: 
     edges: []

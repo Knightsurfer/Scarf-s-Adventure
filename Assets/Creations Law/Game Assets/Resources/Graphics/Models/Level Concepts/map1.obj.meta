@@ -18,7 +18,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: pCube1Mat
-    second: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+    second: {fileID: 2100000, guid: eda57d7f24e42ff4e962adec8b6998d8, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
