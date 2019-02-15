@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,7 +44,12 @@ public class MenuCustom : MenuChooser
                     break;
 
                 case "Stock Menu":
-                    GameObject.Find(currentMenu).GetComponent<Canvas>().enabled = false;
+                    lastMove--;
+                    selectedHighlighter = 0;
+                    highlighter[2].transform.position = new Vector3(-603, 635, 0);
+                    currentMenu = lastMenuEntered[lastMove];
+                    DisableMenuItems("MenuConfirm");
+                    MenuItemsCountRelevant();
                     break;
 
 
@@ -67,54 +73,63 @@ public class MenuCustom : MenuChooser
             menuTitle.GetComponentInChildren<Text>().text = currentMenu;
         }
     }
-
+    bool menuChanges;
     protected override void ConfirmMenu()
     {
         if (game.button_Attack)
         {
-            if (selectedItem >= 0 && selectedItem <= menuItemsCurrentContext.Length - 2 && selectedItem != -100)
+            
+            if (!menuChanges)
             {
-                menuTitle.transform.localPosition = menuTitlePos[1];
-                switch (menuItems[selectedItem].GetComponentInChildren<Text>().text)
+
+
+                if (selectedItem >= 0 && selectedItem <= menuItemsCurrentContext.Length - 2 && selectedItem != -100)
                 {
-                    default:
-                        lastMenuEntered[lastMove] = currentMenu;
-                        lastMove++;
+                    menuTitle.transform.localPosition = menuTitlePos[1];
+                    switch (menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text)
+                    {
+                        default:
+                            Debug.Log("Test");
+                            lastMenuEntered[lastMove] = currentMenu;
+                            lastMove++;
 
-                        currentMenu = menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text + " Menu";
-                        LoadMenu("MenuConfirm");
-                        break;
+                            currentMenu = menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text + " Menu";
+                            LoadMenu("MenuConfirm");
+                            break;
 
-                    case "Save":
-                        highlighter[0].transform.position = new Vector3(-720.4601f, 531.5f, 0);
-                        selectedHighlighter = 1;
-                        lastMenuEntered[lastMove] = currentMenu;
-                        lastMove++;
+                        case "Save":
+                            highlighter[0].transform.position = new Vector3(-720.4601f, 531.5f, 0);
+                            selectedHighlighter = 1;
+                            lastMenuEntered[lastMove] = currentMenu;
+                            lastMove++;
 
-                        currentMenu = menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text + " Menu";
-                        LoadMenu("MenuConfirm");
-                        break;
+                            currentMenu = menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text + " Menu";
+                            LoadMenu("MenuConfirm");
+                            break;
 
-                    case "Stock":
-                        lastMenuEntered[lastMove] = currentMenu;
-                        lastMove++;
-                        currentMenu = menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text + " Menu";
-                        GameObject.Find(currentMenu).GetComponent<Canvas>().enabled = true;
+                        case "Stock":
+                            Debug.Log("Stock");
+                            highlighter[0].transform.position = new Vector3(-720.4601f, 531.5f, 0);
+                            selectedHighlighter = 2;
+                            lastMenuEntered[lastMove] = currentMenu;
+                            lastMove++;
 
-                        
-                        break;
+                            currentMenu = menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text + " Menu";
+                            LoadMenu("MenuConfirm");
+                            break;
+                    }
+
+                    menuTitle.GetComponentInChildren<Text>().text = currentMenu;
+                    if (game.isGamepad)
+                    {
+                        selectedItem = 0;
+                    }
+                    else
+                    {
+                        selectedItem = -100;
+                    }
+
                 }
-                Debug.Log("I got this far at " + currentMenu);
-                menuTitle.GetComponentInChildren<Text>().text = currentMenu;
-                if (game.isGamepad)
-                {
-                    selectedItem = 0;
-                }
-                else
-                {
-                    selectedItem = -100;
-                }
-
             }
         }
     }

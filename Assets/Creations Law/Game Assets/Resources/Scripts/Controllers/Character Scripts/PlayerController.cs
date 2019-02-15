@@ -441,7 +441,7 @@ namespace PlayerPackage
             {
                 actionText = "-";
             }
-            FindObjectOfType<MenuChooser>().menuItems[6].GetComponentInChildren<Text>().text = actionText;
+            //FindObjectOfType<MenuChooser>().menuItems[6].GetComponentInChildren<Text>().text = actionText;
         }
     }
 
@@ -593,7 +593,17 @@ namespace PlayerPackage
             }
             player.height = 2;
             player.radius = 0.5f;
-            player.center = new Vector3(0, 1.1f, 0);
+            switch(name)
+            {
+                case "Scarf":
+                    player.center = new Vector3(0, 1.1f, 0);
+                    break;
+
+                case "ClownFace":
+                    player.center = new Vector3(0, -0.5f, 0);
+                    break;
+            }
+            
             #endregion
         }
         #region Variables

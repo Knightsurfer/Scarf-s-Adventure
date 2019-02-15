@@ -27,9 +27,6 @@ namespace GameHandler
 
     public class PlayerInventory : PlayerHandler
     {
-
-
-
         #region singleton
         public GameObject userInterface;
         public static PlayerInventory instance;
@@ -60,6 +57,10 @@ namespace GameHandler
         readonly int space = 10;
 
         public List<Item> items = new List<Item>();
+
+        public GameObject slotAdd;
+        GameObject newItem;
+        public Transform inventoryBox;
 
 
         public bool Add(Item item)
@@ -93,9 +94,21 @@ namespace GameHandler
                 }
                 itemAmount[i]++;
                 items.Add(item);
+                newItem = Instantiate(slotAdd, inventoryBox);
 
-
-
+                int objects = 0;
+                foreach (MouseMenu menuItem in GameObject.Find("Pause Menu").GetComponent<MenuChooser>().menuItems)
+                {
+                    if (menuItem != null)
+                    {
+                        objects++;
+                    }
+                }
+                GameObject.Find("Pause Menu").GetComponent<MenuChooser>().menuItems[objects] = newItem.GetComponent<MouseMenu>();
+                newItem.GetComponentInChildren<Text>().text = item.name + ": " + itemAmount[i];
+                newItem.name = itemNames[i];
+                
+                
 
 
 

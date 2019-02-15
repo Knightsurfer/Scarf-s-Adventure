@@ -18,6 +18,8 @@ using UnityEngine.SceneManagement;
 
 public class MenuChooser : SavePackage.SaveMenu
 {
+
+
     /// <summary>
     /// Checks which menu this is and sets the relevant variables.
     /// </summary>
@@ -47,26 +49,29 @@ public class MenuChooser : SavePackage.SaveMenu
     private void Update()
     {
         UIUpdate();
-        switch (currentMenuType)
         {
-            default:
-                break;
+            switch (currentMenuType)
+            {
 
-            case "Save Menu":
-                if (menuActivator)
-                {
-                    menuActivator = false;
-                }
-                SaveUpdate();
-                break;
+                default:
+                    break;
 
-            case "Pause Menu":
-                menuActivator = game.button_Start;
-                PauseUpdate();
-                break;
+                case "Save Menu":
+                    if (menuActivator)
+                    {
+                        menuActivator = false;
+                    }
+                    SaveUpdate();
+                    break;
 
-            case "Command Controller":
-                break;
+                case "Pause Menu":
+                    menuActivator = game.button_Start;
+                    PauseUpdate();
+                    break;
+
+                case "Command Controller":
+                    break;
+            }
         }
     }
 }
@@ -121,16 +126,24 @@ namespace PausePackage
         }
         protected virtual void PauseUpdate()
         {
-            
-            PauseMenus();
+                    PauseMenus();
         }
-        protected void PauseMenus()
+
+        protected void InventoryMenu()
         {
             if (menuOpen)
             {
-                UpDownHandler();
-                MenuScroller(0, menuItemsCounted);
+                HighlightPos();
+            }
+        }
 
+    protected void PauseMenus()
+        {
+            if (menuOpen)
+            {
+                UpDownHandler();  
+                MenuScroller(0, menuItemsCounted);
+                
                 HighlightPos();
 
                 ConfirmMenu();
@@ -206,6 +219,10 @@ namespace UI
                 {
                     highlighter[1] = button.GetComponent<Image>();
                 }
+                if (button.name == "Highlight3")
+                {
+                    highlighter[2] = button.GetComponent<Image>();
+                }
             }
         }
 
@@ -243,6 +260,10 @@ namespace UI
             if (!menuChooser[0].menuOpen && !menuChooser[1].menuOpen)
             {
                 paused = false;
+            }
+            if(!menuOpen && menuActivator)
+            {
+                MenuItemsCount();
             }
         }
 
@@ -335,12 +356,13 @@ namespace UI
         /// </summary>
         protected virtual void ConfirmMenu()
         {
+            
             if (game.button_Attack)
             {
                 if (selectedItem >= 0 && selectedItem <= menuItemsCurrentContext.Length - 2 && selectedItem != -100)
                 {
                     menuTitle.transform.localPosition = menuTitlePos[1];
-                    switch (menuItems[selectedItem].GetComponentInChildren<Text>().text)
+                    switch (menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text)
                     {
                         default:
                             lastMenuEntered[lastMove] = currentMenu;
@@ -758,7 +780,7 @@ namespace UI
         /// <summary>
         /// Which highlighter to use.
         /// </summary>
-        protected int selectedHighlighter;
+        public int selectedHighlighter;
 
         /// <summary>
         /// The amount of menu items counted.
@@ -775,7 +797,7 @@ namespace UI
         /// <summary>
         /// The highlighter objects that will move when navigating menus.
         /// </summary>
-        protected Image[] highlighter = new Image[2];
+        public Image[] highlighter = new Image[3];
 
         /// <summary>
         /// Stores information on the relevant menu items.
