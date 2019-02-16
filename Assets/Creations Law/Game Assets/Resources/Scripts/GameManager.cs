@@ -10,6 +10,7 @@ public class GameManager : GameHandler.PlayerInventory
 {
     private void Start()
     {
+        inventoryBox = GameObject.Find("Inventory Box").transform;
         PlayerDetector();
     }
 
@@ -28,7 +29,7 @@ namespace GameHandler
     public class PlayerInventory : PlayerHandler
     {
         #region singleton
-        public GameObject userInterface;
+        protected GameObject userInterface;
         public static PlayerInventory instance;
         private void Awake()
         {
@@ -44,7 +45,7 @@ namespace GameHandler
         #endregion
 
         #region Items
-        public string[] itemNames = { "Key", "Potion" };
+        [HideInInspector]public string[] itemNames = { "Key", "Potion" };
         public int[] itemAmount = new int[2];
         #endregion
 
@@ -56,11 +57,11 @@ namespace GameHandler
 
         readonly int space = 10;
 
-        public List<Item> items = new List<Item>();
+        [HideInInspector]public List<Item> items = new List<Item>();
 
         public GameObject slotAdd;
         GameObject newItem;
-        public Transform inventoryBox;
+        
 
 
         public bool Add(Item item)
@@ -166,13 +167,12 @@ namespace GameHandler
     public class Variables : KnightsControls.Gamepad
     {
         #region Characters
-        public PlayerController[] player = { };
-        public BotReciever[] bot = { };
+        [HideInInspector]public PlayerController[] player = { };
+        [HideInInspector]public BotReciever[] bot = { };
+        protected Transform inventoryBox;
         #endregion
 
         #region Inventory
-        public int keys;
-        public int potions;
         #endregion
     }
 }

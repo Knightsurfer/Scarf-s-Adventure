@@ -50,7 +50,7 @@ public class Interactable : Interactive.I_Door
                 if (hasInteracted)
                 {
 
-                    if (locked && game.keys < requiredAmount)
+                    if (locked && game.itemAmount[0] < requiredAmount)
                     {
                         if (game.button_Action)
                         {

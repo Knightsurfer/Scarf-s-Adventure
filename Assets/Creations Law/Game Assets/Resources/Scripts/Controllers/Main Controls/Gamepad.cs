@@ -28,7 +28,7 @@ namespace KnightsControls
         public string controller;
         [HideInInspector] public bool isGamepad;
         protected string selectedController;
-        public string[] currentControllers = new string[] { };
+        [HideInInspector]public string[] currentControllers = new string[] { };
 
         #endregion
 

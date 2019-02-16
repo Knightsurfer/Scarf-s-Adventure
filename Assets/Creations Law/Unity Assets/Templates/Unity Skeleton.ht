@@ -6,7 +6,7 @@ HumanTemplate:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Human Template
+  m_Name: Unity Skeleton
   m_BoneTemplate:
     Head: Head
     Hips: Hips

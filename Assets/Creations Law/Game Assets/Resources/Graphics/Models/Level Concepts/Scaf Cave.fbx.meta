@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: b28819796d18afa4aa25ad6fe0d517ad
+guid: 856e47dde48e0b5488404a4c9abd3b77
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
-    100000: initialShadingGroup_Mesh2
-    100002: //RootNode
-    400000: initialShadingGroup_Mesh2
-    400002: //RootNode
-    2100000: initialShadingGroup_Mesh2Mat
-    2300000: initialShadingGroup_Mesh2
-    3300000: initialShadingGroup_Mesh2
-    4300000: initialShadingGroup_Mesh2
+    100000: //RootNode
+    100002: pasted__pPlane1
+    400000: //RootNode
+    400002: pasted__pPlane1
+    2100000: lambert2
+    2300000: pasted__pPlane1
+    3300000: pasted__pPlane1
+    4300000: pasted__pPlane1
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -42,7 +42,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 2000
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1

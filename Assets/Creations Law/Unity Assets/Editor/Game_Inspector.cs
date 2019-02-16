@@ -50,7 +50,7 @@ public class Viewer_GameManager : Editor
         people = FindObjectsOfType<PlayerController>();
         bots = FindObjectsOfType<BotReciever>();
         #endregion
-        defaultView = GUILayout.Toolbar(defaultView, new[] { "Controller Test", "Game Settings", "Party", "Inventory" });
+        defaultView = GUILayout.Toolbar(defaultView, new[] { "Controller Test", /*"Game Settings",*/ "Party", "Inventory" });
         switch (defaultView)
         {
             case 0:
@@ -60,21 +60,21 @@ public class Viewer_GameManager : Editor
                 inventory = false;
                 break;
 
-            case 1:
-                party = false;
-                settings = true;
-                controllerTest = false;
-                inventory = false;
-                break;
+            //case 1:
+            //    party = false;
+            //    settings = true;
+            //    controllerTest = false;
+            //    inventory = false;
+            //    break;
 
-            case 2:
+            case 1:
                 party = true;
                 settings = false;
                 controllerTest = false;
                 inventory = false;
                 break;
 
-            case 3:
+            case 2:
                 party = false;
                 settings = false;
                 controllerTest = false;
@@ -89,7 +89,8 @@ public class Viewer_GameManager : Editor
     public override void OnInspectorGUI()
     {
         Init();
-        BaseStats();
+        Inspector();
+        //BaseStats();
     }
     private void BaseStats()
     {
@@ -343,10 +344,18 @@ public class Viewer_GameManager : Editor
     {
         if(inventory)
         {
-            GUILayout.Label("Inventory", GUILayout.Width(80));
             GUILayout.BeginVertical("In BigTitle");
-            GUILayout.Label("Keys: " + unit.itemAmount[0]);
-            GUILayout.Label("Potions: " + unit.itemAmount[1]);
+
+            int i = 0;
+            foreach(string names in unit.itemNames)
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label(unit.itemNames[i] + ": ", GUILayout.Width(80));
+                unit.itemAmount[i] = EditorGUILayout.IntField(unit.itemAmount[i]);
+                GUILayout.EndHorizontal();
+                i++;
+            }
+            
             GUILayout.EndVertical();
         }
     }
