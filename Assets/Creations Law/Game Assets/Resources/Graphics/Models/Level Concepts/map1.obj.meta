@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 9632718fa363fc24b9026b9f35018e28
 labels:
-- Wall
+- Terrain
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:

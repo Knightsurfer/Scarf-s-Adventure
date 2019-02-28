@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea575c7cc585e324fa660766ed5e3402, type: 3}
+  m_Name: Scarf
+  m_EditorClassIdentifier: 
+  portrait: {fileID: 21300004, guid: 03c3c9bb4f5b25548882d7aa78337b20, type: 3}
+  mesh: {fileID: 4300000, guid: 248ccfb1c2bbb50458a0fb95de6731cb, type: 3}
+  material: {fileID: 2100000, guid: 68aa238e87c9d504fb3a5fa7bde46a17, type: 2}

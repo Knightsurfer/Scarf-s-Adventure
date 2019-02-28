@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: 856e47dde48e0b5488404a4c9abd3b77
+labels:
+- Terrain
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -11,7 +13,12 @@ ModelImporter:
     2300000: pasted__pPlane1
     3300000: pasted__pPlane1
     4300000: pasted__pPlane1
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert2
+    second: {fileID: 2100000, guid: 2fc4113a076e2864cb6c0598b34fd528, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

@@ -1,0 +1,201 @@
+fileFormatVersion: 2
+guid: 248ccfb1c2bbb50458a0fb95de6731cb
+labels:
+- Character
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Armature
+    100002: Bottom
+    100004: Cloak
+    100006: Hair
+    100008: Hat
+    100010: Head
+    100012: HeadBand
+    100014: Hips
+    100016: LeftFoot
+    100018: LeftHand
+    100020: LeftIndex
+    100022: LeftLittle
+    100024: LeftLowerArm
+    100026: LeftLowerLeg
+    100028: LeftMiddle
+    100030: LeftRing
+    100032: LeftThumb
+    100034: LeftToes
+    100036: LeftUpperArm
+    100038: LeftUpperLeg
+    100040: Neck
+    100042: Necklace
+    100044: RightFoot
+    100046: RightHand
+    100048: RightIndex
+    100050: RightLittle
+    100052: RightLowerArm
+    100054: RightlowerLeg
+    100056: RightMiddle
+    100058: RightRing
+    100060: RightThumb
+    100062: RightToes
+    100064: RightUpperArm
+    100066: RightUpperLeg
+    100068: Scarf
+    100070: //RootNode
+    100072: Spine
+    100074: Tail0
+    100076: Tail1
+    100078: Tail2
+    100080: Tail3
+    100082: TailBase
+    400000: Armature
+    400002: Bottom
+    400004: Cloak
+    400006: Hair
+    400008: Hat
+    400010: Head
+    400012: HeadBand
+    400014: Hips
+    400016: LeftFoot
+    400018: LeftHand
+    400020: LeftIndex
+    400022: LeftLittle
+    400024: LeftLowerArm
+    400026: LeftLowerLeg
+    400028: LeftMiddle
+    400030: LeftRing
+    400032: LeftThumb
+    400034: LeftToes
+    400036: LeftUpperArm
+    400038: LeftUpperLeg
+    400040: Neck
+    400042: Necklace
+    400044: RightFoot
+    400046: RightHand
+    400048: RightIndex
+    400050: RightLittle
+    400052: RightLowerArm
+    400054: RightlowerLeg
+    400056: RightMiddle
+    400058: RightRing
+    400060: RightThumb
+    400062: RightToes
+    400064: RightUpperArm
+    400066: RightUpperLeg
+    400068: Scarf
+    400070: //RootNode
+    400072: Spine
+    400074: Tail0
+    400076: Tail1
+    400078: Tail2
+    400080: Tail3
+    400082: TailBase
+    2100000: Skin
+    2100002: lambert1
+    2100004: phong1
+    4300000: Scarf
+    4300002: Cloak
+    4300004: Hair
+    4300006: Hat
+    4300008: HeadBand
+    4300010: Necklace
+    7400000: Default Take
+    7400002: Anthro_Idle
+    7400004: Anthro_TPose
+    9500000: //RootNode
+    13700000: Cloak
+    13700002: Hair
+    13700004: Hat
+    13700006: HeadBand
+    13700008: Necklace
+    13700010: Scarf
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Skin
+    second: {fileID: 2100000, guid: 68aa238e87c9d504fb3a5fa7bde46a17, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 1
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

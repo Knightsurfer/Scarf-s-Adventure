@@ -71,12 +71,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Skin
-    second: {fileID: 2100000, guid: f12a68595c57b6441be1582e60fee4cd, type: 2}
+    second: {fileID: 2100000, guid: 68aa238e87c9d504fb3a5fa7bde46a17, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: unnamed
-    second: {fileID: 2100000, guid: 2def26efed470754d90261bb3a7b8788, type: 2}
+    second: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   materials:
     importMaterials: 1
     materialName: 0

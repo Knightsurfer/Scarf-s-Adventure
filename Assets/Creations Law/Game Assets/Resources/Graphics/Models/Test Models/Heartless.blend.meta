@@ -62,7 +62,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: initialShadingGroup
-    second: {fileID: 2100000, guid: 5360e6fa92db3f1449ffe979aa1dd0d7, type: 2}
+    second: {fileID: 2100000, guid: d0f7070da69976e4c9281225a05a5152, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -124,7 +124,7 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  importAnimation: 1
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2
