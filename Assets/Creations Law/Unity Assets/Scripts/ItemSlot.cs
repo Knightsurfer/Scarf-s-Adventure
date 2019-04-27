@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class ItemSlot : MonoBehaviour
 {
     public Image icon;
-    Item item;
+    _Item item;
 
-    public void AddItem(Item newItem)
+    public void AddItem(_Item newItem)
     {
         item = newItem;
         icon.sprite = item.icon;

@@ -1,8 +1,4 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-
-
-//||=================================||
+﻿//||=================================||
 //||                                                                          ||
 //||            CINEMA SCRIPTS                                     ||
 //||                                                                          ||
@@ -12,6 +8,11 @@ using UnityEngine.UI;
 //||    Ingame Cinematics are programmed here.         ||            
 //||                                                                          ||
 //||=================================||
+
+
+using UnityEngine;
+using UnityEngine.UI;
+
 
 public class Cinema_Script : Cinema.Variables
 {

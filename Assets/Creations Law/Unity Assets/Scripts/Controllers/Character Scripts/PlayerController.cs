@@ -12,14 +12,14 @@ public class PlayerController : PlayerPackage.PartyHandler
     {
         VariablesStart();
         StartingVariables();
-        InteractStart();
+     
     }
     private void Update()
     {
         LevelBounds();
         CameraAdjust();
         PartySwitcher();
-        InteractUpdate();
+      
         MovePlayer();
         Actions();
     }
@@ -28,6 +28,24 @@ public class PlayerController : PlayerPackage.PartyHandler
         CameraRotator();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /// <summary>
 /// All the scripts that handle the character being played as.
 /// </summary>
@@ -69,6 +87,7 @@ namespace PlayerPackage
         }
     }
 
+    #region Empty Classes
     /// <summary>
     /// (Currently Empty)
     /// </summary>
@@ -99,19 +118,12 @@ namespace PlayerPackage
     /// </summary>
     public class PlayerInteract : PlayerMovement
     {
-        protected void InteractStart()
-        {
-
-        }
-        protected void InteractUpdate()
-        {
-
-        }
-        protected void ButtonPrompt()
+         protected void ButtonPrompt()
         {
             //buttonPrompt.transform.LookAt(cam.transform.position);
         }
     }
+    #endregion
 
     /// <summary>
     /// Handles which state the character should be in.
@@ -229,26 +241,26 @@ namespace PlayerPackage
         {
             if (interaction != null)
             {
-                Interactable entity = interaction.GetComponentInParent<Interactable>();
-
-                if (entity)
+                if(interaction.GetComponentInParent<Interactable>())
                 {
-                    
-                    switch (entity.type)
-                    {
-                        default:
-                            SetFocus(entity);
-                            break;
+                    Interactable entity = interaction.GetComponentInParent<Interactable>();
 
-                        case "Item":
-                            if (interaction != null)
-                            {
-                                
+                    if (entity)
+                    {
+                        switch (entity.type)
+                        {
+                            default:
                                 SetFocus(entity);
-                                interaction.transform.parent.SendMessage("Item");
-                                
-                            }
-                            break;
+                                break;
+
+                            case "Item":
+                                if (interaction != null)
+                                {
+                                    SetFocus(entity);
+                                    interaction.transform.parent.SendMessage("Item");
+                                }
+                                break;
+                        }
                     }
                 }
             }
@@ -285,26 +297,29 @@ namespace PlayerPackage
         {
             if (interaction != null)
             {
-                Interactable entity = interaction.GetComponentInParent<Interactable>();
-                if (entity)
+                if(interaction.GetComponentInParent<Interactable>())
                 {
-                    switch (entity.type)
+                    Interactable entity = interaction.GetComponentInParent<Interactable>();
+                    if (entity)
                     {
-                        default:
-                            RemoveFocus();
-                            break;
+                        switch (entity.type)
+                        {
+                            default:
+                                RemoveFocus();
+                                break;
 
-                    }
-                    switch (interaction.tag)
-                    {
-                        case "NPC":
-                            buttonPrompt.transform.position = new Vector3();
-                            break;
+                        }
+                        switch (interaction.tag)
+                        {
+                            case "NPC":
+                                buttonPrompt.transform.position = new Vector3();
+                                break;
+                        }
                     }
                 }
             }
         }
-
+        
         /// <summary>
         /// Brings the script attached to the object the player collided with into focus.
         /// </summary>
@@ -312,7 +327,6 @@ namespace PlayerPackage
         private void SetFocus(Interactable newFocus)
         {
             focus = newFocus;
-
             switch (focus.type)
             {
                 default:
@@ -321,7 +335,6 @@ namespace PlayerPackage
 
                 case "Door":
                     break;
-
 
                 case "Chest":
                     break;
@@ -336,12 +349,9 @@ namespace PlayerPackage
             if (focus)
             {
                 focus.hasInteracted = false;
-                if (focus.type == "Door")
-                {
-                    //focus.SendMessage("DoorClose");
-                }
                 focus = null;
             }
+
         }
     }
 
@@ -395,24 +405,50 @@ namespace PlayerPackage
         {
             if (focus != null)
             {
-                if (button)
-                {
+                
                     switch (focus.type)
                     {
                         case "Chest":
+                        if (button)
+                        {
                             focus.hasInteracted = !focus.hasInteracted;
+                        }
                             break;
 
                         case "Door":
+                        if (button)
+                        {
                             focus.hasInteracted = true;
+                        }
                             break;
 
                         case "Save Point":
+                        if (button)
+                        {
                             focus.hasInteracted = true;
+                        }
                             break;
-                    }
+
+                    case "Actor":
+                        if (!focus.currentlyActing && button)
+                        {
+                            focus.Script_Handler();
+                        }
+                        else if (focus.currentlyActing && game.button_Attack)
+                        {
+                            focus.Script_Handler();
+                        }
+                        break;
+
                 }
+                   
+                
+
+                
+                
             }
+
+
         }
 
         /// <summary>
@@ -557,7 +593,7 @@ namespace PlayerPackage
         {
             if (transform.localPosition.y < -15)
             {
-                transform.position = GameObject.Find("Player 1").transform.position;
+                transform.position = transform.parent.transform.position;
                 health -= 45;
             }
         }
@@ -568,26 +604,41 @@ namespace PlayerPackage
     /// </summary>
     public class Variables : MonoBehaviour
     {
-        public Character playerInfo;
+
+        protected void AssignPlayer()
+        {
+            GameObject playerPrefab;
+            playerPrefab = Instantiate(playerInfo.prefab, this.transform);
+            anim = playerPrefab.GetComponent<Animator>();
+
+            Destroy(GetComponent<MeshFilter>());
+            Destroy(GetComponent<MeshRenderer>());
+
+        }
+
+        /// <summary>
+        /// Camera and player rotation.
+        /// </summary>
+        protected void CameraSetup()
+        {
+            lookObject = GameObject.Find("Look Object").transform;
+            skeleton = GetComponentInChildren<SkinnedMeshRenderer>().transform;
+            offset = transform.position - cam.position;
+        }
+
         protected void VariablesStart()
         {
+            AssignPlayer();
+
             pause = FindObjectOfType<MenuChooser>();
             cam = UnityEngine.Camera.main.transform;
-            anim = GetComponent<Animator>();
             game = FindObjectOfType<GameManager>();
 
             buttonPrompt = GameObject.Find("Prompt");
 
 
-            GetComponentInChildren<SkinnedMeshRenderer>().sharedMesh = playerInfo.mesh;
-            GetComponentInChildren<SkinnedMeshRenderer>().sharedMaterial = playerInfo.material;
-            //GetComponent<Animator>().runtimeAnimatorController = playerFlesh.anim;
-
-            
             #region Camera and player rotation 
-            lookObject = GameObject.Find("Look Object").transform;
-            skeleton = GetComponentInChildren<SkinnedMeshRenderer>().transform;
-            offset = transform.position - cam.position;
+            CameraSetup();
             #endregion
             #region Character controller settings.
             if (GetComponent<CharacterController>())
@@ -617,9 +668,11 @@ namespace PlayerPackage
         /// </summary>
         [HideInInspector] public int magicMax = 100;
         /// <summary>
-        /// The current amount of exp the character has.
+        /// The current level the character is at.
         /// </summary>
-        [HideInInspector] protected int exp;
+        [HideInInspector] public int level = 1;
+
+        
 
         /// <summary>
         /// The current amount of magic the character has.
@@ -630,9 +683,9 @@ namespace PlayerPackage
         /// </summary>
         [HideInInspector] public int health = 70;
         /// <summary>
-        /// The current level the character is at.
+        /// The current amount of exp the character has.
         /// </summary>
-        [HideInInspector] public int level = 1;
+        [HideInInspector] protected int exp;
         #endregion
         #region Modes
         /// <summary>
@@ -727,6 +780,11 @@ namespace PlayerPackage
         /// The component that moves the player around, handles the collisions and also creates gravity.
         /// </summary>
         [HideInInspector] public CharacterController player;
+
+        /// <summary>
+        /// Holds the prefab used to spawn the player model.
+        /// </summary>
+        public _Character playerInfo;
         #endregion
         #region Rotation Math
         #region Rotation
@@ -787,7 +845,8 @@ namespace PlayerPackage
         /// <summary>
         /// The interactable object that is currently in focus.
         /// </summary>
-        [HideInInspector] public Interactable focus;
+         public Interactable focus;
+
 
         /// <summary>
         /// When an action can be called this button object will hover next to the object in question.

@@ -19,7 +19,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuChooser : SavePackage.SaveMenu
 {
-    bool usesBackdrop;
+    
 
     /// <summary>
     /// Checks which menu this is and sets the relevant variables.
@@ -74,7 +74,17 @@ public class MenuChooser : SavePackage.SaveMenu
         }
         else
         {
-            CommandUpdate();
+            switch(name)
+            {
+                default:
+                    print("Undefined Menu Type");
+                    break;
+
+                case "Command Menu":
+                    CommandUpdate();
+                    break;
+            }
+            
         }
     }
 }
@@ -95,6 +105,10 @@ namespace SavePackage
         }
         protected void SaveUpdate()
         {
+            if(game.paused && menuOpen && game.button_Start)
+            {
+                game.paused = false;
+            }
             SaveMenus();
         }
         protected void SaveMenus()
@@ -111,16 +125,23 @@ namespace PausePackage
 {
     public class PauseMenu : CommandPackage.CommandMenu
     {
-        /// <summary>
-        /// (Currently Empty)
-        /// </summary>
         protected void PauseStart()
         {
 
         }
         protected virtual void PauseUpdate()
         {
-          PauseMenus();
+            if (menuActivator && !menuOpen)
+            {
+                CharacterStatsUpdate();
+            }
+            else if (menuActivator && menuOpen)
+            {
+                selectedHighlighter = 0;
+                highlighter[1].transform.position = new Vector3(-603, 635, 0);
+                highlighter[2].transform.position = new Vector3(-603, 635, 0);
+            }
+            PauseMenus();
         }
         protected void InventoryMenu()
         {
@@ -134,6 +155,135 @@ namespace PausePackage
             if (GameObject.Find("Character Status"))
             {
                 GameObject.Find("Character Status").GetComponent<Canvas>().enabled = menuOpen;
+            }
+        }
+
+        protected override void ConfirmMenu()
+        {
+            if (game.button_Attack)
+            {
+                if (currentMenu == "Level Select Menu")
+                {
+                    menuOpen = false;
+                    GameObject.Find("Menu Backdrop").GetComponent<Canvas>().enabled = menuOpen;         
+                    SceneManager.LoadScene(menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text);
+
+                    if (menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text == "Quit Game")
+                    {
+                        Application.Quit();
+                    }
+                    selectedItem = 0;
+                }
+                
+                if (selectedItem >= 0 && selectedItem <= menuItemsCurrentContext.Length - 2 && selectedItem != -100)
+                    {
+                        menuTitle.transform.localPosition = menuTitlePos[1];
+                        switch (menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text)
+                        {
+                            default:
+                                //Debug.Log("Test");
+                                lastMenuEntered[lastMove] = currentMenu;
+                                lastMove++;
+
+                                currentMenu = menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text + " Menu";
+                                LoadMenu("MenuConfirm");
+                                break;
+
+                            case "Save":
+                                highlighter[0].transform.position = new Vector3(-720.4601f, 531.5f, 0);
+                                selectedHighlighter = 1;
+                                lastMenuEntered[lastMove] = currentMenu;
+                                lastMove++;
+
+                                currentMenu = menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text + " Menu";
+                                LoadMenu("MenuConfirm");
+                                break;
+
+                            case "Stock":
+                                //Debug.Log("Stock");
+                                highlighter[0].transform.position = new Vector3(-720.4601f, 531.5f, 0);
+                                selectedHighlighter = 2;
+                                lastMenuEntered[lastMove] = currentMenu;
+                                lastMove++;
+
+                                currentMenu = menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text + " Menu";
+                                LoadMenu("MenuConfirm");
+                                break;
+
+                        }
+
+                        menuTitle.GetComponentInChildren<Text>().text = currentMenu;
+                        if (game.isGamepad)
+                        {
+                            selectedItem = 0;
+                        }
+                        else
+                        {
+                            selectedItem = -100;
+                        }
+
+                    }
+                
+            }
+        }
+
+        protected override void CancelMenu()
+        {
+            if (game.button_Jump)
+            {
+                if (game.isGamepad)
+                {
+                    selectedItem = 0;
+                }
+                else
+                {
+                    selectedItem = -100;
+                }
+                switch (currentMenu)
+                {
+                    case "Main Menu":
+                        menuOpen = false;
+                        game.paused = menuOpen;
+                        GameObject.Find("Menu Backdrop").GetComponent<Canvas>().enabled = menuOpen;
+                        break;
+
+                    case "Save Menu":
+                        lastMove--;
+                        selectedHighlighter = 0;
+                        highlighter[1].transform.position = new Vector3(-603, 635, 0);
+                        currentMenu = lastMenuEntered[lastMove];
+                        DisableMenuItems("MenuConfirm");
+                        MenuItemsCountRelevant();
+                        break;
+
+                    case "Stock Menu":
+                        lastMove--;
+                        selectedHighlighter = 0;
+                        highlighter[2].transform.position = new Vector3(-603, 635, 0);
+                        currentMenu = lastMenuEntered[lastMove];
+                        DisableMenuItems("MenuConfirm");
+                        MenuItemsCountRelevant();
+                        break;
+
+
+
+                    default:
+                        lastMove--;
+                        currentMenu = lastMenuEntered[lastMove];
+                        DisableMenuItems("MenuConfirm");
+                        MenuItemsCountRelevant();
+                        break;
+
+                }
+                if (currentMenu != "Main Menu")
+                {
+                    menuTitle.transform.localPosition = menuTitlePos[1];
+                }
+                else
+                {
+                    menuTitle.transform.localPosition = menuTitlePos[0];
+                }
+                menuTitle.GetComponentInChildren<Text>().text = currentMenu;
             }
         }
 
@@ -318,23 +468,14 @@ namespace UI
         /// </summary>
         protected void Pause()
         {
+            paused = menuOpen;
             foreach (Animator anim in FindObjectsOfType<Animator>())
             {
-                anim.enabled = !paused;
+                anim.enabled = !game.paused;
             }
             foreach (PlayerController player in game.player)
             {
-                player.enabled = !paused;
-            }
-
-            if (menuChooser[0].menuOpen || menuChooser[1].menuOpen)
-            {
-                paused = true;
-
-            }
-            if (!menuChooser[0].menuOpen && !menuChooser[1].menuOpen)
-            {
-                paused = false;
+                player.enabled = !game.paused;
             }
             if(!menuOpen && menuActivator)
             {
@@ -491,6 +632,7 @@ namespace UI
                 {
                     case "Main Menu":
                         menuOpen = false;
+                        game.paused = menuOpen;
                         GameObject.Find("Menu Backdrop").GetComponent<Canvas>().enabled = menuOpen;
                         break;
 
@@ -537,7 +679,27 @@ namespace UI
         protected void OpenMenu()
         {
             currentMenu = "Main Menu";
-            menuOpen = !menuOpen;
+            switch (name)
+            {
+                case "Save Menu":
+                    menuOpen = !menuOpen;
+                    game.paused = menuOpen;
+                    break;
+
+                case "Pause Menu":
+                    if(!menuOpen && !game.paused)
+                    {
+                        game.paused = true;
+                        menuOpen = !menuOpen;
+                    }
+                    else if(menuOpen && game.paused)
+                    {
+                        menuOpen = !menuOpen;
+                        game.paused = false;
+                    }
+                    break;
+            }
+            
             GameObject.Find("Menu Backdrop").GetComponent<Canvas>().enabled = menuOpen;
 
             GetComponent<Canvas>().enabled = menuOpen;
@@ -798,6 +960,8 @@ namespace UI
         #region Common Variables
         #region Variables
         #region Bools
+        protected bool usesBackdrop;
+
         /// <summary>
         /// The trigger for the menu opening.
         /// </summary>
@@ -809,7 +973,7 @@ namespace UI
         protected bool menuOpen;
 
         /// <summary>
-        /// If all menus are closed, then this will return false.
+        /// If the current menu is closed, then this will return false.
         /// </summary>
         public bool paused;
 

@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI;
-
-//###################################//
+﻿//###################################//
 //                                                                              //
 //            NPC SCRIPTS                                             //
 //                                                                            //
@@ -16,13 +11,18 @@ using UnityEngine.AI;
 //                                                                    //
 /////////////////////////////////////////////////////////
 
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+
 public class SpriteAI : MonoBehaviour
 {
     public int remainingDistance;
     public bool triggered;
     public int phase;
     NavMeshAgent nav;
-
     
     void Start ()
     {
