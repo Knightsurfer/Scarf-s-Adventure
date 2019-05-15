@@ -172,7 +172,17 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: None__Character_Skin_png
+    second: {fileID: 2100000, guid: 34815cfdaf1cbd14481b0eb6b2b9f0d2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: None__Cylinder_Floor_png_001
+    second: {fileID: 2100000, guid: 82817c87758309545ad777493abf4c7d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: None__Environment_jpg
     second: {fileID: 2100000, guid: 82817c87758309545ad777493abf4c7d, type: 2}
   - first:
       type: UnityEngine:Material

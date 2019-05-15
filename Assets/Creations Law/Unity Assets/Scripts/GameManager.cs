@@ -24,8 +24,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : Game.Player.Inventory
 {
-    public static GameManager game;
-
+    /// <summary>
+    /// Makes the script consist over multiple scenes.
+    /// </summary>
     private void Awake()
     {
         if(game == null)
@@ -40,20 +41,20 @@ public class GameManager : Game.Player.Inventory
         UISetup();
         
     }
-
     private void Start()
     {
-        inventoryBox = GameObject.Find("Inventory Box").transform;
+        StartingVariables();
         CharacterDetector();
     }
     private void Update()
     {
-        GamepadUpdate();
+        ControllerDetect();
+        ControllerCheck();
+
         FunctionKeys();
         UIUpdate();
     }
 }
-
 namespace Game
 {
     namespace Player
@@ -63,7 +64,6 @@ namespace Game
             //Creates an event when an item is recieved.
             public delegate void OnItemChanged();
             public OnItemChanged onItemChangedCallback;
-
             public bool Add(_Item currentItem)
             {
                 int i = 0;
@@ -115,46 +115,19 @@ namespace Game
         {
             protected void CharacterDetector()
             {
-                PlayerDetector();
-                BotDetector();
-            }
-            protected void PlayerDetector()
-            {
                 player.AddRange(FindObjectsOfType<PlayerController>());
-            }
-            protected void BotDetector()
-            {
-                bot = FindObjectsOfType<BotReciever>();
+                bot.AddRange(FindObjectsOfType<BotReciever>());
             }
         }
     }
     namespace Controller
     {
         /// <summary>
-        /// A startup class that neatly drives the controller class.
-        /// </summary>
-        public class Gamepad : Controller
-        {
-            protected void GamepadUpdate()
-            {
-                ControllerDetect();
-                ControllerCheck();
-            }
-            private void StandaloneUpdate()
-            {
-                GamepadUpdate();
-                if (isTest)
-                {
-                    ControllerInput();
-                }
-            }
-        }
-
-        /// <summary>
         /// Handles all Input and organises it neatly into bools and floats.
         /// </summary>
-        public class Controller : MonoBehaviour
+        public class Gamepad : MonoBehaviour
         {
+            public int scroll = 0;
             public bool isTest;
 
             #region Controllers //Variables for detecting how many controllers there are.
@@ -558,16 +531,8 @@ namespace Game
                     cameraX = 0;
                 }
             }
-            /// <summary>
-            /// Test Funtions (Empty)
-            /// </summary>
-            protected void ControllerInput()
-            {
-
-            }
-            public int scroll = 0;
+            
         }
-
     }
     namespace Misc
     {
@@ -584,11 +549,14 @@ namespace Game
             public AudioClip[] Music = new AudioClip[] { };
             private void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
             {
-
-                GetComponent<AudioSource>().clip = Music[SceneManager.GetActiveScene().buildIndex];
+                Start(scene, mode);
+            }
+            private void Start(Scene scene, LoadSceneMode mode)
+            {
+                GetComponent<AudioSource>().clip = Music[scene.buildIndex];
                 GetComponent<AudioSource>().Play();
                 player.Clear();
-                Array.Clear(bot, 0, bot.Length);
+                bot.Clear();
             }
         }
 
@@ -610,23 +578,19 @@ namespace Game
                 }
             }
         }
-
     }
     namespace UI
     {
         public class Dialogue_Manager : Variables
         {
-
             public Text actorName;
             public Text dialogueText;
             public Canvas dialogueBox;
             public Image actorPortrait;
             public int currentPage;
 
-            bool dialogueShowing = true;
             protected void UISetup()
             {
-                
                 actorName = GameObject.Find("ActorName").GetComponent<Text>();
                 dialogueText = GameObject.Find("SpeechText").GetComponent<Text>();
                 dialogueBox = GameObject.Find("Text Box").GetComponent<Canvas>();
@@ -649,14 +613,20 @@ namespace Game
     
     public class Variables : Controller.Gamepad
     {
-        
-        float offset = 0;
-        float scrollspeed = 0;
+        protected void StartingVariables()
+        {
+            inventoryBox = GameObject.Find("Inventory Box").transform;
+        }
+        public int startMusic;
+        protected static GameManager game;
 
-        public int BGM;
-        public int SFX;
-        public int Voices;
-
+        public List<bool> openMenus = new List<bool>(3);
+        public List<int> sound = new List<int>
+        {
+            0,
+            0,
+            0
+        };
         public List <Sprite> actorPortraits;
 
 
@@ -670,7 +640,7 @@ namespace Game
         /// <summary>
         /// Contains all of the CPU players.
         /// </summary>
-        public BotReciever[] bot = { };
+        public List<BotReciever> bot = new List<BotReciever>();
 
         /// <summary>
         /// A variable that holds the inventory box in the menus.

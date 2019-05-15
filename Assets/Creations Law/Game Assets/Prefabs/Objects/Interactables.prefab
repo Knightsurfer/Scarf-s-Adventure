@@ -177,11 +177,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scriptNo: 0
+  playerInfo: {fileID: 0}
   currentlyActing: 0
   actorPortrait: {fileID: 0}
   scriptType: 
   selectedType: 0
   selectedLocked: 0
+  eventType: 0
   lockRequirement: 0
   selectedItem: 0
   game: {fileID: 0}
@@ -481,11 +483,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scriptNo: 0
+  playerInfo: {fileID: 0}
   currentlyActing: 0
   actorPortrait: {fileID: 0}
   scriptType: 
   selectedType: 0
   selectedLocked: 0
+  eventType: 0
   lockRequirement: 0
   selectedItem: 0
   game: {fileID: 0}
@@ -493,7 +497,7 @@ MonoBehaviour:
   hasInteracted: 0
   anim: {fileID: 0}
   item: {fileID: 11400000, guid: b2fbb80090d211c4bbabb27c1c93b90d, type: 2}
-  obtained: 0
+  obtained: 1
   requiredAmount: 0
   locked: 0
   botOverride: 0
@@ -554,7 +558,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8db7fadeabf382f44b7fc04f62a912ba, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -679,11 +683,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scriptNo: 0
+  playerInfo: {fileID: 0}
   currentlyActing: 0
   actorPortrait: {fileID: 0}
   scriptType: 
   selectedType: 3
   selectedLocked: 0
+  eventType: 0
   lockRequirement: 0
   selectedItem: 0
   game: {fileID: 0}
@@ -753,7 +759,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8db7fadeabf382f44b7fc04f62a912ba, type: 2}
+  - {fileID: 10756, guid: 0000000000000000e000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1174,7 +1180,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8db7fadeabf382f44b7fc04f62a912ba, type: 2}
+  - {fileID: 10756, guid: 0000000000000000e000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1265,7 +1271,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8db7fadeabf382f44b7fc04f62a912ba, type: 2}
+  - {fileID: 10756, guid: 0000000000000000e000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1383,11 +1389,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scriptNo: 0
+  playerInfo: {fileID: 0}
   currentlyActing: 0
   actorPortrait: {fileID: 0}
   scriptType: 
   selectedType: 2
   selectedLocked: 0
+  eventType: 0
   lockRequirement: 0
   selectedItem: 0
   game: {fileID: 0}

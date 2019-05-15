@@ -13,6 +13,7 @@
 
 using UnityEngine;
 using UnityEditor;
+using System.Collections.Generic;
 
 
 
@@ -27,14 +28,10 @@ public class Viewer_GameManager : Editor
     GameManager unit;
     BotReciever[] bots = new BotReciever[] { };
     PlayerController[] people = new PlayerController[] { };
-    #endregion
-    #region Default Layer
-    bool party;
-    bool settings;
-    bool controllerTest;
-    bool inventory;
-    #endregion
-
+    
+    /// <summary>
+    /// Initialise the current selected script of the type to be under this script's scope.
+    /// </summary>
     void Init()
     {
         if (!Initialized)
@@ -43,78 +40,47 @@ public class Viewer_GameManager : Editor
             Initialized = true;
         }
     }
-    protected void Inspector()
-    {
-        #region Find Objects
-        people = FindObjectsOfType<PlayerController>();
-        bots = FindObjectsOfType<BotReciever>();
-        #endregion
-        defaultView = GUILayout.Toolbar(defaultView, new[] { "Controller Test", "Game Settings", "Party", "Inventory" });
-        switch (defaultView)
-        {
-            case 0:
-                party = false;
-                settings = false;
-                controllerTest = true;
-                inventory = false;
-                break;
+    #endregion
 
-            case 1:
-                party = false;
-                settings = true;
-                controllerTest = false;
-                inventory = false;
-                break;
-
-            case 2:
-                party = true;
-                settings = false;
-                controllerTest = false;
-                inventory = false;
-                break;
-                
-
-            case 3:
-                party = false;
-                settings = false;
-                controllerTest = false;
-                inventory = true;
-                break;
-        }
-
-        PartyViewer();
-        SettingsViewer();
-        ControllerViewer();
-        InventoryViewer();
-    }
-    /// <summary>
-    /// Inititialises the script in question onto the inspector 
-    /// and dictates what to display.
-    /// </summary>
     public override void OnInspectorGUI()
-    {
-        BaseStats();
-        Init();
-    }
-
-    /// <summary>
-    /// Used to show the default inspector,
-    /// no longer needed.
-    /// </summary>
-    private void BaseStats()
     {
         debugView = GUILayout.Toolbar(debugView, new[] { "Default", "Debug" }, GUILayout.Height(40));
         switch (debugView)
         {
             case 0:
-                Inspector();
-                break;
+                #region Find Objects
+                people = FindObjectsOfType<PlayerController>();
+                bots = FindObjectsOfType<BotReciever>();
+                #endregion
+                defaultView = GUILayout.Toolbar(defaultView, new[] { "Controller Test", "Game Settings", "Party", "Inventory", "Misc" });
+                switch (defaultView)
+                {
+                    default:
+                        break;
 
+                    case 0:
+                        ControllerViewer();
+                        break;
+
+                    case 1:
+                        SettingsViewer();
+                        break;
+
+                    case 2:
+                        PartyViewer();
+                        break;
+
+                    case 3:
+                        InventoryViewer();
+                        break;
+                }
+                break;
 
             case 1:
                 base.OnInspectorGUI();
                 break;
         }
+        Init();
     }
 
     /// <summary>
@@ -122,9 +88,9 @@ public class Viewer_GameManager : Editor
     /// </summary>
     private void PartyViewer()
     {
-        if (party && people.Length > 0)
+        if (people.Length > 0)
         {
-            foreach (PlayerController player in people)
+            foreach (PlayerController player in FindObjectsOfType<PlayerController>())
             {
                 GUILayout.BeginVertical("In BigTitle");
 
@@ -151,30 +117,30 @@ public class Viewer_GameManager : Editor
 
                 GUILayout.EndVertical();
             }
-            foreach (BotReciever b in bots)
+            foreach (BotReciever bot in  FindObjectsOfType<BotReciever>())
             {
                 GUILayout.BeginVertical("In BigTitle");
 
                 EditorGUILayout.BeginHorizontal();
-                GUILayout.Label(b.playerInfo.name);
+                GUILayout.Label(bot.playerInfo.name + " (BOT)");
                 EditorGUILayout.EndHorizontal();
 
                 EditorGUILayout.Space();
 
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Label("HP: ", GUILayout.Width(70));
-                b.health = EditorGUILayout.IntField(b.health);
+                bot.health = EditorGUILayout.IntField(bot.health);
                 
                 EditorGUILayout.EndHorizontal();
 
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Label("MP: ", GUILayout.Width(70));
-                b.magic = EditorGUILayout.IntField(b.magic);
+                bot.magic = EditorGUILayout.IntField(bot.magic);
                 EditorGUILayout.EndHorizontal();
 
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Label("Level: ", GUILayout.Width(70));
-                b.level = EditorGUILayout.IntField(b.level);
+                bot.level = EditorGUILayout.IntField(bot.level);
                 EditorGUILayout.EndHorizontal();
 
                 GUILayout.EndVertical();
@@ -187,30 +153,60 @@ public class Viewer_GameManager : Editor
     /// </summary>
     private void SettingsViewer()
     {
-        if (settings)
+        
+        List<string> musicNames = new List<string>();
+        foreach (AudioClip audio in unit.Music)
         {
-            GUILayout.BeginVertical("In BigTitle");
-
-            GUILayout.Label("Music ", GUILayout.Width(70));
-            EditorGUILayout.Space();
-
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.Label("BGM: ", GUILayout.Width(70));
-            unit.BGM = EditorGUILayout.IntField(unit.BGM);
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.Label("SFX: ", GUILayout.Width(70));
-            unit.SFX = EditorGUILayout.IntField(unit.SFX);
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.Label("Voices: ", GUILayout.Width(70));
-            unit.Voices = EditorGUILayout.IntField(unit.Voices);
-            EditorGUILayout.EndHorizontal();
-
-            GUILayout.EndVertical();
+            musicNames.Add(audio.name);
         }
+
+        GUILayout.BeginVertical("In BigTitle");
+        GUILayout.Label("SOUND\n-------- ", GUILayout.Width(70));
+
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Music:", GUILayout.Width(70));
+        unit.startMusic = EditorGUILayout.Popup(unit.startMusic, musicNames.ToArray());
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("BGM: ", GUILayout.Width(70));
+        unit.sound[0] = EditorGUILayout.IntSlider(unit.sound[0], 0, 100);
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("SFX: ", GUILayout.Width(70));
+        unit.sound[1] = EditorGUILayout.IntSlider(unit.sound[1], 0, 100);
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Voices: ", GUILayout.Width(70));
+        unit.sound[2] = EditorGUILayout.IntSlider(unit.sound[2], 0, 100);
+        EditorGUILayout.EndHorizontal();
+
+        GUILayout.EndVertical();
+
+        EditorGUILayout.Space();
+
+        GUILayout.BeginVertical("In BigTitle");
+        GUILayout.Label("Menus\n-------- ", GUILayout.Width(70));
+
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Pause Menu", GUILayout.Width(80));
+        unit.openMenus[0] = GUILayout.Toggle(unit.openMenus[0],"");
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Save Menu", GUILayout.Width(80));
+        unit.openMenus[1] = GUILayout.Toggle(unit.openMenus[1], "");
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Other Menu", GUILayout.Width(80));
+        unit.openMenus[2] = GUILayout.Toggle(unit.openMenus[2], "");
+        EditorGUILayout.EndHorizontal();
+
+        GUILayout.EndVertical();
+
     }
 
     /// <summary>
@@ -218,7 +214,7 @@ public class Viewer_GameManager : Editor
     /// </summary>
     private void ControllerViewer()
     {
-        bool[] button =
+        List <bool> button = new List<bool>
             {
             Input.GetKey(KeyCode.JoystickButton0),
             Input.GetKey(KeyCode.JoystickButton1),
@@ -234,163 +230,166 @@ public class Viewer_GameManager : Editor
             Input.GetKey(KeyCode.JoystickButton11),
             Input.GetKey(KeyCode.JoystickButton12)
             };
-        string[] buttonName = new string[13];
-        /*
-        switch (unit.controller)
+        string[] buttonName = new string[] { };
+        if (unit)
         {
-            default:
-                break;
-
-            case "PS4":
-                buttonName[0] = "";
-                buttonName[1] = "Cross";
-                buttonName[2] = "Circle";
-                buttonName[3] = "Triangle";
-                buttonName[4] = "L1";
-                buttonName[5] = "R1";
-                buttonName[9] = "Options";
-                buttonName[13] = "Share";
-
-                break;
-
-            case "Xbox":
-                buttonName[0] = "A";
-                buttonName[1] = "B";
-                buttonName[2] = "X";
-                buttonName[3] = "Y";
-                buttonName[4] = "LB";
-                buttonName[5] = "RB";
-                buttonName[7] = "Start";
-                buttonName[6] = "Back";
-                break;
-
-            case "Snes":
-                buttonName[1] = "A";
-                buttonName[4] = "B";
-                buttonName[5] = "";
-                buttonName[6] = "L";
-                buttonName[7] = "R";
-                buttonName[10] = "Start";
-                buttonName[11] = "Select";
-                break;
-        }
-        
-
-        if (controllerTest)
-        {
-            if(unit.controller != "Keyboard")
-            {
-                GUILayout.BeginHorizontal("In BigTitle");
-                GUILayout.Label("Controller: ", GUILayout.Width(80));
-
-                switch (unit.controller)
-                {
-                    default:
-                        GUILayout.Label(unit.controller);
-                        break;
-
-                    case "":
-                        GUILayout.Label("None");
-                        break;
-
-                    
-
-                    case "Wireless Controller":
-                        GUILayout.Label("PS4");
-                        break;
-
-                    case "Controller (Xbox 360 Wireless Receiver for Windows)":
-                        GUILayout.Label("Xbox");
-                        break;
-
-                    case "Keyboard":
-                        GUILayout.Label("Keyboard");
-                        break;
-
-                    case "SFC30 Joystick":
-                        GUILayout.Label("Snes");
-                        break;
-                }
-                EditorGUILayout.EndHorizontal();
-            }
-            switch (unit.controller)
-            {
-                default:
-                    GUILayout.BeginVertical("In BigTitle");
-                    for (int i = 0; i < buttonName.Length; i++)
-                    {
-                        if (buttonName[i] != null)
-                        {
-                            GUILayout.BeginHorizontal();
-                            EditorGUILayout.LabelField(buttonName[i], GUILayout.Width(30));
-                            EditorGUILayout.Toggle(button[i]);
-                            GUILayout.EndHorizontal();
-                            Repaint();
-                        }
-                    }
-                    GUILayout.EndVertical();
-
-                    GUILayout.BeginVertical("In BigTitle");
-
-                    GUILayout.BeginHorizontal();
-                    EditorGUILayout.LabelField("Left X");
-                    EditorGUILayout.FloatField(Input.GetAxisRaw("Horizontal"));
-                    GUILayout.EndHorizontal();
-
-                    GUILayout.BeginHorizontal();
-                    EditorGUILayout.LabelField("Left Y");
-                    EditorGUILayout.FloatField(Input.GetAxisRaw("Vertical"));
-                    GUILayout.EndHorizontal();
-                    GUILayout.EndVertical();
-
-
-                    break;
-
-                case "Keyboard":
-                    GUILayout.BeginVertical("In BigTitle");
-                    EditorGUILayout.LabelField("No Controller");
-                    GUILayout.EndVertical();
-                    break;
-
-                case "":
-                    GUILayout.BeginVertical("In BigTitle");
-                    EditorGUILayout.LabelField(unit.controller);
-                    GUILayout.EndVertical();
-                    break;
-            }
             switch (unit.controller)
             {
                 default:
                     break;
 
                 case "PS4":
-                    GUILayout.BeginVertical("In BigTitle");
-                    GUILayout.BeginHorizontal();
-                    EditorGUILayout.LabelField("Right X");
-                    EditorGUILayout.FloatField(Input.GetAxisRaw("Axis3"));
-                    GUILayout.EndHorizontal();
-                    GUILayout.BeginHorizontal();
-                    EditorGUILayout.LabelField("Right Y");
-                    EditorGUILayout.FloatField(Input.GetAxisRaw("Axis6"));
-                    GUILayout.EndHorizontal();
-                    GUILayout.EndVertical();
+                    buttonName = new string[14];
+                    buttonName[0] = "";
+                    buttonName[1] = "Cross";
+                    buttonName[2] = "Circle";
+                    buttonName[3] = "Triangle";
+                    buttonName[4] = "L1";
+                    buttonName[5] = "R1";
+                    buttonName[6] = "Options";
+                    buttonName[13] = "Share";
                     break;
 
                 case "Xbox":
-                    GUILayout.BeginVertical("In BigTitle");
-                    GUILayout.BeginHorizontal();
-                    EditorGUILayout.LabelField("Right X");
-                    EditorGUILayout.FloatField(Input.GetAxisRaw("Axis4"));
-                    GUILayout.EndHorizontal();
-                    GUILayout.BeginHorizontal();
-                    EditorGUILayout.LabelField("Right Y");
-                    EditorGUILayout.FloatField(Input.GetAxisRaw("Axis5"));
-                    GUILayout.EndHorizontal();
-                    GUILayout.EndVertical();
+                    buttonName = new string[8];
+                    buttonName[0] = "A";
+                    buttonName[1] = "B";
+                    buttonName[2] = "X";
+                    buttonName[3] = "Y";
+                    buttonName[4] = "LB";
+                    buttonName[5] = "RB";
+                    buttonName[7] = "Start";
+                    buttonName[6] = "Back";
                     break;
+
+                case "Snes":
+                    buttonName = new string[12];
+                    buttonName[2] = "A";
+                    buttonName[5] = "B";
+                    buttonName[6] = "";
+                    buttonName[7] = "L";
+                    buttonName[8] = "R";
+                    buttonName[11] = "Start";
+                    buttonName[12] = "Select";
+                    break;
+
             }
-        }
-        */
+                if (unit.controller != "Keyboard")
+                {
+                    GUILayout.BeginHorizontal("In BigTitle");
+                    GUILayout.Label("Controller: ", GUILayout.Width(80));
+
+                    switch (unit.controller)
+                    {
+                        default:
+                            GUILayout.Label(unit.controller);
+                            break;
+
+                        case "":
+                            GUILayout.Label("None");
+                            break;
+
+                        case "Wireless Controller":
+                            GUILayout.Label("PS4");
+                            break;
+
+                        case "Controller (Xbox 360 Wireless Receiver for Windows)":
+                            GUILayout.Label("Xbox");
+                            break;
+
+                        case "Keyboard":
+                            GUILayout.Label("Keyboard");
+                            break;
+
+                        case "SFC30 Joystick":
+                            GUILayout.Label("Snes");
+                            break;
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+                switch (unit.controller)
+                {
+                    default:
+                        GUILayout.BeginVertical("In BigTitle");
+                        for (int i = 0; i < buttonName.Length; i++)
+                        {
+                            if (buttonName[i] != null)
+                            {
+                                GUILayout.BeginHorizontal();
+                                EditorGUILayout.LabelField(buttonName[i], GUILayout.Width(30));
+                                EditorGUILayout.Toggle(button[i]);
+                                GUILayout.EndHorizontal();
+
+                                Repaint();
+                            }
+                        }
+                        GUILayout.EndVertical();
+
+                        GUILayout.BeginVertical("In BigTitle");
+
+                        GUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField("Left X");
+                        EditorGUILayout.FloatField(Input.GetAxisRaw("Horizontal"));
+                        GUILayout.EndHorizontal();
+
+                        GUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField("Left Y");
+                        EditorGUILayout.FloatField(Input.GetAxisRaw("Vertical"));
+                        GUILayout.EndHorizontal();
+
+                        GUILayout.EndVertical();
+                        break;
+
+                    case "Keyboard":
+                        GUILayout.BeginVertical("In BigTitle");
+                        EditorGUILayout.LabelField("No Controller");
+                        GUILayout.EndVertical();
+                        break;
+
+                    case "":
+                        GUILayout.BeginVertical("In BigTitle");
+                        EditorGUILayout.LabelField(unit.controller);
+                        GUILayout.EndVertical();
+                        break;
+                }
+                switch (unit.controller)
+                {
+                    default:
+                        break;
+
+                    case "PS4":
+                        GUILayout.BeginVertical("In BigTitle");
+
+                        GUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField("Right X");
+                        EditorGUILayout.FloatField(Input.GetAxisRaw("Axis3"));
+                        GUILayout.EndHorizontal();
+
+                        GUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField("Right Y");
+                        EditorGUILayout.FloatField(Input.GetAxisRaw("Axis6"));
+                        GUILayout.EndHorizontal();
+
+                        GUILayout.EndVertical();
+                        break;
+
+                    case "Xbox":
+                        GUILayout.BeginVertical("In BigTitle");
+
+                        GUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField("Right X");
+                        EditorGUILayout.FloatField(Input.GetAxisRaw("Axis4"));
+                        GUILayout.EndHorizontal();
+
+                        GUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField("Right Y");
+                        EditorGUILayout.FloatField(Input.GetAxisRaw("Axis5"));
+                        GUILayout.EndHorizontal();
+
+                        GUILayout.EndVertical();
+                        break;
+                }
+        } 
     }
 
     /// <summary>
@@ -398,8 +397,6 @@ public class Viewer_GameManager : Editor
     /// </summary>
     private void InventoryViewer()
     {
-        if(inventory)
-        {
             GUILayout.BeginVertical("In BigTitle");
             int i = 0;
             foreach(string names in unit.itemNames)
@@ -411,7 +408,7 @@ public class Viewer_GameManager : Editor
                 i++;
             }
             GUILayout.EndVertical();
-        }
+        
     }
 }
 
@@ -450,11 +447,11 @@ public class Viewer_Interactable : Editor
     }
     #endregion
 
-    protected void Inspector()
+    void Inspector()
     {
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Object Type: ", GUILayout.Width(80));
-        unit.selectedType = EditorGUILayout.Popup(unit.selectedType, new string[] { "Item", "Chest", "Door", "Save Point", "Actor" });
+        unit.selectedType = EditorGUILayout.Popup(unit.selectedType, new string[] { "Item", "Chest", "Door", "Save Point", "Actor","Event"});
         EditorGUILayout.EndHorizontal();
 
         switch (unit.selectedType)
@@ -535,6 +532,16 @@ public class Viewer_Interactable : Editor
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Label("Script Number: ", GUILayout.Width(90));
                 unit.scriptNo = EditorGUILayout.IntField(unit.scriptNo);
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.EndVertical();
+                break;
+
+            case 5:
+                unit.type = "Event";
+                GUILayout.BeginVertical("In BigTitle");
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Label("Event Type: ", GUILayout.Width(70));
+                unit.eventType = EditorGUILayout.Popup(unit.eventType, new string[] { "None", "Ladder", "Partner Action" });
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.EndVertical();
                 break;

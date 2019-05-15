@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea575c7cc585e324fa660766ed5e3402, type: 3}
-  m_Name: ClownFace
+  m_Name: Clownface
   m_EditorClassIdentifier: 
   prefab: {fileID: 4457011082918898050, guid: fadc110a2f986874c829bac70d183411, type: 3}
-  portrait: {fileID: 21300000, guid: 03c3c9bb4f5b25548882d7aa78337b20, type: 3}
+  portrait: {fileID: 21300008, guid: 03c3c9bb4f5b25548882d7aa78337b20, type: 3}

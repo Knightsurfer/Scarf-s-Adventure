@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: 92e48993cd5b770458ddc08f32f2eb45
+labels:
+- Terrain
 ModelImporter:
   serializedVersion: 25
   internalIDToNameTable:
@@ -34,7 +36,7 @@ ModelImporter:
       name: unnamed
     second: {fileID: 2100000, guid: 82817c87758309545ad777493abf4c7d, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -183,7 +185,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 1
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 3

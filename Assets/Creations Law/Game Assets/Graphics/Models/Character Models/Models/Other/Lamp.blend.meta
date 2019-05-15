@@ -1,5 +1,8 @@
 fileFormatVersion: 2
 guid: 6cdbdf28eebde8249876bd1f1e00f66e
+labels:
+- Character
+- Prop
 ModelImporter:
   serializedVersion: 25
   internalIDToNameTable:
@@ -127,7 +130,7 @@ ModelImporter:
       name: unnamed
     second: {fileID: 2100000, guid: 82817c87758309545ad777493abf4c7d, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1

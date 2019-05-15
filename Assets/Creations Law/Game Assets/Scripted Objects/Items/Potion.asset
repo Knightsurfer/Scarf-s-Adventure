@@ -16,4 +16,4 @@ MonoBehaviour:
   icon: {fileID: 0}
   isDefaultItem: 0
   mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-  material: {fileID: 2100000, guid: 68aa238e87c9d504fb3a5fa7bde46a17, type: 2}
+  material: {fileID: 2100000, guid: 82817c87758309545ad777493abf4c7d, type: 2}

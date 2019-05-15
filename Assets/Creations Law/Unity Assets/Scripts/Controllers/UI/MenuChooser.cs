@@ -46,6 +46,7 @@ public class MenuChooser : SavePackage.SaveMenu
 
     private void Update()
     {
+
         if (usesBackdrop)
         {
             UIUpdate();
@@ -60,21 +61,29 @@ public class MenuChooser : SavePackage.SaveMenu
                 CancelMenu();
             }
             switch (name)
-                {
-                    case "Save Menu":
-                        if (menuActivator) menuActivator = false;
-                        SaveUpdate();
-                        break;
+            {
+                case "Save Menu":
+                    if (game.openMenus[0])
+                    {
+                        return;
+                    }
+                    if (menuActivator) menuActivator = false;
+                    SaveUpdate();
+                    break;
 
-                    case "Pause Menu":
-                        menuActivator = game.button_Start;
-                        PauseUpdate();
-                        break;
-                }            
+                case "Pause Menu":
+                    if (game.openMenus[1])
+                    {
+                        return;
+                    }
+                    menuActivator = game.button_Start;
+                    PauseUpdate();
+                    break;
+            }
         }
         else
         {
-            switch(name)
+            switch (name)
             {
                 default:
                     print("Undefined Menu Type");
@@ -84,7 +93,7 @@ public class MenuChooser : SavePackage.SaveMenu
                     CommandUpdate();
                     break;
             }
-            
+
         }
     }
 }
@@ -105,7 +114,8 @@ namespace SavePackage
         }
         protected void SaveUpdate()
         {
-            if(game.paused && menuOpen && game.button_Start)
+            game.openMenus[1] = menuOpen;
+            if (game.paused && menuOpen && game.button_Start)
             {
                 game.paused = false;
             }
@@ -131,6 +141,8 @@ namespace PausePackage
         }
         protected virtual void PauseUpdate()
         {
+            game.openMenus[0] = menuOpen;
+
             if (menuActivator && !menuOpen)
             {
                 CharacterStatsUpdate();
@@ -337,7 +349,7 @@ namespace CommandPackage
             {
                 if (menu.name != name)
                 {
-                    if (menu.paused)
+                    if (game.paused)
                     {
                         return;
                     }
@@ -431,9 +443,7 @@ namespace UI
                     menuChooser[i] = menu;
                     i++;
                 }
-            }
-
-           
+            }          
             foreach (Button button in FindObjectsOfType<Button>())
             {
                 if (button.name == "Highlight")
@@ -457,64 +467,32 @@ namespace UI
         protected void UIUpdate()
         {
             Pause();
-            ActivatorPushed();
-            GamepadDetection();
-            ResetMainVariables();
-            DisableMenuItems("MenuOpen");
-        }
-
-        /// <summary>
-        /// Game pause determinator.
-        /// </summary>
-        protected void Pause()
-        {
-            paused = menuOpen;
-            foreach (Animator anim in FindObjectsOfType<Animator>())
-            {
-                anim.enabled = !game.paused;
-            }
-            foreach (PlayerController player in game.player)
-            {
-                player.enabled = !game.paused;
-            }
-            if(!menuOpen && menuActivator)
-            {
-                MenuItemsCount();
-            }
-        }
-
-        /// <summary>
-        /// Moves the highlighters when required.
-        /// </summary>
-        protected void HighlightPos()
-        {
-            if (selectedItem == -100)
-            {
-                highlighter[selectedHighlighter].transform.position = new Vector3(-603, 635, 0);
-            }
-            if (selectedItem != -100)
-            {
-                highlighter[selectedHighlighter].transform.position = menuItemsCurrentContext[selectedItem].transform.position;
-            }
-        }
-
-        /// <summary>
-        /// If the activator of the menu is triggered, this fires.
-        /// </summary>
-        protected void ActivatorPushed()
-        {
+            #region MenuPushed
             if (menuActivator)
             {
                 OpenMenu();
                 CloseOtherMenus();
             }
-        }
-
-        /// <summary>
-        /// Resets the position of the title card and also resets the selected item.
-        /// </summary>
-        protected void ResetMainVariables()
-        {
+            #endregion
+            #region Gamepad Detection
+            if (game.isGamepad)
+            {
+                if (gamepadChanged)
+                {
+                    selectedItem = 0;
+                    gamepadChanged = false;
+                }
+            }
+            else
+            {
+                if (!gamepadChanged)
+                {
+                    selectedItem = -100;
+                    gamepadChanged = true;
+                }
+            }
+            #endregion
+            #region Reset Main Variables
             foreach (MenuChooser mc in menuChooser)
             {
                 if (mc != this)
@@ -546,7 +524,50 @@ namespace UI
             {
                 selectedItem = -100;
             }
+            #endregion
+            DisableMenuItems("MenuOpen");
+        }
 
+        /// <summary>
+        /// Game pause determinator.
+        /// </summary>
+        protected void Pause()
+        {
+            foreach (Animator anim in FindObjectsOfType<Animator>())
+            {
+                anim.enabled = !game.paused;
+            }
+            foreach (PlayerController player in game.player)
+            {
+                if (player)
+                {
+                    player.enabled = !game.paused;
+
+                }
+            }
+            foreach (BotReciever bot in game.bot)
+            {
+                                
+            }
+            if(!menuOpen && menuActivator)
+            {
+                MenuItemsCount();
+            }
+        }
+
+        /// <summary>
+        /// Moves the highlighters when required.
+        /// </summary>
+        protected void HighlightPos()
+        {
+            if (selectedItem == -100)
+            {
+                highlighter[selectedHighlighter].transform.position = new Vector3(-603, 635, 0);
+            }
+            if (selectedItem != -100)
+            {
+                highlighter[selectedHighlighter].transform.position = menuItemsCurrentContext[selectedItem].transform.position;
+            }
         }
 
         /// <summary>
@@ -558,6 +579,8 @@ namespace UI
             {
                 if (menu.gameObject != gameObject)
                 {
+                    Array.Clear(lastMenuEntered,0, 5);
+                    lastMove = 0;
                     menu.menuOpen = false;
                 }
             }
@@ -822,28 +845,6 @@ namespace UI
             }
         }
 
-        /// <summary>
-        /// Upon a controller connecting or disconnecting, this will fire.
-        /// </summary>
-        protected void GamepadDetection()
-        {
-            if (game.isGamepad)
-            {
-                if (gamepadChanged)
-                {
-                    selectedItem = 0;
-                    gamepadChanged = false;
-                }
-            }
-            else
-            {
-                if (!gamepadChanged)
-                {
-                    selectedItem = -100;
-                    gamepadChanged = true;
-                }
-            }
-        }
     }
     /// <summary>
     /// Functions that contain more math than most others.
@@ -960,6 +961,9 @@ namespace UI
         #region Common Variables
         #region Variables
         #region Bools
+        /// <summary>
+        /// Tells the game if the menu in question requires a menu backdrop.
+        /// </summary>
         protected bool usesBackdrop;
 
         /// <summary>
@@ -971,11 +975,6 @@ namespace UI
         /// Tells if the menu is currently open.
         /// </summary>
         protected bool menuOpen;
-
-        /// <summary>
-        /// If the current menu is closed, then this will return false.
-        /// </summary>
-        public bool paused;
 
         /// <summary>
         /// If the cursor is hovering over a menu item then this will be true.
@@ -997,11 +996,6 @@ namespace UI
         #endregion
         #region Strings
         /// <summary>
-        /// The type of menu this menu is.
-        /// </summary>
-        [HideInInspector] public string currentMenuType;
-
-        /// <summary>
         /// The current menu the player is navigating.
         /// </summary>
         protected string currentMenu = "Main Menu";
@@ -1009,7 +1003,8 @@ namespace UI
         /// <summary>
         /// stores which menu's were previously opened so that you can go back.
         /// </summary>
-        protected string[] lastMenuEntered = new string[20];
+        public string[] lastMenuEntered = new string[5];
+        
         #endregion
         #region Intergers
         /// <summary>
@@ -1068,15 +1063,12 @@ namespace UI
         /// <summary>
         /// Stores the variables within all of the menu items.
         /// </summary>
+        public List<MouseMenu> menuItems = new List<MouseMenu>();
 
-        //public MouseMenu[] menuItems = new MouseMenu[99];
-            public List<MouseMenu> menuItems = new List<MouseMenu>();
         /// <summary>
         /// If there are other menus this will store it.
         /// </summary>
         public MenuChooser[] menuChooser = new MenuChooser[2];
-
-
 
         /// <summary>
         /// Grabs variables from the game manager.

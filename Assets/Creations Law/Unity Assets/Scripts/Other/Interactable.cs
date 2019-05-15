@@ -24,18 +24,17 @@ using UnityEngine.AI;
 
 
 
-[ExecuteInEditMode]
+
 public class Interactable : Interactive.I_Item
 {
-
-    // float timerspeed = 2f;
-
+    
+    
     
     private void Start()
     {
         game = FindObjectOfType<GameManager>();
 
-        switch(type)
+        switch (type)
         {
             case "Chest":
                 if (item != null)
@@ -54,7 +53,12 @@ public class Interactable : Interactive.I_Item
                 break;
 
             case "Actor":
-                dialogue = FindObjectOfType<Game.UI.Dialogue_Manager>();
+                ActorStart();
+                break;
+
+            case "Door":
+                scriptNo = 7;
+                ActorStart();
                 break;
         }
     }
@@ -69,10 +73,9 @@ public class Interactable : Interactive.I_Item
 
                     if (locked && game.itemAmount[0] < requiredAmount)
                     {
-                        if (game.button_Action)
+                        if (game.button_Action && !currentlyActing)
                         {
-                            Debug.Log(locked);
-                            Debug.Log("You need a key!");
+                            Script_Handler();
                         }
                     }
 
@@ -98,6 +101,10 @@ public class Interactable : Interactive.I_Item
 
                         anim.SetBool("Approached", false);
                     }
+                }
+                if(currentlyActing && game.button_Attack)
+                {
+                    Script_Handler();
                 }
                 break;
 
@@ -148,6 +155,13 @@ public class Interactable : Interactive.I_Item
                     
                 }
                 break;
+
+            case "Event":
+                if (hasInteracted && !game.paused)
+                {
+                    Event_Handler();
+                }
+                break;
         }
 
 
@@ -186,17 +200,12 @@ public class Interactable : Interactive.I_Item
 
 }
 
-
-
-
-
-
-
-
-
-
 namespace Interactive
 {
+    
+
+
+
     public class I_Item : I_Event
     {
         public virtual void Item()
@@ -216,6 +225,27 @@ namespace Interactive
     }
     public class I_Event : Variables
     {
+        public void Event_Handler()
+        {
+            switch(eventType)
+            {
+                default:
+                    break;
+
+                case 1:
+                    if(game.moveY > 0)
+                    {
+                        if (game.player[0].playerInfo.name == "Clownface")
+                        {
+                            game.player[0].moveType = "Climbing";
+                        }
+                    }
+                    break;
+            }
+        }
+
+
+
         public void Script_Handler()
         {
             switch (currentlyActing)
@@ -230,7 +260,6 @@ namespace Interactive
                         case "Sign":
                             ContinueTalking();
                             break;
-
                     }
                     break;
             } 
@@ -281,15 +310,8 @@ namespace Interactive
                     if (!currentlyActing)
                     {
                         transform.position = new Vector3(transform.position.x, transform.position.y + 15, transform.position.z);
-                        
-                           
-                        
                     }
                     if(GetComponent<BotReciever>()) GetComponent<BotReciever>().isPartyMember = true;                   
-                    break;
-
-                case 7:
-                    
                     break;
 
                 case 6:
@@ -299,9 +321,17 @@ namespace Interactive
                         transform.position = new Vector3(transform.position.x, transform.position.y + 15, transform.position.z);
                     }
                     break;
+
+                case 7:
+                    StartTalking("Clownface", new[] { "I need a key for this door..." });
+                    break;
+
+                case 8:
+                    StartTalking("???", new[] { "Hello?" });
+                    break;
+                
             }
         }
-
 
         #region TalkScripts
         protected void StartTalking(string actorName, string[] text)
@@ -365,12 +395,7 @@ namespace Interactive
 
 
 
-    }
-
-
-
-    
-
+    } 
     public class Variables : InspectorVariables
     {
         private void Awake()
@@ -409,28 +434,14 @@ namespace Interactive
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     public class InspectorVariables : Events.Functions
     {
         public int selectedType;
         public int selectedLocked;
 
-
-
+        public int eventType;
         [HideInInspector] public int lockRequirement;
         [HideInInspector] public int selectedItem;
-
     }
 }
 
@@ -438,27 +449,43 @@ namespace Events
 {
     public class Functions : Scripts
     {
-
         public string scriptType;
-
-       
     }
-
     public class Scripts : Script_Mechanics
     {
        
     }
-
     public class Script_Mechanics : MonoBehaviour
     {
         public int scriptNo;
+        #region Actor
+        public _Character playerInfo;
         public bool currentlyActing;
         public Sprite actorPortrait;
-
         Vector2 startPos;
         Vector2 destination;
 
         protected string[] speech = { };
         protected Game.UI.Dialogue_Manager dialogue;
+
+       protected void ActorStart()
+        {
+
+        GameObject prefab;
+        BoxCollider actorBox;
+
+            if (playerInfo)
+            {
+                prefab = Instantiate(playerInfo.prefab, transform);
+                actorBox = gameObject.AddComponent<BoxCollider>();
+                actorBox.isTrigger = true;
+                actorBox.center = new Vector3(0, 0, 0.5f);
+                actorBox.size = new Vector3(1, 1, 2);
+            }
+            Destroy(GetComponent<MeshFilter>());
+            Destroy(GetComponent<MeshRenderer>());
+            dialogue = FindObjectOfType<Game.UI.Dialogue_Manager>();
+        }
+        #endregion
     }
 }

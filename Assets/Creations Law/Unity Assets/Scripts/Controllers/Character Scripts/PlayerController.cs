@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 //The Main Startup Class. (Nothing is really required from this class.)
 public class PlayerController : PlayerPackage.PartyHandler
 {
-    private void Start()
+    void Start()
     {
         VariablesStart();
         StartingVariables();
@@ -65,24 +65,6 @@ namespace PlayerPackage
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 partyMember = game.bot[0];
-                if (partyMember && partyMember.isPartyMember)
-                {
-                    cam = null;
-                    Destroy(partyMember.GetComponent<BoxCollider>());
-                    Destroy(partyMember.GetComponent<CapsuleCollider>());
-
-                    gameObject.AddComponent<BotReciever>();
-                    GetComponent<BotReciever>().points = partyMember.points;
-                    GetComponent<BotReciever>().WaypointPassed = 0;
-                    GetComponent<BotReciever>().range = 20;
-
-                    partyMember.gameObject.AddComponent<PlayerController>();
-                    Destroy(partyMember.botAI);
-                    partyMember.bot.enabled = true;
-                    Destroy(partyMember);
-                    GetComponent<BotReciever>().target = FindObjectOfType<PlayerController>().transform;
-                    Destroy(this);
-                }
             }
         }
     }
@@ -103,6 +85,19 @@ namespace PlayerPackage
     {
         protected void StartingVariables()
         {
+            switch(playerInfo.name)
+            {
+                default:
+                    break;
+
+                case "Scarf":
+                    anim.SetInteger("Character", 1);
+                    break;
+
+                case "Clownface":
+                    anim.SetInteger("Character", 0);
+                    break;
+            }
             string currentScene = SceneManager.GetActiveScene().name;
             switch (currentScene)
             {
@@ -141,14 +136,47 @@ namespace PlayerPackage
                 {
                     anim.applyRootMotion = true;
                     collisionDetected = false;
-                    moveType = "Normal";
+                    //moveType = "Normal";
                 }
                 switch (moveType)
                 {
                     case "Normal":
+                        anim.SetFloat("Action", 0);
                         player.enabled = true;
-                        anim.SetBool("Climbing", false);
+                        //anim.SetBool("Climbing", false);
                         NormalMovement();
+                        break;
+
+                    case "Climbing":
+                        Debug.Log("Climbing");
+                        //anim.SetBool("Grounded", false);
+                        anim.SetFloat("Action", 1);
+                        anim.SetFloat("MoveX", game.moveX);
+                        anim.SetFloat("MoveY", game.moveY);
+                        if (game.moveY > 0)
+                        {
+                            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y +0.1f, transform.localPosition.z);
+                        }
+                        if (game.moveY < 0)
+                        {
+                            if (transform.position.y == focus.transform.position.y + 10)
+                            {
+                                moveType = "Normal";
+                                
+                                return;
+                            }
+                            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y -0.1f, transform.localPosition.z);
+                        }
+                        if(game.moveY == 0)
+                        {
+                            anim.SetFloat("Action", 1);
+                        }
+                        
+                        if (game.button_Jump)
+                        {
+                            moveType = "Normal";
+                            anim.SetFloat("Action", 0);
+                        }
                         break;
 
                     case "Hanging":
@@ -221,7 +249,15 @@ namespace PlayerPackage
             #region Animator
             if (canMove)
             {
-                anim.SetBool("OnGround", player.isGrounded);
+                if(player.isGrounded)
+                {
+                    anim.SetBool("Grounded", true);
+                }
+                else
+                {
+                    anim.SetBool("Grounded", false);
+                }
+
                 anim.SetFloat("Speed", Mathf.Abs(game.moveX) + Mathf.Abs(game.moveY));
             }
             #endregion
@@ -350,6 +386,7 @@ namespace PlayerPackage
             {
                 focus.hasInteracted = false;
                 focus = null;
+                moveType = "Normal";
             }
 
         }
@@ -387,12 +424,13 @@ namespace PlayerPackage
                     if (button)
                     {
                         moveDirection.y = jumpForce;
+                        anim.SetBool("Grounded", true);
                     }
-                    anim.SetBool("OnGround", true);
+                    
                 }
                 else
                 {
-                    anim.SetBool("OnGround", false);
+                    anim.SetBool("Grounded", false);
                 }
             }
         }
@@ -593,7 +631,7 @@ namespace PlayerPackage
         {
             if (transform.localPosition.y < -15)
             {
-                transform.position = transform.parent.transform.position;
+                //transform.position = transform.parent.transform.position;
                 health -= 45;
             }
         }
@@ -607,12 +645,21 @@ namespace PlayerPackage
 
         protected void AssignPlayer()
         {
-            GameObject playerPrefab;
-            playerPrefab = Instantiate(playerInfo.prefab, this.transform);
-            anim = playerPrefab.GetComponent<Animator>();
+            if (!GetComponentInChildren<SkinnedMeshRenderer>())
+            {
 
-            Destroy(GetComponent<MeshFilter>());
-            Destroy(GetComponent<MeshRenderer>());
+
+                GameObject playerPrefab;
+                playerPrefab = Instantiate(playerInfo.prefab, this.transform);
+                anim = playerPrefab.GetComponent<Animator>();
+
+                Destroy(GetComponent<MeshFilter>());
+                Destroy(GetComponent<MeshRenderer>());
+            }
+            else
+            {
+                anim = GetComponentInChildren<Animator>();
+            }
 
         }
 
@@ -727,7 +774,7 @@ namespace PlayerPackage
         /// <summary>
         /// When the controls need to change for a specific situation, this controls that.
         /// </summary>
-        [HideInInspector]  public string moveType = "Normal";
+        public string moveType = "Normal";
         #endregion
         #region Movement
         /// <summary>

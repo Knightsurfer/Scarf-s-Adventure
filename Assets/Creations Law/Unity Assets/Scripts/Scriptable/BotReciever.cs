@@ -9,10 +9,13 @@ using UnityEngine.SceneManagement;
 //The Main Startup Class. (Nothing is really required from this class.)
 public class BotReciever : Bot_Controller
 {
-
+   
     private void Start()
     {
-        AssignPlayer();
+        
+        
+            AssignPlayer();
+        
         AddComponents();
 
         if (!positionSet)
@@ -35,9 +38,10 @@ public class BotReciever : Bot_Controller
 
 public class Bot_Controller : Bot_Destinations
 {
+    public float test;
     protected void BotUpdate()
     {
-        canMove = !pause.paused;
+        canMove = !game.paused;
         bot.enabled = canMove;
         botAI.enabled = canMove;
 
@@ -53,13 +57,20 @@ public class Bot_Controller : Bot_Destinations
             Animation();
             PositionSet();
         }
+        if(!canMove)
+        {
+            if (bot.isGrounded)
+            {
+               
+            }
+        }
     }
 
     public float positionY;
 
     protected void Movement()
     {
-        positionY = target.position.y;
+        
 
         distance = Vector3.Distance(new Vector3(target.position.x, transform.position.y, target.position.z), transform.position);
         if (distance < range && distance > 3 && WaypointPassed == 100)
@@ -68,7 +79,7 @@ public class Bot_Controller : Bot_Destinations
         } 
         if(isPartyMember)
         {
-            transform.LookAt(new Vector3(target.position.x, -76.62532f, target.position.z));
+            transform.LookAt(new Vector3(target.position.x, transform.position.y - 0.5f, target.position.z));
         }
         moveDirection = transform.TransformDirection(Vector3.forward);
         moveDirection.y -= 1f;
@@ -164,17 +175,26 @@ public class Bot_Destinations : Bot_Components
     }
     protected void PositionSet()
     {
-        if (!GameObject.Find("Point0"))
+       if (points[0] == new Vector3() && game.player.Count > 0)
         {
-            foreach (Vector3 p in points)
+            points[0] = game.player[0].transform.position;
+        }
+
+        else
+        {
+            if (!GameObject.Find("Point0"))
             {
-                waypoint = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                waypoint.GetComponent<MeshRenderer>().enabled = false;
-                waypoint.GetComponent<Collider>().enabled = false;
-                waypoint.name = "Point" + createdNo;
-                waypoint.transform.parent = GameObject.Find("Waypoints").transform;
-                waypoint.transform.localPosition = p;
-                createdNo++;
+
+                foreach (Vector3 p in points)
+                {
+                    waypoint = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    waypoint.GetComponent<MeshRenderer>().enabled = false;
+                    waypoint.GetComponent<Collider>().enabled = false;
+                    waypoint.name = "Point" + createdNo;
+                    waypoint.transform.parent = GameObject.Find("Waypoints").transform;
+                    waypoint.transform.localPosition = p;
+                    createdNo++;
+                }
             }
         }
         if (isPartyMember)
@@ -236,7 +256,8 @@ public class Bot_Destinations : Bot_Components
                     {
                         if (interact.anim.GetBool("Approached"))
                         {
-                            other.transform.parent.SendMessage("Door");
+                            focus.hasInteracted = true;
+                            // other.transform.parent.SendMessage("Door");
                         }
                     }
                     focus = null;
@@ -316,18 +337,27 @@ public class Bot_Variables : MonoBehaviour
 {
     protected void AssignPlayer()
     {
-        GameObject playerPrefab;
-        playerPrefab = Instantiate(playerInfo.prefab, this.transform);
-        anim = playerPrefab.GetComponent<Animator>();
+        if (!GetComponentInChildren<SkinnedMeshRenderer>())
+        {
+            GameObject playerPrefab;
+            playerPrefab = Instantiate(playerInfo.prefab, this.transform);
+            anim = playerPrefab.GetComponent<Animator>();
 
-        Destroy(GetComponent<MeshFilter>());
-        Destroy(GetComponent<MeshRenderer>());
+
+            
+           // Destroy(GetComponent<MeshFilter>());
+           // Destroy(GetComponent<MeshRenderer>());
+        }
+        else
+        {
+            anim = GetComponentInChildren<Animator>();
+        }
         game = FindObjectOfType<GameManager>();
 
     }
 
     #region Misc
-    protected bool canMove;
+    public bool canMove;
     public bool playerIsPresent;
     public bool isPartyMember = true;
 

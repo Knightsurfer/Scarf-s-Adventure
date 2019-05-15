@@ -55,6 +55,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\ControlScheme.cs" />
      <Compile Include="Assets\Creations Law\Unity Assets\Scripts\Controllers\Character Scripts\PlayerController.cs" />
      <Compile Include="Assets\Creations Law\Unity Assets\Scripts\Controllers\Character Scripts\SpriteAI.cs" />
      <Compile Include="Assets\Creations Law\Unity Assets\Scripts\Controllers\Other\Cinema_Script.cs" />
@@ -74,6 +75,9 @@
  </Reference>
  <Reference Include="com.unity.multiplayer-hlapi.Editor">
  <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.VisualEffectGraph.Runtime">
+ <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/ScriptAssemblies/Unity.VisualEffectGraph.Runtime.dll</HintPath>
  </Reference>
  <Reference Include="Unity.TextMeshPro.Editor">
  <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
@@ -98,6 +102,9 @@
  </Reference>
  <Reference Include="UnityEngine.SpatialTracking">
  <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.VisualEffectGraph.Editor">
+ <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/ScriptAssemblies/Unity.VisualEffectGraph.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.TextMeshPro">
  <HintPath>D:/Projects/Unity/3D/Scarfs-Adventure/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
