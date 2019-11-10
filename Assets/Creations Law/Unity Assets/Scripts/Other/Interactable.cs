@@ -17,20 +17,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
-
-
-
-
-
+using ScriptableObjects;
 
 
 public class Interactable : Interactive.I_Item
 {
-    
-    
-    
-    private void Start()
+        
+    public void Start()
     {
         game = FindObjectOfType<GameManager>();
 
@@ -59,21 +52,29 @@ public class Interactable : Interactive.I_Item
             case "Door":
                 scriptNo = 7;
                 ActorStart();
+                gameObject.AddComponent<NavMeshObstacle>();
+                gameObject.AddComponent<Animator>();
+                BoxCollider doorCollider = gameObject.AddComponent<BoxCollider>();
+                BoxCollider doorTrigger = gameObject.AddComponent<BoxCollider>();
+                doorTrigger.center = new Vector3(-0, 0.3f, -0.2f);
+                doorTrigger.size = new Vector3(2.8f, 4.5f, 8);
+                doorTrigger.isTrigger = true;
                 break;
         }
     }
-    private void Update()
+    public void Update()
     {
         switch(type)
         {
             case "Door":
+               
                 GetComponent<NavMeshObstacle>().enabled = locked;
                 if (hasInteracted)
                 {
 
                     if (locked && game.itemAmount[0] < requiredAmount)
                     {
-                        if (game.button_Action && !currentlyActing)
+                        if (Input.GetKeyDown(game.button_Action) && !currentlyActing)
                         {
                             Script_Handler();
                         }
@@ -102,7 +103,7 @@ public class Interactable : Interactive.I_Item
                         anim.SetBool("Approached", false);
                     }
                 }
-                if(currentlyActing && game.button_Attack)
+                if(currentlyActing && Input.GetKeyDown(game.button_Attack))
                 {
                     Script_Handler();
                 }
@@ -142,7 +143,7 @@ public class Interactable : Interactive.I_Item
                 break;
 
             case "Save Point":
-                if (hasInteracted && game.button_Action && !game.paused)
+                if (hasInteracted && Input.GetKeyDown(game.button_Action) && !game.paused)
                 {
                     foreach(MenuChooser menu in FindObjectsOfType<MenuChooser>())
                     {
@@ -206,7 +207,7 @@ namespace Interactive
 
 
 
-    public class I_Item : I_Event
+    public class I_Item : Scripts
     {
         public virtual void Item()
         {
@@ -246,103 +247,13 @@ namespace Interactive
 
 
 
-        public void Script_Handler()
-        {
-            switch (currentlyActing)
-            {
-                case false:
-                    SetScript();
-                    break;
 
-                case true:
-                    switch (scriptType)
-                    {
-                        case "Sign":
-                            ContinueTalking();
-                            break;
-                    }
-                    break;
-            } 
-        }
-        protected void SetScript()
-        {
-            switch (scriptNo)
-            {
-                default:
-                    StartTalking("Error", new[] { "The script you have tried to call is currently not available.", "Please try again later..." });
-                    scriptNo = 0;
-                    break;
-
-                case 0:
-                    StartTalking("Test", new[] { "Hey", "I'm Cool! 8D" });
-                    scriptNo++;
-                    break;
-
-                case 1:
-                    StartTalking("Navi", new[] { "Hey!", "Listen!" });
-                    scriptNo++;
-                    break;
-
-                case 2:
-                    StartTalking("Test Boi", new[] { "I'm a test script! ^ ^", "Did I do a good job? 83c", "Third Line testing." });
-                    scriptNo++;
-                    break;
-
-
-                case 3:
-                    StartTalking("Clownface", new[] { "This little dino doodle is so cool. ^ ^ \nI wonder who drew it. ^ ^" });
-                    if(!currentlyActing)
-                    {
-                        transform.position = new Vector3(transform.position.x, transform.position.y +15, transform.position.z);
-                    }
-                    break;
-
-                case 4:
-                    StartTalking("Scarf", new[] { "I ain't no fairy boy..." });
-                    if (!currentlyActing)
-                    {
-                        transform.position = new Vector3(transform.position.x, transform.position.y + 15, transform.position.z);
-                    }
-                    break;
-
-                case 5:
-                    StartTalking("Scarf", new[] { "oops, I'm in the wrong world.", "Just ignore me, I'm not supposed to be here." });
-                    if (!currentlyActing)
-                    {
-                        transform.position = new Vector3(transform.position.x, transform.position.y + 15, transform.position.z);
-                    }
-                    if(GetComponent<BotReciever>()) GetComponent<BotReciever>().isPartyMember = true;                   
-                    break;
-
-                case 6:
-                    StartTalking("Lamp", new[] { "How's the sculpture coming on?" });
-                    if (!currentlyActing)
-                    {
-                        transform.position = new Vector3(transform.position.x, transform.position.y + 15, transform.position.z);
-                    }
-                    break;
-
-                case 7:
-                    StartTalking("Clownface", new[] { "I need a key for this door..." });
-                    break;
-
-                case 8:
-                    StartTalking("???", new[] { "Hello?" });
-                    break;
-                
-            }
-        }
 
         #region TalkScripts
-        protected void StartTalking(string actorName, string[] text)
-        {
-            scriptType = "Sign";
-            speech = text;
-            currentlyActing = true;
-            dialogue.actorName.text = actorName;
-            
 
-            switch(actorName)
+        protected void ChangeHeader(string actorName)
+        {
+            switch (actorName)
             {
                 default:
                     dialogue.actorPortrait.sprite = null;
@@ -355,18 +266,61 @@ namespace Interactive
                 case "Clownface":
                     dialogue.actorPortrait.sprite = dialogue.actorPortraits[1];
                     break;
+
+                case "Perry":
+                    dialogue.actorPortrait.sprite = dialogue.actorPortraits[2];
+                    break;
+
+                case "Player":
+                    dialogue.dialogue[0].text = game.player[0].playerInfo.name;
+
+                    switch (game.player[0].playerInfo.name)
+                    {
+                        case "Scarf":
+                            dialogue.actorPortrait.sprite = dialogue.actorPortraits[0];
+                            break;
+
+                        case "Clownface":
+                            dialogue.actorPortrait.sprite = dialogue.actorPortraits[1];
+                            break;
+                    }
+                    break;
+
+                case "Actor":
+                    dialogue.dialogue[0].text = GetComponent<BotReciever>().playerInfo.name;
+
+                    switch (GetComponent<BotReciever>().playerInfo.name)
+                    {
+                        case "Scarf":
+                            dialogue.actorPortrait.sprite = dialogue.actorPortraits[0];
+                            break;
+
+                        case "Clownface":
+                            dialogue.actorPortrait.sprite = dialogue.actorPortraits[1];
+                            break;
+                    }
+                    break;
             }
+        }
 
-
-            if (!dialogue.dialogueBox.enabled && game.button_Action && text.Length > 0)
+        
+        protected void StartTalking(string[] text)
+        {
+            scriptType = "Sign";
+            speech = text;
+            game.player[0].canMove = false;
+            currentlyActing = true;
+            
+            if (!dialogue.dialogueBox.enabled && Input.GetKeyDown(game.button_Action) && text.Length > 0)
             {
                 dialogue.dialogueBox.enabled = true;
-                dialogue.dialogueText.text = text[0];
-
+                ChangeHeader(actorNames[0]);
+                dialogue.dialogue[1].text = text[0];
             }
         }
         protected void ContinueTalking()
         {
+
             if (dialogue.dialogueBox.enabled && currentlyActing)
             {
                 if (speech.Length > 0)
@@ -376,34 +330,25 @@ namespace Interactive
                         dialogue.dialogueBox.enabled = false;
                         dialogue.currentPage = 0;
                         currentlyActing = false;
+                        game.player[0].canMove = true;
                     }
-
                     if (dialogue.currentPage <= speech.Length)
                     {
-                        dialogue.dialogueText.text = speech[dialogue.currentPage];
+                        ChangeHeader(actorNames[dialogue.currentPage]);
+                        dialogue.dialogue[1].text = speech[dialogue.currentPage];
                         dialogue.currentPage++;
                     }
                 }
             }
         }
         #endregion
-
-        protected void Movement()
-        {
-
-        }
-
-
-
     } 
     public class Variables : InspectorVariables
     {
-        private void Awake()
+        public void Awake()
         {
             anim = GetComponentInChildren<Animator>();
         }
-
-
 
         #region Setup
         public GameManager game;
@@ -426,13 +371,7 @@ namespace Interactive
         #region Actor
 
         #endregion
-
-        #region Other
-        public bool botOverride;
-        #endregion
-
     }
-
 
     public class InspectorVariables : Events.Functions
     {
@@ -447,14 +386,11 @@ namespace Interactive
 
 namespace Events
 {
-    public class Functions : Scripts
+    public class Functions : Script_Mechanics
     {
         public string scriptType;
     }
-    public class Scripts : Script_Mechanics
-    {
-       
-    }
+
     public class Script_Mechanics : MonoBehaviour
     {
         public int scriptNo;
@@ -462,17 +398,17 @@ namespace Events
         public _Character playerInfo;
         public bool currentlyActing;
         public Sprite actorPortrait;
-        Vector2 startPos;
-        Vector2 destination;
+        public Vector2 startPos;
+        public Vector2 destination;
 
         protected string[] speech = { };
+        protected string[] actorNames = { };
         protected Game.UI.Dialogue_Manager dialogue;
 
-       protected void ActorStart()
+        public GameObject prefab;
+        protected void ActorStart()
         {
-
-        GameObject prefab;
-        BoxCollider actorBox;
+            BoxCollider actorBox;
 
             if (playerInfo)
             {
@@ -482,8 +418,8 @@ namespace Events
                 actorBox.center = new Vector3(0, 0, 0.5f);
                 actorBox.size = new Vector3(1, 1, 2);
             }
-            Destroy(GetComponent<MeshFilter>());
-            Destroy(GetComponent<MeshRenderer>());
+            //Destroy(GetComponent<MeshFilter>());
+            //Destroy(GetComponent<MeshRenderer>());
             dialogue = FindObjectOfType<Game.UI.Dialogue_Manager>();
         }
         #endregion

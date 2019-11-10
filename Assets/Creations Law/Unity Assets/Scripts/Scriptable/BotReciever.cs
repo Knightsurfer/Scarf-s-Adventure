@@ -1,118 +1,38 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using PlayerVariables;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.AI;
-using UnityEngine.SceneManagement;
 
 
 //The Main Startup Class. (Nothing is really required from this class.)
-public class BotReciever : Bot_Controller
+public class BotReciever : PartyController
 {
-   
     private void Start()
     {
-        
-        
-            AssignPlayer();
-        
-        AddComponents();
-
-        if (!positionSet)
+        AssignPlayer();
+        switch (botType)
         {
-            pointZero = points[0];
-            positionSet = true;
+            case 0:
+                AddComponents();
+                break;
         }
-        if (isPartyMember)
-        {
-            points[0] = pointZero;
-            playerIsPresent = true;
-        }
-        PositionSet();
     }
+
     private void Update()
     {
-        BotUpdate();
+        switch (botType)
+        {
+            case 0:
+                FacePlayer();
+                break;
+        }
     }
 }
 
-public class Bot_Controller : Bot_Destinations
+public class PartyController : Components
 {
-    public float test;
-    protected void BotUpdate()
-    {
-        canMove = !game.paused;
-        bot.enabled = canMove;
-        botAI.enabled = canMove;
-
-
-        if(isPartyMember)
-        {
-            playerIsPresent = true;
-        }
-
-        if (canMove)
-        {
-            Movement();
-            Animation();
-            PositionSet();
-        }
-        if(!canMove)
-        {
-            if (bot.isGrounded)
-            {
-               
-            }
-        }
-    }
-
-    public float positionY;
-
-    protected void Movement()
-    {
-        
-
-        distance = Vector3.Distance(new Vector3(target.position.x, transform.position.y, target.position.z), transform.position);
-        if (distance < range && distance > 3 && WaypointPassed == 100)
-        {
-
-        } 
-        if(isPartyMember)
-        {
-            transform.LookAt(new Vector3(target.position.x, transform.position.y - 0.5f, target.position.z));
-        }
-        moveDirection = transform.TransformDirection(Vector3.forward);
-        moveDirection.y -= 1f;
-
-        if (bot.enabled || botAI.enabled)
-        {
-            if (distance > 2 && WaypointPassed != 100)
-            {
-                botAI.enabled = true;
-                bot.enabled = false;
-
-                botAI.SetDestination(target.position);
-                Patrol();
-            }
-        }
-        if (distance < range - 3 && distance > 2 && WaypointPassed == 100)
-        {
-            botAI.enabled = false;
-            bot.enabled = true;
-
-            bot.Move(moveDirection * Time.deltaTime * speed);
-        }
-        else
-        {
-            if (bot.enabled)
-            {
-                bot.Move(moveDirection * Time.deltaTime * 0);
-            }
-        }
-    }
     protected void Animation()
     {
-        if (playerIsPresent)
+        if (distance < 1)
         {
             if (canMove && distance > 2)
             {
@@ -125,159 +45,9 @@ public class Bot_Controller : Bot_Destinations
         }
     }
 }
-public class Bot_Destinations : Bot_Components
+
+public class Components : Variables
 {
-    private void Follow()
-    {
-        if (prey == null && distance < 3)
-        {
-            WaypointPassed = 1; 
-        }
-    }
-    protected void Patrol()
-    {
-        if (prey != null)
-        {
-            WaypointPassed = 100;
-            return;
-        }
-        if (distance < 3)
-        {
-            switch (WaypointPassed)
-            {
-                default:
-                    if (!isPartyMember)
-                    {
-                        target = GameObject.Find("Point" + WaypointPassed).transform;
-                        range = 10;
-                        if (WaypointPassed == points.Length - 1)
-                        {
-                            WaypointPassed = 0;
-                            //Debug.Log("Waypoint Reset.");
-                            return;
-                        }
-                        WaypointPassed++;
-                        
-                        Debug.Log("Waypoint " + WaypointPassed + " Passed");
-                    }
-                    else
-                    {
-                        range = 100;
-                        target = FindObjectOfType<PlayerController>().transform;
-                    }
-                    break;
-
-                case 100:
-                    Follow();
-                    break;
-            }
-        }
-    }
-    protected void PositionSet()
-    {
-       if (points[0] == new Vector3() && game.player.Count > 0)
-        {
-            points[0] = game.player[0].transform.position;
-        }
-
-        else
-        {
-            if (!GameObject.Find("Point0"))
-            {
-
-                foreach (Vector3 p in points)
-                {
-                    waypoint = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    waypoint.GetComponent<MeshRenderer>().enabled = false;
-                    waypoint.GetComponent<Collider>().enabled = false;
-                    waypoint.name = "Point" + createdNo;
-                    waypoint.transform.parent = GameObject.Find("Waypoints").transform;
-                    waypoint.transform.localPosition = p;
-                    createdNo++;
-                }
-            }
-        }
-        if (isPartyMember)
-        {
-            target = FindObjectOfType<PlayerController>().transform;
-        }
-        else
-        {
-            if (GameObject.Find("Point" + WaypointPassed))
-            {
-                target = GameObject.Find("Point" + WaypointPassed).transform;
-            }
-        }
-    }
-    private void ResetPositions()
-    {
-        if (isPartyMember)
-        {
-            points[0] = Vector3.zero;
-            WaypointPassed = 0;
-        }
-        else
-        {
-            points[0] = pointZero;
-            WaypointPassed = 1;
-        }
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.GetComponentInParent<Interactable>())
-        {
-            Interactable interaction = other.GetComponentInParent<Interactable>();
-            switch (interaction.type)
-            {
-                case "Door":
-                    focus = interaction;
-                    interaction.hasInteracted = true;
-                    interaction.botOverride = true;
-                    break;
-            }
-        }
-        if (other.GetComponent<PlayerController>())
-        {
-            prey = other.GetComponent<PlayerController>();
-            target = prey.transform;
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.GetComponentInParent<Interactable>())
-        {
-            Interactable interact = other.GetComponentInParent<Interactable>();
-            switch (interact.type)
-            {
-                case "Door":
-                    interact.hasInteracted = false;
-                    interact.botOverride = false;
-                    if (!interact.locked)
-                    {
-                        if (interact.anim.GetBool("Approached"))
-                        {
-                            focus.hasInteracted = true;
-                            // other.transform.parent.SendMessage("Door");
-                        }
-                    }
-                    focus = null;
-                    break;
-            }
-        }
-        if (other.GetComponent<PlayerController>())
-        {
-            prey = null;
-            WaypointPassed = 1;
-            if (!isPartyMember)
-            {
-                target = GameObject.Find("Point0").transform;
-            }
-        }
-    }
-}
-public class Bot_Components : Bot_Scripts
-{
-   
     protected void AddComponents()
     {
         #region NavMesh Agent
@@ -306,7 +76,6 @@ public class Bot_Components : Bot_Scripts
     {
         #region Other
         //anim = GetComponent<Animator>();
-        pause = FindObjectOfType<MenuChooser>();
         #endregion
         #region NavMesh Agent
         botAI.agentTypeID = 0;
@@ -327,72 +96,12 @@ public class Bot_Components : Bot_Scripts
         skeleton = GetComponentInChildren<SkinnedMeshRenderer>().transform;
     }
 }
-public class Bot_Scripts : Bot_Variables
+
+public class Variables : CharacterPackage
 {
-    protected MenuChooser pause;
-    protected PlayerController prey;
-    protected Interactable focus;
-}
-public class Bot_Variables : MonoBehaviour
-{
-    protected void AssignPlayer()
-    {
-        if (!GetComponentInChildren<SkinnedMeshRenderer>())
-        {
-            GameObject playerPrefab;
-            playerPrefab = Instantiate(playerInfo.prefab, this.transform);
-            anim = playerPrefab.GetComponent<Animator>();
-
-
-            
-           // Destroy(GetComponent<MeshFilter>());
-           // Destroy(GetComponent<MeshRenderer>());
-        }
-        else
-        {
-            anim = GetComponentInChildren<Animator>();
-        }
-        game = FindObjectOfType<GameManager>();
-
-    }
-
-    #region Misc
-    public bool canMove;
-    public bool playerIsPresent;
-    public bool isPartyMember = true;
-
-   [HideInInspector] public int healthMax;
-   [HideInInspector] public int magicMax;
-   [HideInInspector] protected int exp;
-
-    /// <summary>
-    /// Holds the prefab used to spawn the player model.
-    /// </summary>
-    public _Character playerInfo;
-
-
-    public int level;
-    public int magic;
-    public int health;
-
-
-    #endregion
-    /// <summary>
-    /// Determines how intense gravity is.
-    /// </summary>
-    protected float gravity = 3;
-    protected GameManager game;
-
     #region Variables
     //Own Object
-    public Animator anim;
-    public Transform skeleton;
-    public CharacterController bot;
-    public NavMeshAgent botAI;
 
-    //Other Objects
-    public Transform target;
-    protected GameObject waypoint;
     #endregion
 
     #region Waypoints

@@ -1,29 +1,35 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using PlayerVariables;
+using ScriptableObjects;
 
 
 //The Main Startup Class. (Nothing is really required from this class.)
 public class PlayerController : PlayerPackage.PartyHandler
 {
+    
     void Start()
+
     {
         VariablesStart();
         StartingVariables();
-     
     }
+  
     private void Update()
+
     {
         LevelBounds();
+        
         CameraAdjust();
         PartySwitcher();
-      
+
         MovePlayer();
         Actions();
+        FaceTarget();
     }
+
     private void LateUpdate()
+
     {
         CameraRotator();
     }
@@ -85,17 +91,17 @@ namespace PlayerPackage
     {
         protected void StartingVariables()
         {
-            switch(playerInfo.name)
+            switch (playerInfo.name)
             {
                 default:
                     break;
 
                 case "Scarf":
-                    anim.SetInteger("Character", 1);
+                    anim.SetFloat("Character", 1);
                     break;
 
                 case "Clownface":
-                    anim.SetInteger("Character", 0);
+                    anim.SetFloat("Character", 0);
                     break;
             }
             string currentScene = SceneManager.GetActiveScene().name;
@@ -113,7 +119,7 @@ namespace PlayerPackage
     /// </summary>
     public class PlayerInteract : PlayerMovement
     {
-         protected void ButtonPrompt()
+        protected void ButtonPrompt()
         {
             //buttonPrompt.transform.LookAt(cam.transform.position);
         }
@@ -136,14 +142,14 @@ namespace PlayerPackage
                 {
                     anim.applyRootMotion = true;
                     collisionDetected = false;
-                    //moveType = "Normal";
+                   
                 }
                 switch (moveType)
                 {
                     case "Normal":
                         anim.SetFloat("Action", 0);
                         player.enabled = true;
-                        //anim.SetBool("Climbing", false);
+                        
                         NormalMovement();
                         break;
 
@@ -155,24 +161,24 @@ namespace PlayerPackage
                         anim.SetFloat("MoveY", game.moveY);
                         if (game.moveY > 0)
                         {
-                            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y +0.1f, transform.localPosition.z);
+                            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y + 0.1f, transform.localPosition.z);
                         }
                         if (game.moveY < 0)
                         {
                             if (transform.position.y == focus.transform.position.y + 10)
                             {
                                 moveType = "Normal";
-                                
+
                                 return;
                             }
-                            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y -0.1f, transform.localPosition.z);
+                            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - 0.1f, transform.localPosition.z);
                         }
-                        if(game.moveY == 0)
+                        if (game.moveY == 0)
                         {
                             anim.SetFloat("Action", 1);
                         }
-                        
-                        if (game.button_Jump)
+
+                        if (Input.GetKeyDown(game.button_Jump) && canMove)
                         {
                             moveType = "Normal";
                             anim.SetFloat("Action", 0);
@@ -181,7 +187,7 @@ namespace PlayerPackage
 
                     case "Hanging":
                         player.enabled = false;
-                        if (game.button_Jump)
+                        if (Input.GetKeyDown(game.button_Jump))
                         {
                             moveType = "Normal";
                             anim.SetBool("Hanging", false);
@@ -224,7 +230,9 @@ namespace PlayerPackage
             }
             moveDirection.y = yspeed;
             #endregion
+
             moveDirection.y = moveDirection.y + (Physics.gravity.y * Time.deltaTime * gravity);
+
             if (player)
             {
                 player.Move(moveDirection * Time.deltaTime);
@@ -238,18 +246,19 @@ namespace PlayerPackage
                         if (game.moveX != 0 || game.moveY != 0)
                         {
                             player.transform.rotation = Quaternion.Euler(0, rotator + 30, 0);
-                            Quaternion newRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, 90, moveDirection.z));
+                            Quaternion newRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, 200, moveDirection.z));
                             theRotation = newRotation;
                             skeleton.rotation = Quaternion.Slerp(skeleton.rotation, newRotation, player_rotateSpeed * Time.deltaTime);
                         }
                     }
+
                     #endregion
                     break;
             }
             #region Animator
             if (canMove)
             {
-                if(player.isGrounded)
+                if (player.isGrounded)
                 {
                     anim.SetBool("Grounded", true);
                 }
@@ -277,7 +286,7 @@ namespace PlayerPackage
         {
             if (interaction != null)
             {
-                if(interaction.GetComponentInParent<Interactable>())
+                if (interaction.GetComponentInParent<Interactable>())
                 {
                     Interactable entity = interaction.GetComponentInParent<Interactable>();
 
@@ -313,7 +322,12 @@ namespace PlayerPackage
                     break;
                 case "Sprite Light":
                     interaction.enabled = false;
-                    interaction.GetComponent<SpriteAI>().triggered = true;
+                    interaction.GetComponent<_SpriteAI>().triggered = true;
+                    break;
+
+                case "Bot":
+                    interaction.GetComponent<BotReciever>().target = this.transform;
+                    target = interaction.transform;
                     break;
 
             }
@@ -333,7 +347,19 @@ namespace PlayerPackage
         {
             if (interaction != null)
             {
-                if(interaction.GetComponentInParent<Interactable>())
+
+                if (interaction.GetComponent<BotReciever>())
+                {
+                    interaction.GetComponent<BotReciever>().target = null;
+
+                    if (target = interaction.transform)
+                    {
+                        target = null;
+                    }
+
+                }
+
+                if (interaction.GetComponentInParent<Interactable>())
                 {
                     Interactable entity = interaction.GetComponentInParent<Interactable>();
                     if (entity)
@@ -355,7 +381,7 @@ namespace PlayerPackage
                 }
             }
         }
-        
+
         /// <summary>
         /// Brings the script attached to the object the player collided with into focus.
         /// </summary>
@@ -405,8 +431,8 @@ namespace PlayerPackage
             MenuPrompt();
             if (game)
             {
-                Jump(game.button_Jump);
-                Interact(game.button_Action);
+                Jump(Input.GetKeyDown(game.button_Jump));
+                Interact(Input.GetKeyDown(game.button_Action));
             }
         }
 
@@ -421,12 +447,12 @@ namespace PlayerPackage
                 if (player.isGrounded)
                 {
                     moveDirection.y = 0;
-                    if (button)
+                    if (button && canMove)
                     {
-                        moveDirection.y = jumpForce;
+                        moveDirection.y = jumpForce;           
                         anim.SetBool("Grounded", true);
                     }
-                    
+
                 }
                 else
                 {
@@ -443,49 +469,44 @@ namespace PlayerPackage
         {
             if (focus != null)
             {
-                
-                    switch (focus.type)
-                    {
-                        case "Chest":
+
+                switch (focus.type)
+                {
+                    case "Chest":
                         if (button)
                         {
                             focus.hasInteracted = !focus.hasInteracted;
                         }
-                            break;
+                        break;
 
-                        case "Door":
+                    case "Door":
                         if (button)
                         {
                             focus.hasInteracted = true;
                         }
-                            break;
+                        break;
 
-                        case "Save Point":
+                    case "Save Point":
                         if (button)
                         {
                             focus.hasInteracted = true;
                         }
-                            break;
+                        break;
 
                     case "Actor":
                         if (!focus.currentlyActing && button)
                         {
                             focus.Script_Handler();
                         }
-                        else if (focus.currentlyActing && game.button_Attack)
+                        else if (focus.currentlyActing && Input.GetKeyDown(game.button_Attack))
                         {
                             focus.Script_Handler();
                         }
                         break;
 
                 }
-                   
-                
 
-                
-                
             }
-
 
         }
 
@@ -524,12 +545,14 @@ namespace PlayerPackage
     /// </summary>
     public class Camera : BugHandler
     {
+        bool cameraAdjusted;
+
         /// <summary>
         /// Makes sure that the starting state of the camera is correct.
         /// </summary>
         protected void CameraAdjust()
         {
-            if (!canMove)
+            if (!cameraAdjusted)
             {
                 if (currentYaw != 90)
                 {
@@ -538,13 +561,14 @@ namespace PlayerPackage
                 else
                 {
                     elapsed += Time.deltaTime;
-                    if (!canMove)
+                    if (!cameraAdjusted)
                     {
                         if (elapsed >= timerspeed)
                         {
                             GameObject.Find("KH UI").GetComponent<Canvas>().enabled = true;
                             FindObjectOfType<MenuChooser>().enabled = true;
                             FindObjectOfType<MenuChooser>().enabled = true;
+                            cameraAdjusted = true;
                             canMove = true;
                         }
                     }
@@ -568,7 +592,7 @@ namespace PlayerPackage
                 switch (viewType)
                 {
                     case "FirstPerson":
-                        if (game.button_Select)
+                        if (Input.GetKeyDown(game.button_Select))
                         {
                             cam.parent = GameObject.Find("Player 1").transform;
                             viewType = "ThirdPerson";
@@ -578,7 +602,7 @@ namespace PlayerPackage
                         break;
 
                     case "ThirdPerson":
-                        if (game.button_Select)
+                        if (Input.GetKeyDown(game.button_Select))
                         {
                             cam.parent = lookObject.transform;
                             viewType = "FirstPerson";
@@ -640,35 +664,23 @@ namespace PlayerPackage
     /// <summary>
     /// All the different variables are stored here.
     /// </summary>
-    public class Variables : MonoBehaviour
+    public class Variables : CharacterPackage
     {
 
-        protected void AssignPlayer()
-        {
-            if (!GetComponentInChildren<SkinnedMeshRenderer>())
-            {
-
-
-                GameObject playerPrefab;
-                playerPrefab = Instantiate(playerInfo.prefab, this.transform);
-                anim = playerPrefab.GetComponent<Animator>();
-
-                Destroy(GetComponent<MeshFilter>());
-                Destroy(GetComponent<MeshRenderer>());
-            }
-            else
-            {
-                anim = GetComponentInChildren<Animator>();
-            }
-
-        }
+        
 
         /// <summary>
         /// Camera and player rotation.
         /// </summary>
         protected void CameraSetup()
         {
-            lookObject = GameObject.Find("Look Object").transform;
+            foreach (Transform look in GetComponentsInChildren<Transform>())
+            {
+                if(look.name == "Look Object")
+                {
+                    lookObject = look;
+                }
+            }
             skeleton = GetComponentInChildren<SkinnedMeshRenderer>().transform;
             offset = transform.position - cam.position;
         }
@@ -699,41 +711,15 @@ namespace PlayerPackage
             player.height = 2;
             player.radius = 0.5f;
             player.center = new Vector3(0, 1.1f, 0);
-                  
-            
-            
+
+
+
             #endregion
         }
+
+
         #region Variables
-        #region Stats
-        /// <summary>
-        /// The max amount of health the character can have.
-        /// </summary>
-        [HideInInspector] public int healthMax = 100;
-        /// <summary>
-        /// The max amount of magic the character can have.
-        /// </summary>
-        [HideInInspector] public int magicMax = 100;
-        /// <summary>
-        /// The current level the character is at.
-        /// </summary>
-        [HideInInspector] public int level = 1;
-
-        
-
-        /// <summary>
-        /// The current amount of magic the character has.
-        /// </summary>
-        [HideInInspector] public int magic = 50;
-        /// <summary>
-        /// The current amount of health the character has.
-        /// </summary>
-        [HideInInspector] public int health = 70;
-        /// <summary>
-        /// The current amount of exp the character has.
-        /// </summary>
-        [HideInInspector] protected int exp;
-        #endregion
+       
         #region Modes
         /// <summary>
         /// Which perspective you are playing from.
@@ -743,7 +729,7 @@ namespace PlayerPackage
         /// <summary>
         /// Determines if the player can move or not.
         /// </summary>
-        [HideInInspector] public bool canMove = true;
+
         #endregion
         #region Timing
         protected float timerspeed = 0f;
@@ -765,17 +751,8 @@ namespace PlayerPackage
         /// </summary>
         protected Vector3 playerDestination;
         #endregion
-        #region Physics
-        /// <summary>
-        /// Determines how intense gravity is.
-        /// </summary>
-        protected float gravity = 3;
 
-        /// <summary>
-        /// When the controls need to change for a specific situation, this controls that.
-        /// </summary>
-        public string moveType = "Normal";
-        #endregion
+        
         #region Movement
         /// <summary>
         /// Determines what direction the player is moving or wether the player is jumping.
@@ -793,10 +770,7 @@ namespace PlayerPackage
         protected float jumpForce = 14;
         #endregion
         #region Components
-        /// <summary>
-        /// The armature object.
-        /// </summary>
-        protected Transform skeleton;
+        
 
         /// <summary>
         /// Handles the rotation of the camera in thirdperson mode.
@@ -813,25 +787,13 @@ namespace PlayerPackage
         /// </summary>
         protected Transform cam;
 
-        /// <summary>
-        /// Grabs variables from the game manager.
-        /// </summary>
-        protected GameManager game;
+        
 
-        /// <summary>
-        /// The animator attached to the character.
-        /// </summary>
-        [HideInInspector] public Animator anim;
+        
 
-        /// <summary>
-        /// The component that moves the player around, handles the collisions and also creates gravity.
-        /// </summary>
-        [HideInInspector] public CharacterController player;
+        
 
-        /// <summary>
-        /// Holds the prefab used to spawn the player model.
-        /// </summary>
-        public _Character playerInfo;
+        
         #endregion
         #region Rotation Math
         #region Rotation
@@ -889,10 +851,7 @@ namespace PlayerPackage
         /// </summary>
         protected bool collisionDetected = true;
 
-        /// <summary>
-        /// The interactable object that is currently in focus.
-        /// </summary>
-         public Interactable focus;
+        
 
 
         /// <summary>

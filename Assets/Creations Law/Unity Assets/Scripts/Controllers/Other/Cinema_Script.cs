@@ -16,7 +16,9 @@ using UnityEngine.UI;
 
 public class Cinema_Script : Cinema.Variables
 {
+
     void Start()
+
     {
         speechLines = GameObject.Find("Speech Lines").GetComponent<Text>();
         //start = SceneManager.GetActiveScene().buildIndex;
@@ -27,6 +29,7 @@ public class Cinema_Script : Cinema.Variables
             FindObjectOfType<PlayerController>().canMove = false;
         }
     }
+
     void Update()
     {
         speechLines.text = "Text Line " + start;
@@ -80,6 +83,8 @@ public class Cinema_Script : Cinema.Variables
     {
         transform.localPosition = startLocation[start];
     }
+
+
 }
 
 namespace Cinema

@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea575c7cc585e324fa660766ed5e3402, type: 3}
+  m_Script: {fileID: -1195142265, guid: 4bfc857179ff18c4d813babfa67c3f7c, type: 3}
   m_Name: Scarf
   m_EditorClassIdentifier: 
-  prefab: {fileID: 9019715630119782088, guid: 7725e259ad75f2b42998584d6f1398b5, type: 3}
-  portrait: {fileID: 21300002, guid: 03c3c9bb4f5b25548882d7aa78337b20, type: 3}
+  prefab: {fileID: 7319058789857967603, guid: be358456588e82b4e84a2879ad24dd07, type: 3}
+  portrait: {fileID: 21300000, guid: b75e6098cb839ea45ae73cef4e28579b, type: 3}

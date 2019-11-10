@@ -6,12 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Creations Law/Game Assets/Scenes/UI Scenes/Title Screen.unity
-    guid: b4b2c1e90d77e4545ae0b59971d56df3
+    path: Assets/Creations Law/Game Assets/Scenes/Test Rooms/Title Screen.unity
+    guid: 925f417ab2ea20a4fa104ca6392b5343
+  - enabled: 1
+    path: Assets/Creations Law/Game Assets/Scenes/Test Rooms/Game.unity
+    guid: 3ee4c31bd4997fd4cb4ef12cb12fbe52
   - enabled: 1
     path: Assets/Creations Law/Game Assets/Scenes/Test Rooms/Gameplay Test.unity
     guid: 5570270a76e3d6146a58489a43853e5c
-  - enabled: 1
-    path: Assets/Creations Law/Game Assets/Scenes/Actual Levels/Scarf's Cave.unity
-    guid: d37039be379a553488478906a2fccf70
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 665bef7f256471a4fa0ee599bd475268,
+      type: 2}

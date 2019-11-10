@@ -1,14 +1,33 @@
 fileFormatVersion: 2
 guid: 03c3c9bb4f5b25548882d7aa78337b20
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: UI Faces_0
-    21300002: UI Faces_1
-    21300004: UI Faces_2
-    21300006: UI Faces_3
-    21300008: UI Faces_4
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: UI Faces_0
+  - first:
+      213: 21300002
+    second: UI Faces_1
+  - first:
+      213: 21300004
+    second: UI Faces_2
+  - first:
+      213: 21300006
+    second: UI Faces_3
+  - first:
+      213: 21300008
+    second: UI Faces_4
+  - first:
+      213: -2622242815560401866
+    second: UI Faces_5
+  - first:
+      213: 120051271713842078
+    second: UI Faces_6
+  - first:
+      213: 4096830429420205187
+    second: UI Faces_7
   externalObjects: {}
-  serializedVersion: 9
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -115,17 +134,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 400
         width: 400
         height: 400
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5cefc90b6f5ce814bbcdf6ecf2e673f1
+      spriteID: 81cdf3055d2577c46a65c1fec8727958
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
@@ -135,17 +155,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 400
-        y: 0
+        y: 400
         width: 400
         height: 400
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 723410342f1020149a113ea0b1c4deaa
+      spriteID: 958867fec7cf78d46aa3308b37dfe5f4
+      internalID: 21300002
       vertices: []
       indices: 
       edges: []
@@ -155,17 +176,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 800
-        y: 0
+        y: 400
         width: 400
         height: 400
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ff0fb4a5314c5a843953f399cb267c76
+      spriteID: f41c9f04af8bbcd4a82d7a9d769e1b0d
+      internalID: 21300004
       vertices: []
       indices: 
       edges: []
@@ -175,17 +197,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1200
-        y: 0
+        y: 400
         width: 400
         height: 400
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1d3f9d0b78e96754ca368f6254294030
+      spriteID: d65dca5454631ad4fbc6e9b4db32efe9
+      internalID: 21300006
       vertices: []
       indices: 
       edges: []
@@ -195,9 +218,72 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1600
+        y: 400
+        width: 400
+        height: 400
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a12410b829b95d44be229798a46b5a2
+      internalID: 21300008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI Faces_5
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 0
         width: 400
         height: 400
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0762d01c41985ed4cbf81632b0cfe154
+      internalID: -2622242815560401866
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI Faces_6
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 0
+        width: 400
+        height: 400
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b9ae998e2c25fb4d8d48873e5a296fc
+      internalID: 120051271713842078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI Faces_7
+      rect:
+        serializedVersion: 2
+        x: 803
+        y: 0
+        width: 387
+        height: 399
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -205,7 +291,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 55b600d7ba0a62f468be3932fa688744
+      spriteID: 8224be338c13f1d42be0a43f3d223afb
+      internalID: 4096830429420205187
       vertices: []
       indices: 
       edges: []
@@ -214,10 +301,12 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: befe23cc4f194d6428dd1a70e87026d3
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -17,32 +17,27 @@ public class MouseMenu : MonoBehaviour
         {
             //           Menu Back Panel, Backpanel, Canvas
             parentName = transform.parent.transform.parent.transform.parent.name;
-            //Debug.Log(parentName + "/" + name);
             menu = GameObject.Find(parentName).GetComponent<MenuChooser>();
         }
         else
         {
             // Buttons, MenuName, MenuType,Pause Menu
             parentName = transform.parent.transform.parent.transform.parent.transform.parent.name;
-            //Debug.Log(parentName + "/" + name);
             menu = GameObject.Find(parentName).GetComponent<MenuChooser>();
+
+            
         }
         
     }
 
-    private void Update()
-    {
-        if (menu)
-        {
-
-        }
-    }
 
     public void MouseOn()
     {
         if (menu)
+        {
             menu.SendMessage("MouseMenu", buttonNumber);
-        selected = true;
+            selected = true;
+        }
     }
     public void MouseOff()
     {

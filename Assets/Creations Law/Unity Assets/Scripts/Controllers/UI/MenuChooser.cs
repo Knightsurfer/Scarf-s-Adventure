@@ -19,14 +19,20 @@ using UnityEngine.SceneManagement;
 
 public class MenuChooser : SavePackage.SaveMenu
 {
-    
+
 
     /// <summary>
     /// Checks which menu this is and sets the relevant variables.
     /// </summary>
-    private void Start()
+    public void Start()
     {
-        switch(name)
+        switch (name)
+        {
+            case "Title Menu":
+                TitleStart();
+                break;
+        }
+        switch (name)
         {
             default:
                 usesBackdrop = true;
@@ -37,14 +43,16 @@ public class MenuChooser : SavePackage.SaveMenu
                 break;
         }
 
-        if(usesBackdrop)
+
+        if (usesBackdrop)
         {
             VariablesStart();
             UIStart();
+           
         }
     }
 
-    private void Update()
+    public void Update()
     {
 
         if (usesBackdrop)
@@ -52,11 +60,18 @@ public class MenuChooser : SavePackage.SaveMenu
             UIUpdate();
             if (menuOpen)
             {
-                UpDownHandler();
+                switch (navigationMode)
+                {
+                    case "Vertical":
+                        VerticalHandler();
+                        break;
+
+                    case "Grid":
+                        GridHandler();
+                        break;
+                }
                 MenuScroller(0, menuItemsCounted);
-
                 HighlightPos();
-
                 ConfirmMenu();
                 CancelMenu();
             }
@@ -76,8 +91,12 @@ public class MenuChooser : SavePackage.SaveMenu
                     {
                         return;
                     }
-                    menuActivator = game.button_Start;
+                    menuActivator = Input.GetKeyDown(game.button_Start);
                     PauseUpdate();
+                    break;
+
+                case "Title Menu":
+                    TitleUpdate();
                     break;
             }
         }
@@ -115,15 +134,11 @@ namespace SavePackage
         protected void SaveUpdate()
         {
             game.openMenus[1] = menuOpen;
-            if (game.paused && menuOpen && game.button_Start)
-            {
-                game.paused = false;
-            }
             SaveMenus();
         }
         protected void SaveMenus()
         {
- 
+
         }
     }
 }
@@ -135,11 +150,8 @@ namespace PausePackage
 {
     public class PauseMenu : CommandPackage.CommandMenu
     {
-        protected void PauseStart()
-        {
-
-        }
-        protected virtual void PauseUpdate()
+       
+        protected void PauseUpdate()
         {
             game.openMenus[0] = menuOpen;
 
@@ -170,134 +182,7 @@ namespace PausePackage
             }
         }
 
-        protected override void ConfirmMenu()
-        {
-            if (game.button_Attack)
-            {
-                if (currentMenu == "Level Select Menu")
-                {
-                    menuOpen = false;
-                    GameObject.Find("Menu Backdrop").GetComponent<Canvas>().enabled = menuOpen;         
-                    SceneManager.LoadScene(menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text);
 
-                    if (menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text == "Quit Game")
-                    {
-                        Application.Quit();
-                    }
-                    selectedItem = 0;
-                }
-                
-                if (selectedItem >= 0 && selectedItem <= menuItemsCurrentContext.Length - 2 && selectedItem != -100)
-                    {
-                        menuTitle.transform.localPosition = menuTitlePos[1];
-                        switch (menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text)
-                        {
-                            default:
-                                //Debug.Log("Test");
-                                lastMenuEntered[lastMove] = currentMenu;
-                                lastMove++;
-
-                                currentMenu = menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text + " Menu";
-                                LoadMenu("MenuConfirm");
-                                break;
-
-                            case "Save":
-                                highlighter[0].transform.position = new Vector3(-720.4601f, 531.5f, 0);
-                                selectedHighlighter = 1;
-                                lastMenuEntered[lastMove] = currentMenu;
-                                lastMove++;
-
-                                currentMenu = menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text + " Menu";
-                                LoadMenu("MenuConfirm");
-                                break;
-
-                            case "Stock":
-                                //Debug.Log("Stock");
-                                highlighter[0].transform.position = new Vector3(-720.4601f, 531.5f, 0);
-                                selectedHighlighter = 2;
-                                lastMenuEntered[lastMove] = currentMenu;
-                                lastMove++;
-
-                                currentMenu = menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text + " Menu";
-                                LoadMenu("MenuConfirm");
-                                break;
-
-                        }
-
-                        menuTitle.GetComponentInChildren<Text>().text = currentMenu;
-                        if (game.isGamepad)
-                        {
-                            selectedItem = 0;
-                        }
-                        else
-                        {
-                            selectedItem = -100;
-                        }
-
-                    }
-                
-            }
-        }
-
-        protected override void CancelMenu()
-        {
-            if (game.button_Jump)
-            {
-                if (game.isGamepad)
-                {
-                    selectedItem = 0;
-                }
-                else
-                {
-                    selectedItem = -100;
-                }
-                switch (currentMenu)
-                {
-                    case "Main Menu":
-                        menuOpen = false;
-                        game.paused = menuOpen;
-                        GameObject.Find("Menu Backdrop").GetComponent<Canvas>().enabled = menuOpen;
-                        break;
-
-                    case "Save Menu":
-                        lastMove--;
-                        selectedHighlighter = 0;
-                        highlighter[1].transform.position = new Vector3(-603, 635, 0);
-                        currentMenu = lastMenuEntered[lastMove];
-                        DisableMenuItems("MenuConfirm");
-                        MenuItemsCountRelevant();
-                        break;
-
-                    case "Stock Menu":
-                        lastMove--;
-                        selectedHighlighter = 0;
-                        highlighter[2].transform.position = new Vector3(-603, 635, 0);
-                        currentMenu = lastMenuEntered[lastMove];
-                        DisableMenuItems("MenuConfirm");
-                        MenuItemsCountRelevant();
-                        break;
-
-
-
-                    default:
-                        lastMove--;
-                        currentMenu = lastMenuEntered[lastMove];
-                        DisableMenuItems("MenuConfirm");
-                        MenuItemsCountRelevant();
-                        break;
-
-                }
-                if (currentMenu != "Main Menu")
-                {
-                    menuTitle.transform.localPosition = menuTitlePos[1];
-                }
-                else
-                {
-                    menuTitle.transform.localPosition = menuTitlePos[0];
-                }
-                menuTitle.GetComponentInChildren<Text>().text = currentMenu;
-            }
-        }
 
         /// <summary>
         /// Updates the stats on the pause screen.
@@ -312,14 +197,14 @@ namespace PausePackage
                     int i = game.player.Count;
                     foreach (PlayerController player in game.player)
                     {
-                            GameObject.Find("Character " + (i)).GetComponent<Canvas>().enabled = true;
+                        GameObject.Find("Character " + (i)).GetComponent<Canvas>().enabled = true;
 
-                            if (player != null)
-                            {
-                                GameObject.Find("Player" + (i - 1) + " Name").GetComponent<Text>().text = player.playerInfo.name;
-                                GameObject.Find("Player" + (i - 1) + " Stats").GetComponent<Text>().text = player.level + "\n" + player.health + " / " + player.healthMax + "\n" + player.magic + " / " + player.magicMax;
-                            }
-                            i--;
+                        if (player != null)
+                        {
+                            GameObject.Find("Player" + (i - 1) + " Name").GetComponent<Text>().text = player.playerInfo.name;
+                            GameObject.Find("Player" + (i - 1) + " Stats").GetComponent<Text>().text = player.level + "\n" + player.health + " / " + player.healthMax + "\n" + player.magic + " / " + player.magicMax;
+                        }
+                        i--;
                     }
                 }
             }
@@ -332,7 +217,7 @@ namespace PausePackage
 /// </summary>
 namespace CommandPackage
 {
-    public class CommandMenu : UI.Main
+    public class CommandMenu : TitlePackage.TitleMenu
     {
         /// <summary>
         /// (Currently Empty)
@@ -345,78 +230,221 @@ namespace CommandPackage
         }
         protected virtual void CommandUpdate()
         {
-            foreach (MenuChooser menu in FindObjectsOfType<MenuChooser>())
-            {
-                if (menu.name != name)
-                {
-                    if (game.paused)
-                    {
-                        return;
-                    }
-                }
+           if (game.paused)
+           {
+                return;
+           }
+               
+            VerticalHandler();
 
-            }  
-                    UpDownHandler();
-                
-                MenuScroller(0, menuItemsCounted);
-                if (menuItems.Count > 0)
-                {
-                    Menu();
-                }
-            
+            MenuScroller(0, menuItemsCounted);
+            if (menuItems.Count > 0)
+            {
+                Menu();
+            }
+
         }
 
-            protected void Menu()
+        protected void Menu()
+        {
+            switch (selectedItem)
             {
-                switch (selectedItem)
-                {
 
-                    case 0:
-                        //menuItems[4].transform.localPosition = new Vector3(210, 133, 0);
-                        //menuItems[5].transform.localPosition = new Vector3(-180f, 71f, 0);
+                case 0:
+                    //menuItems[4].transform.localPosition = new Vector3(210, 133, 0);
+                    //menuItems[5].transform.localPosition = new Vector3(-180f, 71f, 0);
 
-                        menuItems[0].transform.localPosition = new Vector3(30, 67.5f, 0);
-                        menuItems[1].transform.localPosition = new Vector3(0, 0, 0);
-                        menuItems[2].transform.localPosition = new Vector3(0, -69, 0);
-                        menuItems[3].transform.localPosition = new Vector3(0, -136, 0);
-                        break;
+                    menuItems[0].transform.localPosition = new Vector3(30, 67.5f, 0);
+                    menuItems[1].transform.localPosition = new Vector3(0, 0, 0);
+                    menuItems[2].transform.localPosition = new Vector3(0, -69, 0);
+                    menuItems[3].transform.localPosition = new Vector3(0, -136, 0);
+                    break;
 
-                    case 1:
-                        //menuItems[4].transform.localPosition = new Vector3(211, 66, 0);
-                        //menuItems[5].transform.localPosition = new Vector3(-179f, 1f, 0);
+                case 1:
+                    //menuItems[4].transform.localPosition = new Vector3(211, 66, 0);
+                    //menuItems[5].transform.localPosition = new Vector3(-179f, 1f, 0);
 
-                        menuItems[0].transform.localPosition = new Vector3(0, 67.5f, 0);
-                        menuItems[1].transform.localPosition = new Vector3(30, 0, 0);
-                        menuItems[2].transform.localPosition = new Vector3(0, -69, 0);
-                        menuItems[3].transform.localPosition = new Vector3(0, -136, 0);
-                        break;
+                    menuItems[0].transform.localPosition = new Vector3(0, 67.5f, 0);
+                    menuItems[1].transform.localPosition = new Vector3(30, 0, 0);
+                    menuItems[2].transform.localPosition = new Vector3(0, -69, 0);
+                    menuItems[3].transform.localPosition = new Vector3(0, -136, 0);
+                    break;
 
-                    case 2:
-                        //menuItems[4].transform.localPosition = new Vector3(211, -2.7f, 0);
-                        //menuItems[5].transform.localPosition = new Vector3(-179f, -66.5f, 0);
+                case 2:
+                    //menuItems[4].transform.localPosition = new Vector3(211, -2.7f, 0);
+                    //menuItems[5].transform.localPosition = new Vector3(-179f, -66.5f, 0);
 
-                        menuItems[0].transform.localPosition = new Vector3(0, 67.5f, 0);
-                        menuItems[1].transform.localPosition = new Vector3(0, 0, 0);
-                        menuItems[2].transform.localPosition = new Vector3(30, -69, 0);
-                        menuItems[3].transform.localPosition = new Vector3(0, -136, 0);
-                        break;
+                    menuItems[0].transform.localPosition = new Vector3(0, 67.5f, 0);
+                    menuItems[1].transform.localPosition = new Vector3(0, 0, 0);
+                    menuItems[2].transform.localPosition = new Vector3(30, -69, 0);
+                    menuItems[3].transform.localPosition = new Vector3(0, -136, 0);
+                    break;
 
-                    case 3:
-                        //menuItems[4].transform.localPosition = new Vector3(209, -70.8f, 0);
-                        //menuItems[5].transform.localPosition = new Vector3(-181, -135f, 0);
+                case 3:
+                    //menuItems[4].transform.localPosition = new Vector3(209, -70.8f, 0);
+                    //menuItems[5].transform.localPosition = new Vector3(-181, -135f, 0);
 
-                        menuItems[0].transform.localPosition = new Vector3(0, 67.5f, 0);
-                        menuItems[1].transform.localPosition = new Vector3(0, 0, 0);
-                        menuItems[2].transform.localPosition = new Vector3(0, -69, 0);
-                        menuItems[3].transform.localPosition = new Vector3(30, -136, 0);
-                       break;
+                    menuItems[0].transform.localPosition = new Vector3(0, 67.5f, 0);
+                    menuItems[1].transform.localPosition = new Vector3(0, 0, 0);
+                    menuItems[2].transform.localPosition = new Vector3(0, -69, 0);
+                    menuItems[3].transform.localPosition = new Vector3(30, -136, 0);
+                    break;
 
-                }
             }
         }
     }
+}
+
+namespace TitlePackage
+{
+    public class TitleMenu : UI.Main
+    {
+        protected void TitleStart()
+        {
+            game = FindObjectOfType<GameManager>();
+            menuOpen = true;
+            player = GameObject.Find("Prefab Spawner");
+            modLastPages[1] = game.characters.Length;
+            modelPrefab = game.characters[0];
+            
+        }
+        public bool continueDeleted;
+        protected void TitleUpdate()
+        {
+            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/" + Application.productName + "/Data/" + "Saves"))
+            {
+                Destroy(GameObject.Find("Continue"));
+                continueDeleted = true;
+                saveExists = false;
+            }
+            else
+            {
+                saveExists = true;
+            }
+            switch (currentMenu)
+            {
+                case "Mods Menu":
+                    if (game.isGamepad)
+                    {
+                        player.transform.Rotate(0, -Input.GetAxis("Axis4") * 5, 0);
+                        ModIndexer();
+                    }
+                    else
+                    {
+                        ModIndexer();
+                    }
+                    break;
+            }
+
+        }
 
 
+        public void DragPlayer()
+        {
+            if (!game.isGamepad)
+            {
+                player.transform.Rotate(0, -Input.GetAxis("Mouse X") * 5, 0);
+            }
+        }
+
+        protected void ModIndexer()
+        {
+            if (game.characters[modPages[1]])
+            {
+                GameObject.Find("Character").GetComponent<Text>().text = game.characters[modPages[1]].name;
+            }
+            if (selectedItem != -100)
+            {
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    
+                        foreach (SkinnedMeshRenderer skin in FindObjectsOfType<SkinnedMeshRenderer>())
+                        {
+                            Destroy(skin.transform.parent.gameObject);
+                        }
+                        foreach (MeshRenderer mesh in FindObjectsOfType<MeshRenderer>())
+                        {
+                            Destroy(mesh.transform.parent.gameObject);
+                        }
+                    
+                   
+                       
+                    
+                    
+
+                    if (modPages[selectedItem] < modLastPages[selectedItem] - 1)
+                    {
+                        Instantiate(game.characters[modPages[1]+1], player.transform);
+                        modPages[selectedItem]++;
+                    }
+                    else
+                    {
+                        modPages[selectedItem] = 0;
+                    }
+                }
+            }
+            
+            if (game.isGamepad)
+            {
+                if (!game.d_Left && modPages[selectedItem] > 0)
+                {
+                    if (game.direction == "left")
+                    {
+                        game.d_Left = true;
+                        modPages[selectedItem]--;
+                        if (modPages[selectedItem] == 0)
+                        {
+                            //left notifier disappears
+                        }
+                    }
+                }
+                if (!game.d_Right && modPages[selectedItem] < modLastPages[selectedItem] - 1)
+                {
+                    if (game.direction == "right")
+                    {
+                        game.d_Right = true;
+                        modPages[selectedItem]++;
+                        if (modPages[selectedItem] == modLastPages[selectedItem])
+                        {
+                            //Right notifier disappears
+                        }
+                    }
+                }
+
+                
+                if (!game.d_Left || !game.d_Right)
+                {
+                    if (!FindObjectOfType<SkinnedMeshRenderer>() || !FindObjectOfType<MeshRenderer>())
+                    {
+                        Instantiate(game.characters[modPages[1]], player.transform);
+                    }
+
+                    if (modPages[selectedItem] > -1 && game.d_Left || modPages[selectedItem] != modLastPages[selectedItem] && game.d_Right)
+                    {
+                        switch (selectedItem)
+                        {
+                            default:
+                                foreach (SkinnedMeshRenderer skin in FindObjectsOfType<SkinnedMeshRenderer>())
+                                {
+                                    Destroy(skin.transform.parent.gameObject);
+                                }
+                                foreach (MeshRenderer mesh in FindObjectsOfType<MeshRenderer>())
+                                {
+                                    Destroy(mesh.transform.parent.gameObject);
+                                }
+                                break;
+                            case 3: break;
+
+                            case 4: break;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}
 
 /// <summary>
 /// Things that are common among the menus.
@@ -435,15 +463,7 @@ namespace UI
             MenuItemsCountRelevant();
             #endregion
             menuTitle = GameObject.Find("Menu Title");
-            int i = 0;
-            foreach(MenuChooser menu in FindObjectsOfType<MenuChooser>())
-            {
-                if(menu.name != "Command Menu")
-                {
-                    menuChooser[i] = menu;
-                    i++;
-                }
-            }          
+
             foreach (Button button in FindObjectsOfType<Button>())
             {
                 if (button.name == "Highlight")
@@ -471,7 +491,6 @@ namespace UI
             if (menuActivator)
             {
                 OpenMenu();
-                CloseOtherMenus();
             }
             #endregion
             #region Gamepad Detection
@@ -493,19 +512,7 @@ namespace UI
             }
             #endregion
             #region Reset Main Variables
-            foreach (MenuChooser mc in menuChooser)
-            {
-                if (mc != this)
-                {
-                    if (mc.menuActivator && menuOpen)
-                    {
-                        currentMenu = "Main Menu";
-                        menuTitle.transform.localPosition = menuTitlePos[0];
-                        LoadMenu("MenuConfirm");
-                    }
-                }
-                else
-                {
+            
                     if (menuActivator && menuOpen)
                     {
                         currentMenu = "Main Menu";
@@ -513,9 +520,9 @@ namespace UI
                         menuTitle.transform.localPosition = menuTitlePos[0];
                         LoadMenu("MenuConfirm");
                     }
-                }
+                
 
-            }
+            
             if (menuActivator && menuOpen && selectedItem != 0 && game.isGamepad)
             {
                 selectedItem = 0;
@@ -547,9 +554,9 @@ namespace UI
             }
             foreach (BotReciever bot in game.bot)
             {
-                                
+
             }
-            if(!menuOpen && menuActivator)
+            if (!menuOpen && menuActivator)
             {
                 MenuItemsCount();
             }
@@ -560,48 +567,82 @@ namespace UI
         /// </summary>
         protected void HighlightPos()
         {
-            if (selectedItem == -100)
+            if (name != "Title Menu")
             {
-                highlighter[selectedHighlighter].transform.position = new Vector3(-603, 635, 0);
+                if (selectedItem == -100)
+                {
+                    highlighter[selectedHighlighter].transform.position = new Vector3(-603, 635, 0);
+                }
+                if (selectedItem != -100)
+                {
+                    if (menuItemsCurrentContext[0])
+                    {
+                        highlighter[selectedHighlighter].transform.position = menuItemsCurrentContext[selectedItem].transform.position;
+                    }
+                }
             }
-            if (selectedItem != -100)
+            else
             {
-                highlighter[selectedHighlighter].transform.position = menuItemsCurrentContext[selectedItem].transform.position;
+                foreach (GameObject item in menuItemsCurrentContext)
+                {
+                    if (item == null)
+                    { return; }
+
+                    if (item.GetComponent<MouseMenu>().buttonNumber == selectedItem)
+                    {
+                        item.GetComponent<Image>().color = colours[1];
+                    }
+                    else
+                    {
+                        item.GetComponent<Image>().color = colours[0];
+                    }
+                }
             }
         }
 
         /// <summary>
-        /// If a menu that already uses the menu backdrop is currently in use, closes the other one before opening another.
-        /// </summary>
-        protected void CloseOtherMenus()
-        {
-            foreach (MenuChooser menu in menuChooser)
-            {
-                if (menu.gameObject != gameObject)
-                {
-                    Array.Clear(lastMenuEntered,0, 5);
-                    lastMove = 0;
-                    menu.menuOpen = false;
-                }
-            }
-        }
     }
     /// <summary>
     /// The controls aspect of the userinterface.
     /// </summary>
     public class Controls : Math
     {
-        /// <summary>
-        /// Handles menu confirmation.
-        /// </summary>
-        protected virtual void ConfirmMenu()
+        protected void ConfirmMenu()
         {
-            
-            if (game.button_Attack)
+            if (Input.GetKeyDown(game.button_Attack))
             {
+
+                switch (currentMenu)
+                {
+                    case "Mods Menu":
+
+                        return;
+                        
+
+                    case "Items Menu":
+                        if (selectedItem == menuItemsCounted)
+                        {
+                            navigationMode = "Grid";
+                        }
+                        break;
+
+                    case "Level Select Menu":
+                        
+                        if (SceneManager.GetSceneByName(menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text).buildIndex != -1)
+                        {
+                            SceneManager.LoadScene(menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text);
+                            Destroy(FindObjectOfType<GameManager>().gameObject);
+                        }
+                        else
+                        {
+                            return;
+                        }
+                        break;
+                }
+
                 if (selectedItem >= 0 && selectedItem <= menuItemsCurrentContext.Length - 2 && selectedItem != -100)
                 {
-                    menuTitle.transform.localPosition = menuTitlePos[1];
+
                     switch (menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text)
                     {
                         default:
@@ -612,6 +653,18 @@ namespace UI
                             LoadMenu("MenuConfirm");
                             break;
 
+                        case "New Game":
+                            DestroyImmediate(FindObjectOfType<GameManager>().gameObject);
+                            SceneManager.LoadScene(1);
+                            return;
+
+                        
+
+                        case "Quit Game":
+                            Application.Quit();
+                            return;
+
+
                         case "Save":
                             highlighter[0].transform.position = new Vector3(-720.4601f, 531.5f, 0);
                             selectedHighlighter = 1;
@@ -621,8 +674,31 @@ namespace UI
                             currentMenu = menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text + " Menu";
                             LoadMenu("MenuConfirm");
                             break;
+
+                        case "Stock":
+                            highlighter[0].transform.position = new Vector3(-720.4601f, 531.5f, 0);
+                            selectedHighlighter = 2;
+                            lastMenuEntered[lastMove] = currentMenu;
+                            lastMove++;
+
+                            currentMenu = menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text + " Menu";
+                            LoadMenu("MenuConfirm");
+                            break;
+
                     }
-                    menuTitle.GetComponentInChildren<Text>().text = currentMenu;
+
+                    if (SceneManager.GetActiveScene().name == "Title Screen")
+                    {
+                        switch (menuItemsCurrentContext[selectedItem].GetComponentInChildren<Text>().text)
+                        {
+                            case "Mods":
+                                if (!FindObjectOfType<SkinnedMeshRenderer>() || !FindObjectOfType<MeshRenderer>())
+                                {
+                                    Instantiate(game.characters[0], player.transform);
+                                }
+                                break;
+                        }
+                    }
                     if (game.isGamepad)
                     {
                         selectedItem = 0;
@@ -631,18 +707,26 @@ namespace UI
                     {
                         selectedItem = -100;
                     }
-
+                    if (name != "Title Menu")
+                    {
+                        menuTitle.transform.localPosition = menuTitlePos[1];
+                        menuTitle.GetComponentInChildren<Text>().text = currentMenu;
+                    }
                 }
+               
+
             }
         }
 
-        /// <summary>
-        /// Handles menu cancellation.
-        /// </summary>
-        protected virtual void CancelMenu()
+        protected void CancelMenu()
         {
-            if (game.button_Jump)
+            if (Input.GetKeyDown(game.button_Jump))
             {
+                if (name == "Title Menu" && currentMenu == "Main Menu")
+                {
+                    return;
+                }
+
                 if (game.isGamepad)
                 {
                     selectedItem = 0;
@@ -653,9 +737,11 @@ namespace UI
                 }
                 switch (currentMenu)
                 {
+                   
+
                     case "Main Menu":
                         menuOpen = false;
-                        game.paused = menuOpen;
+                        
                         GameObject.Find("Menu Backdrop").GetComponent<Canvas>().enabled = menuOpen;
                         break;
 
@@ -668,13 +754,33 @@ namespace UI
                         MenuItemsCountRelevant();
                         break;
 
+                    case "Stock Menu":
+                        navigationMode = "Vertical";
+                        lastMove--;
+                        selectedHighlighter = 0;
+                        highlighter[2].transform.position = new Vector3(-603, 635, 0);
+                        currentMenu = lastMenuEntered[lastMove];
+                        DisableMenuItems("MenuConfirm");
+                        MenuItemsCountRelevant();
+                        break;
+
+
+
                     default:
                         lastMove--;
                         currentMenu = lastMenuEntered[lastMove];
                         DisableMenuItems("MenuConfirm");
                         MenuItemsCountRelevant();
                         break;
+
+                    
+
                 }
+                if (name == "Title Menu")
+                {
+                    return;
+                }
+
                 if (currentMenu != "Main Menu")
                 {
                     menuTitle.transform.localPosition = menuTitlePos[1];
@@ -683,6 +789,7 @@ namespace UI
                 {
                     menuTitle.transform.localPosition = menuTitlePos[0];
                 }
+                
                 menuTitle.GetComponentInChildren<Text>().text = currentMenu;
             }
         }
@@ -706,23 +813,23 @@ namespace UI
             {
                 case "Save Menu":
                     menuOpen = !menuOpen;
-                    game.paused = menuOpen;
+                    
                     break;
 
                 case "Pause Menu":
-                    if(!menuOpen && !game.paused)
+                    if (!menuOpen && !game.paused)
                     {
-                        game.paused = true;
+                        
                         menuOpen = !menuOpen;
                     }
-                    else if(menuOpen && game.paused)
+                    else if (menuOpen && game.paused)
                     {
                         menuOpen = !menuOpen;
-                        game.paused = false;
+                        
                     }
                     break;
             }
-            
+
             GameObject.Find("Menu Backdrop").GetComponent<Canvas>().enabled = menuOpen;
 
             GetComponent<Canvas>().enabled = menuOpen;
@@ -731,7 +838,7 @@ namespace UI
         /// <summary>
         /// Handles vertical scrolling.
         /// </summary>
-        protected virtual void UpDownHandler()
+        protected virtual void VerticalHandler()
         {
             if (game.isGamepad)
             {
@@ -749,6 +856,108 @@ namespace UI
                     {
                         game.d_Down = true;
                         selectedItem++;
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Handles menus that work off a grid like format such as the item stock menu.
+        /// </summary>
+        protected virtual void GridHandler()
+        {
+
+            if (game.isGamepad)
+            {
+                if (game.direction == "up")
+                {
+                    switch (selectedItem)
+                    {
+                        default:
+                            if (!game.d_Up)
+                            {
+                                game.d_Up = true;
+                                selectedItem -= 3;
+                            }
+                            break;
+
+                        case 0:
+                            break;
+
+                        case 1:
+                            break;
+
+                        case 2:
+                            break;
+                    }
+                }
+                if (game.direction == "down")
+                {
+                    if (!game.d_Down)
+                    {
+                        game.d_Down = true;
+                        selectedItem += 3;
+                    }
+                }
+
+                if (game.direction == "left")
+                {
+                    switch (selectedItem)
+                    {
+                        default:
+                            if (!game.d_Left)
+                            {
+                                game.d_Left = true;
+                                selectedItem--;
+                            }
+                            break;
+
+                        case 0:
+
+                            break;
+
+                        case 3:
+                            break;
+
+                        case 6:
+                            break;
+
+                        case 9:
+                            break;
+                    }
+
+                }
+
+
+                if (game.direction == "right")
+                {
+                    if (selectedItem != menuItemsCounted)
+                    {
+                        switch (selectedItem)
+                        {
+                            default:
+
+                                if (!game.d_Right)
+                                {
+                                    game.d_Right = true;
+                                    selectedItem++;
+                                }
+                                break;
+
+                            case 2:
+                                break;
+
+                            case 5:
+                                break;
+
+                            case 8:
+                                break;
+
+                            case 11:
+                                break;
+
+                        }
                     }
                 }
             }
@@ -1004,7 +1213,7 @@ namespace UI
         /// stores which menu's were previously opened so that you can go back.
         /// </summary>
         public string[] lastMenuEntered = new string[5];
-        
+
         #endregion
         #region Intergers
         /// <summary>
@@ -1037,7 +1246,7 @@ namespace UI
         /// <summary>
         /// Stores information on the relevant menu items.
         /// </summary>
-        protected GameObject[] menuItemsCurrentContext = new GameObject[99];
+        public GameObject[] menuItemsCurrentContext = new GameObject[99];
 
         /// <summary>
         /// The titlecard for the selected menu.
@@ -1086,6 +1295,17 @@ namespace UI
         /// Contains the text of the selected menu item.
         /// </summary>
         protected string selectedMenuItem;
+        
+        protected string navigationMode = "Vertical";
+
+        
+
+        public Color[] colours = new Color[2];
+        protected GameObject modelPrefab;
+        protected GameObject player;
+        protected bool saveExists;
+        public int[] modPages = new int[4];
+        public int[] modLastPages = new int[4];
         #endregion
     }
 }

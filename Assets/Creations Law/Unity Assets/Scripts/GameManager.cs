@@ -19,7 +19,10 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.UI;
+
 using UnityEngine.SceneManagement;
+using ScriptableObjects;
+
 
 
 public class GameManager : Game.Player.Inventory
@@ -27,9 +30,9 @@ public class GameManager : Game.Player.Inventory
     /// <summary>
     /// Makes the script consist over multiple scenes.
     /// </summary>
-    private void Awake()
+    void Awake()
     {
-        if(game == null)
+        if (game == null)
         {
             DontDestroyOnLoad(gameObject);
             game = this;
@@ -39,20 +42,19 @@ public class GameManager : Game.Player.Inventory
             Destroy(gameObject);
         }
         UISetup();
-        
     }
-    private void Start()
+    void Start()
     {
         StartingVariables();
         CharacterDetector();
     }
-    private void Update()
+    void Update()
     {
-        ControllerDetect();
         ControllerCheck();
 
         FunctionKeys();
         UIUpdate();
+        CharacterDetector();
     }
 }
 namespace Game
@@ -96,7 +98,7 @@ namespace Game
 
                         newItem.name = currentItem.name;
                         newItem.GetComponentInChildren<Text>().text = currentItem.name + ": " + itemAmount[i];
-                        newItem.GetComponent<MouseMenu>().buttonNumber = i;
+                        newItem.GetComponent<MouseMenu>().buttonNumber = stockItems.Count-1;
                         GameObject.Find("Pause Menu").GetComponent<MenuChooser>().menuItems.Add(newItem.GetComponent<MouseMenu>());
 
                         i = 0;
@@ -115,8 +117,11 @@ namespace Game
         {
             protected void CharacterDetector()
             {
-                player.AddRange(FindObjectsOfType<PlayerController>());
-                bot.AddRange(FindObjectsOfType<BotReciever>());
+                if (player.Count < 1)
+                {
+                    player.AddRange(FindObjectsOfType<PlayerController>());
+                    bot.AddRange(FindObjectsOfType<BotReciever>());
+                }
             }
         }
     }
@@ -127,17 +132,16 @@ namespace Game
         /// </summary>
         public class Gamepad : MonoBehaviour
         {
-            public int scroll = 0;
-            public bool isTest;
+            #region Keycode Stuff
+           readonly bool isTest = false;
+            float scroll = 0;
 
             #region Controllers //Variables for detecting how many controllers there are.
             public string controller;
             [HideInInspector] public bool isGamepad;
             protected string selectedController;
-            public string[] currentControllers = new string[] { };
-
+            [HideInInspector] public string[] currentControllers = new string[] { };
             #endregion
-
             #region Axis    //All analog movement is recorded as a float here.
             [HideInInspector] public string direction = "none";
 
@@ -151,28 +155,29 @@ namespace Game
             [HideInInspector] public float triggerR;
             #endregion
             #region Buttons //All button feedback is recorded as a bool here.
-            [HideInInspector] public bool button_Jump;
-            [HideInInspector] public bool button_Attack;
-            [HideInInspector] public bool button_Action;
-            [HideInInspector] public bool button_Kick;
+            [HideInInspector] public KeyCode button_Jump;
+            [HideInInspector] public KeyCode button_Attack;
+            [HideInInspector] public KeyCode button_Action;
+            [HideInInspector] public KeyCode button_Kick;
 
             [HideInInspector] public bool d_Up;
             [HideInInspector] public bool d_Down;
             [HideInInspector] public bool d_Left;
             [HideInInspector] public bool d_Right;
-            [HideInInspector] public bool button_L;
-            [HideInInspector] public bool button_R;
+            [HideInInspector] public KeyCode button_L;
+            [HideInInspector] public KeyCode button_R;
 
-            [HideInInspector] public bool button_Start;
-            [HideInInspector] public bool button_Select;
+            [HideInInspector] public KeyCode button_Start;
+            [HideInInspector] public KeyCode button_Select;
+            #endregion
             #endregion
 
-            //Device Check
-            public void ControllerDetect()
+            protected void ControllerCheck()
             {
+                //Controller mode switcher.
+                #region Controller Detect
                 //Starts checking number of controllers and then decides what controller mode to turn on.
                 //Will Come back to this for a simpler version later.
-
                 currentControllers = Input.GetJoystickNames();
                 if (currentControllers.Length < 1 || currentControllers[0] == "")
                 {
@@ -205,8 +210,6 @@ namespace Game
                         break;
                 }
 
-
-
                 if (selectedController == "Wireless Controller")
                 {
                     controller = "PS4";
@@ -219,12 +222,7 @@ namespace Game
                 {
                     controller = "Keyboard";
                 }
-
-            }
-            protected void ControllerCheck()
-            {
-                //Controller mode switcher.
-                ControllerDetect();
+                #endregion
                 switch (controller)
                 {
                     case "PS4":
@@ -247,10 +245,10 @@ namespace Game
                         SnesConversion();
                         break;
                 }
+
             }
 
-            //Device Input
-            private void KeyboardConversion()
+            void KeyboardConversion()
             {
                 //Keyboard Controls
                 #region Move
@@ -263,7 +261,6 @@ namespace Game
                 {
                     moveY = 0;
                 }
-
                 if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
                 {
                     moveY = -1;
@@ -331,56 +328,63 @@ namespace Game
 
                 #endregion
                 #region Actions
-                button_Jump = Input.GetMouseButtonDown(1);
-                button_Attack = Input.GetMouseButtonDown(0);
-                button_Action = Input.GetKeyDown(KeyCode.E);
+                button_Jump = KeyCode.Mouse1;
+                button_Attack = KeyCode.Mouse0;
+                button_Action = KeyCode.E;
 
-                button_Start = Input.GetKeyDown(KeyCode.Escape);
-                button_Select = Input.GetKeyDown(KeyCode.Backspace);
+                button_Start = KeyCode.Escape;
+                button_Select = KeyCode.Backspace;
                 #endregion
             }
-            private void XboxConversion()
+            void XboxConversion()
             {
-                //Xbox Controls
                 #region Axis
-                #region Control Sticks
                 moveX = Input.GetAxis("Horizontal");
                 moveY = Input.GetAxis("Vertical");
 
                 cameraX = Input.GetAxis("Axis4");
                 cameraY = -Input.GetAxis("Axis5");
-                #endregion
-                #region Triggers
-                if (Input.GetAxis("Axis3") > 0)
+
+                if (Input.GetAxis("Axis7") == 0 && Input.GetAxis("Axis6") == 0)
                 {
-                    triggerL = Input.GetAxis("Axis3");
-                }
-                if (Input.GetAxis("Axis3") < 0)
-                {
-                    triggerR = -Input.GetAxis("Axis3");
-                }
-                if (Input.GetAxis("Axis3") == 0)
-                {
-                    triggerL = 0;
-                    triggerR = 0;
-                }
-                #endregion
-                #endregion
-                #region Buttons
-                #region D-X //Horizontal D-pad input.
-                if (Input.GetAxis("Axis6") < 0)
-                {
-                    d_Left = true;
-                }
-                if (Input.GetAxis("Axis6") > 0)
-                {
-                    d_Right = true;
-                }
-                if (Input.GetAxis("Axis6") == 0)
-                {
+                    d_Up = false;
+                    d_Down = false;
+
                     d_Left = false;
                     d_Right = false;
+                    direction = "none";
                 }
+
+                #region D-X //Horizontal D-pad input.
+                if (Input.GetAxis("Axis6") == -1)
+                {
+                    direction = "left";
+                }
+                if (Input.GetAxis("Axis6") == 1)
+                {
+                    direction = "right";
+                }
+
+
+                if (!d_Right)
+                {
+                    if (direction == "right")
+                    {
+
+                    }
+
+                }
+
+
+                if (!d_Left)
+                {
+                    if (direction == "left")
+                    {
+
+                    }
+
+                }
+
                 #endregion
                 #region D-Y //Vertical D-pad input.
                 if (!d_Up)
@@ -405,41 +409,39 @@ namespace Game
                         }
                     }
                 }
-                if (Input.GetAxis("Axis7") == 0)
+
+                #endregion
+                #region Triggers
+                if (Input.GetAxis("Axis3") > 0)
                 {
-                    d_Up = false;
-                    d_Down = false;
-                    direction = "none";
+                    triggerL = Input.GetAxis("Axis3");
+                }
+                if (Input.GetAxis("Axis3") < 0)
+                {
+                    triggerR = -Input.GetAxis("Axis3");
+                }
+                if (Input.GetAxis("Axis3") == 0)
+                {
+                    triggerL = 0;
+                    triggerR = 0;
                 }
                 #endregion
 
-                #region Main Buttons
-                button_Jump = Input.GetKeyDown(KeyCode.JoystickButton1);
-                button_Attack = Input.GetKeyDown(KeyCode.JoystickButton0);
-                button_Action = Input.GetKeyDown(KeyCode.JoystickButton3);
-
-                button_L = Input.GetKeyDown(KeyCode.JoystickButton4);
-                button_R = Input.GetKeyDown(KeyCode.JoystickButton5);
-
-                button_Start = Input.GetKeyDown(KeyCode.JoystickButton7);
-                button_Select = Input.GetKeyDown(KeyCode.JoystickButton6);
-
-                if (isTest)
-                {
-                    button_Jump = Input.GetKey(KeyCode.JoystickButton1);
-                    button_Attack = Input.GetKey(KeyCode.JoystickButton0);
-                    button_Action = Input.GetKey(KeyCode.JoystickButton3);
-
-                    button_L = Input.GetKey(KeyCode.JoystickButton4);
-                    button_R = Input.GetKey(KeyCode.JoystickButton5);
-
-                    button_Start = Input.GetKey(KeyCode.JoystickButton7);
-                    button_Select = Input.GetKey(KeyCode.JoystickButton6);
-                }
                 #endregion
+                #region Buttons
+                button_Jump = KeyCode.JoystickButton1;
+                button_Attack = KeyCode.JoystickButton0;
+                button_Kick = KeyCode.JoystickButton2;
+                button_Action = KeyCode.JoystickButton3;
+
+                button_L = KeyCode.JoystickButton4;
+                button_R = KeyCode.JoystickButton5;
+
+                button_Start = KeyCode.JoystickButton7;
+                button_Select = KeyCode.JoystickButton6;
                 #endregion
             }
-            private void Ps4Conversion()
+            void Ps4Conversion()
             {
                 #region Axis
                 #region Control Sticks
@@ -458,16 +460,17 @@ namespace Game
                 #region D-X //Horizontal D-pad input.
                 if (Input.GetAxis("Axis7") < 0)
                 {
-                    d_Left = true;
+                    direction = "left";
                 }
                 if (Input.GetAxis("Axis7") > 0)
                 {
-                    d_Right = true;
+                    direction = "right";
                 }
                 if (Input.GetAxis("Axis7") == 0)
                 {
                     d_Left = false;
                     d_Right = false;
+                    direction = "none";
                 }
                 #endregion
                 #region D-Y //Vertical D-pad input.
@@ -487,31 +490,30 @@ namespace Game
                 }
                 #endregion
                 #region Main Buttons
-                button_Jump = Input.GetKeyDown(KeyCode.JoystickButton2);
-                button_Attack = Input.GetKeyDown(KeyCode.JoystickButton1);
-                button_Action = Input.GetKeyDown(KeyCode.JoystickButton3);
+                button_Jump = KeyCode.JoystickButton2;
+                button_Attack = KeyCode.JoystickButton1;
+                button_Action = KeyCode.JoystickButton3;
 
-                button_L = Input.GetKeyDown(KeyCode.JoystickButton4);
-                button_R = Input.GetKeyDown(KeyCode.JoystickButton5);
+                button_L = KeyCode.JoystickButton4;
+                button_R = KeyCode.JoystickButton5;
 
-                button_Start = Input.GetKeyDown(KeyCode.JoystickButton9);
-                button_Select = Input.GetKeyDown(KeyCode.JoystickButton13);
+                button_Start = KeyCode.JoystickButton9;
+                button_Select = KeyCode.JoystickButton13;
                 #endregion
                 #endregion
             }
-            private void SnesConversion()
+            void SnesConversion()
             {
+                button_Attack = KeyCode.JoystickButton4; //ButtonY
+                button_Kick = KeyCode.JoystickButton0; //ButtonA
+                button_Jump = KeyCode.JoystickButton1; //ButtonB
+                button_Action = KeyCode.JoystickButton3; //ButtonX
 
-                button_Attack = Input.GetKeyDown(KeyCode.JoystickButton4); //ButtonY
-                button_Kick = Input.GetKeyDown(KeyCode.JoystickButton0); //ButtonA
-                button_Jump = Input.GetKeyDown(KeyCode.JoystickButton1); //ButtonB
-                button_Action = Input.GetKeyDown(KeyCode.JoystickButton3); //ButtonX
+                button_L = KeyCode.JoystickButton6; //ButtonL
+                button_R = KeyCode.JoystickButton7; //ButtonR
 
-                button_L = Input.GetKeyDown(KeyCode.JoystickButton6); //ButtonL
-                button_R = Input.GetKeyDown(KeyCode.JoystickButton7); //ButtonR
-
-                button_Select = Input.GetKeyDown(KeyCode.JoystickButton10); //ButtonSelect
-                button_Start = Input.GetKeyDown(KeyCode.JoystickButton11); //ButtonStart
+                button_Select = KeyCode.JoystickButton10; //ButtonSelect
+                button_Start = KeyCode.JoystickButton11; //ButtonStart
 
                 moveX = Input.GetAxis("Horizontal");
                 moveY = Input.GetAxis("Vertical");
@@ -531,7 +533,6 @@ namespace Game
                     cameraX = 0;
                 }
             }
-            
         }
     }
     namespace Misc
@@ -541,20 +542,25 @@ namespace Game
             private void OnEnable()
             {
                 SceneManager.sceneLoaded += OnLevelFinishedLoading;
+            
             }
             private void OnDisable()
             {
                 SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+               
             }
             public AudioClip[] Music = new AudioClip[] { };
             private void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
             {
-                Start(scene, mode);
+                Start();
             }
-            private void Start(Scene scene, LoadSceneMode mode)
+            private void Start()
             {
-                GetComponent<AudioSource>().clip = Music[scene.buildIndex];
-                GetComponent<AudioSource>().Play();
+                GetComponent<AudioSource>().clip = Music[startMusic];
+                if (GetComponent<AudioSource>().enabled)
+                {
+                    GetComponent<AudioSource>().Play();
+                }
                 player.Clear();
                 bot.Clear();
             }
@@ -562,7 +568,7 @@ namespace Game
 
         public class Shortcuts : UI.Dialogue_Manager
         {
-            SaveEncrypt save = new SaveEncrypt();
+           readonly SaveEncrypt save = new SaveEncrypt();
             protected void FunctionKeys()
             {
                 if (Input.GetKeyDown(KeyCode.F6))
@@ -583,29 +589,45 @@ namespace Game
     {
         public class Dialogue_Manager : Variables
         {
-            public Text actorName;
-            public Text dialogueText;
-            public Canvas dialogueBox;
-            public Image actorPortrait;
-            public int currentPage;
+            public List<Text> dialogue = new List<Text>(2);
+
+            [HideInInspector] public Canvas dialogueBox;
+            [HideInInspector] public Image actorPortrait;
+            [HideInInspector] public int currentPage;
 
             protected void UISetup()
             {
-                actorName = GameObject.Find("ActorName").GetComponent<Text>();
-                dialogueText = GameObject.Find("SpeechText").GetComponent<Text>();
-                dialogueBox = GameObject.Find("Text Box").GetComponent<Canvas>();
-                actorPortrait = GameObject.Find("Character Portrait").GetComponent<Image>();
+                if (SceneManager.GetActiveScene().name != "Title Screen")
+                {
+                    dialogue[0] = GameObject.Find("ActorName").GetComponent<Text>();
+                    dialogue[1] = GameObject.Find("SpeechText").GetComponent<Text>();
+                    dialogueBox = GameObject.Find("Text Box").GetComponent<Canvas>();
+                    actorPortrait = GameObject.Find("Character Portrait").GetComponent<Image>();
+                }
             }
 
             protected void UIUpdate()
             {
-                if (actorPortrait.sprite == null)
+                paused = false;
+                foreach(bool menus in openMenus)
                 {
-                    actorPortrait.color = Color.clear;
+                    if(menus)
+                    {
+                        paused = true;
+                    }
                 }
-                else
+
+                if (SceneManager.GetActiveScene().name != "Title Screen")
                 {
-                    actorPortrait.color = Color.white;
+
+                    if (actorPortrait.sprite == null)
+                    {
+                        actorPortrait.color = Color.clear;
+                    }
+                    else
+                    {
+                        actorPortrait.color = Color.white;
+                    }
                 }
             }
         }
@@ -615,32 +637,30 @@ namespace Game
     {
         protected void StartingVariables()
         {
-            inventoryBox = GameObject.Find("Inventory Box").transform;
+            if (SceneManager.GetActiveScene().name != "Title Screen")
+            {
+                inventoryBox = GameObject.Find("Inventory Box").transform;
+            }
         }
         public int startMusic;
         protected static GameManager game;
 
-        public List<bool> openMenus = new List<bool>(3);
-        public List<int> sound = new List<int>
-        {
-            0,
-            0,
-            0
-        };
-        public List <Sprite> actorPortraits;
+        public GameObject[] characters;
 
+       [HideInInspector] public List<bool> openMenus = new List<bool>(3);
+       [HideInInspector] public List<int> sound = new List<int>(3);
+        public List <Sprite> actorPortraits;
 
         #region Characters
         /// <summary>
         /// Contains all of the playable characters.
         /// </summary>
-        //public PlayerController[] player = { };
-        public List<PlayerController> player = new List<PlayerController>();
+        [HideInInspector] public List<PlayerController> player = new List<PlayerController>();
 
         /// <summary>
         /// Contains all of the CPU players.
         /// </summary>
-        public List<BotReciever> bot = new List<BotReciever>();
+        [HideInInspector] public List<BotReciever> bot = new List<BotReciever>();
 
         /// <summary>
         /// A variable that holds the inventory box in the menus.
@@ -652,13 +672,13 @@ namespace Game
         /// <summary>
         /// The list of items for the inventory box to display.
         /// </summary>
-        public List<_Item> items = new List<_Item>();
-        public List<GameObject> stockItems = new List<GameObject>();
+        [HideInInspector] public List<_Item> items = new List<_Item>();
+        [HideInInspector] public List<GameObject> stockItems = new List<GameObject>();
 
         /// <summary>
         /// The slot prefab to add to the inventory box.
         /// </summary>
-        public GameObject slotAdd;
+        [HideInInspector] public GameObject slotAdd;
 
         /// <summary>
         /// The new item slot added.
@@ -668,12 +688,12 @@ namespace Game
         /// <summary>
         /// The names of all the available items.
         /// </summary>
-        public string[] itemNames = { "Key", "Potion" };
+         public string[] itemNames;
 
         /// <summary>
         /// The amount of an item is stored here.
         /// </summary>
-        public int[] itemAmount = new int[2];
+         public int[] itemAmount;
         #endregion
         #region To Be Scrapped
         /// <summary>
@@ -682,55 +702,15 @@ namespace Game
         protected int space = 10;
         #endregion
         #endregion
-        public bool paused;
+        [HideInInspector] public bool paused;
     }
 
-    public class INIFile
-    {
-        private string filePath;
-
-        [DllImport("kernel32")]
-        private static extern long WritePrivateProfileString(string section,
-        string key,
-        string val,
-        string filePath);
-
-        [DllImport("kernel32")]
-        private static extern int GetPrivateProfileString(string section,
-        string key,
-        string def,
-        StringBuilder retVal,
-        int size,
-        string filePath);
-
-        public INIFile(string filePath)
-        {
-            this.filePath = filePath;
-        }
-
-        public void Write(string section, string key, string value)
-        {
-            WritePrivateProfileString(section, key, value.ToLower(), this.filePath);
-        }
-
-        public string Read(string section, string key)
-        {
-            StringBuilder SB = new StringBuilder(255);
-            int i = GetPrivateProfileString(section, key, "", SB, 255, this.filePath);
-            return SB.ToString();
-        }
-
-        public string FilePath
-        {
-            get { return this.filePath; }
-            set { this.filePath = value; }
-        }
-    }
+ 
     public class SaveEncrypt
     {
         #region Variables
         public List<PlayerController> player = new List<PlayerController>();
-        BinaryFormatter bf = new BinaryFormatter();
+       readonly BinaryFormatter bf = new BinaryFormatter();
 
         Vector3 positions;
         Quaternion rotations;
@@ -742,13 +722,11 @@ namespace Game
             FileStream file = File.Create(fileDirectory + "/Data/" + category + "/" + saveType + "/" + fileName + ".dat");
             PlayerData data = new PlayerData();
 
-
-
             if (!Directory.Exists(fileDirectory + "/Data/" + category + "/" + saveType))
             {
                 Directory.CreateDirectory(fileDirectory + "/Data/" + category + "/" + saveType);
             }
-
+                
             Debug.Log(fileDirectory + "/Data/" + category + "/" + saveType + "/" + fileName + ".dat");
 
             int i = 0;
@@ -758,8 +736,6 @@ namespace Game
             {
                 data.health[i] = character.health;
                 data.level[i] = character.level;
-
-
 
                 positions = character.transform.localPosition;
                 data.positionFloat[p] = positions.x;
@@ -778,16 +754,12 @@ namespace Game
                 p += 3;
                 r += 4;
             }
-
             bf.Serialize(file, data);
             file.Close();
-
         }
-
         public void Load(string category, string saveType, string fileName)
         {
             string fileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/" + Application.productName;
-
 
             if (File.Exists(fileDirectory + "/Data/" + category + "/" + saveType + "/" + fileName + ".dat"))
             {
@@ -813,10 +785,8 @@ namespace Game
                     p += 3;
                     r += 4;
                 }
-
             }
         }
-
     }
     [Serializable] class PlayerData
     {
@@ -830,5 +800,4 @@ namespace Game
 
         public float[] currentYaw = new float[4];
     }
-
 }

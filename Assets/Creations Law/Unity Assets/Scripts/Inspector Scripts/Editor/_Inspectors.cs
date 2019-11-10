@@ -14,207 +14,208 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
+using ScriptableObjects;
 
-
-
-[CustomEditor(typeof(GameManager))]
-public class Viewer_GameManager : Editor
+namespace Inspectors
 {
-    #region Main Layer
-    protected int debugView;
-    protected int defaultView;
-    protected bool Initialized;
-
-    GameManager unit;
-    BotReciever[] bots = new BotReciever[] { };
-    PlayerController[] people = new PlayerController[] { };
-    
-    /// <summary>
-    /// Initialise the current selected script of the type to be under this script's scope.
-    /// </summary>
-    void Init()
+    [CustomEditor(typeof(GameManager))]
+    public class Viewer_GameManager : Editor
     {
-        if (!Initialized)
+        #region Main Layer
+        protected int debugView = 1;
+        protected int defaultView;
+        protected bool Initialized;
+
+        GameManager unit;
+        public BotReciever[] bots = new BotReciever[] { };
+        PlayerController[] people = new PlayerController[] { };
+
+        /// <summary>
+        /// Initialise the current selected script of the type to be under this script's scope.
+        /// </summary>
+        void Init()
         {
-            unit = (GameManager)target;
-            Initialized = true;
+            if (!Initialized)
+            {
+                unit = (GameManager)target;
+                Initialized = true;
+            }
         }
-    }
-    #endregion
+        #endregion
 
-    public override void OnInspectorGUI()
-    {
-        debugView = GUILayout.Toolbar(debugView, new[] { "Default", "Debug" }, GUILayout.Height(40));
-        switch (debugView)
+        public override void OnInspectorGUI()
         {
-            case 0:
-                #region Find Objects
-                people = FindObjectsOfType<PlayerController>();
-                bots = FindObjectsOfType<BotReciever>();
-                #endregion
-                defaultView = GUILayout.Toolbar(defaultView, new[] { "Controller Test", "Game Settings", "Party", "Inventory", "Misc" });
-                switch (defaultView)
+            debugView = GUILayout.Toolbar(debugView, new[] { "Default", "Debug" }, GUILayout.Height(40));
+            switch (debugView)
+            {
+                case 0:
+                    #region Find Objects
+                    people = FindObjectsOfType<PlayerController>();
+                    bots = FindObjectsOfType<BotReciever>();
+                    #endregion
+                    defaultView = GUILayout.Toolbar(defaultView, new[] { "Controller Test", "Game Settings", "Party", "Inventory", "Misc" });
+                    switch (defaultView)
+                    {
+                        default:
+                            break;
+
+                        case 0:
+                            ControllerViewer();
+                            break;
+
+                        case 1:
+                            SettingsViewer();
+                            break;
+
+                        case 2:
+                            PartyViewer();
+                            break;
+
+                        case 3:
+                            InventoryViewer();
+                            break;
+                    }
+                    break;
+
+                case 1:
+                    base.OnInspectorGUI();
+                    break;
+            }
+            Init();
+        }
+
+        /// <summary>
+        /// Displays stats about party members.
+        /// </summary>
+        private void PartyViewer()
+        {
+            if (people.Length > 0)
+            {
+                foreach (PlayerController player in FindObjectsOfType<PlayerController>())
                 {
-                    default:
-                        break;
+                    GUILayout.BeginVertical("In BigTitle");
 
-                    case 0:
-                        ControllerViewer();
-                        break;
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label(player.playerInfo.name);
+                    EditorGUILayout.EndHorizontal();
 
-                    case 1:
-                        SettingsViewer();
-                        break;
+                    EditorGUILayout.Space();
 
-                    case 2:
-                        PartyViewer();
-                        break;
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("HP: ", GUILayout.Width(70));
+                    player.health = EditorGUILayout.IntField(player.health);
+                    EditorGUILayout.EndHorizontal();
 
-                    case 3:
-                        InventoryViewer();
-                        break;
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("MP: ", GUILayout.Width(70));
+                    player.magic = EditorGUILayout.IntField(player.magic);
+                    EditorGUILayout.EndHorizontal();
+
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("Level: ", GUILayout.Width(70));
+                    player.level = EditorGUILayout.IntField(player.level);
+                    EditorGUILayout.EndHorizontal();
+
+                    GUILayout.EndVertical();
                 }
-                break;
+                foreach (BotReciever bot in FindObjectsOfType<BotReciever>())
+                {
+                    GUILayout.BeginVertical("In BigTitle");
 
-            case 1:
-                base.OnInspectorGUI();
-                break;
-        }
-        Init();
-    }
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label(bot.playerInfo.name + " (BOT)");
+                    EditorGUILayout.EndHorizontal();
 
-    /// <summary>
-    /// Displays stats about party members.
-    /// </summary>
-    private void PartyViewer()
-    {
-        if (people.Length > 0)
-        {
-            foreach (PlayerController player in FindObjectsOfType<PlayerController>())
-            {
-                GUILayout.BeginVertical("In BigTitle");
+                    EditorGUILayout.Space();
 
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label(player.playerInfo.name);
-                EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("HP: ", GUILayout.Width(70));
+                    bot.health = EditorGUILayout.IntField(bot.health);
 
-                EditorGUILayout.Space();
+                    EditorGUILayout.EndHorizontal();
 
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label("HP: ", GUILayout.Width(70));
-                player.health = EditorGUILayout.IntField(player.health);
-                EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("MP: ", GUILayout.Width(70));
+                    bot.magic = EditorGUILayout.IntField(bot.magic);
+                    EditorGUILayout.EndHorizontal();
 
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label("MP: ", GUILayout.Width(70));
-                player.magic = EditorGUILayout.IntField(player.magic);
-                EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("Level: ", GUILayout.Width(70));
+                    bot.level = EditorGUILayout.IntField(bot.level);
+                    EditorGUILayout.EndHorizontal();
 
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label("Level: ", GUILayout.Width(70));
-                player.level = EditorGUILayout.IntField(player.level);
-                EditorGUILayout.EndHorizontal();
-
-                GUILayout.EndVertical();
-            }
-            foreach (BotReciever bot in  FindObjectsOfType<BotReciever>())
-            {
-                GUILayout.BeginVertical("In BigTitle");
-
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label(bot.playerInfo.name + " (BOT)");
-                EditorGUILayout.EndHorizontal();
-
-                EditorGUILayout.Space();
-
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label("HP: ", GUILayout.Width(70));
-                bot.health = EditorGUILayout.IntField(bot.health);
-                
-                EditorGUILayout.EndHorizontal();
-
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label("MP: ", GUILayout.Width(70));
-                bot.magic = EditorGUILayout.IntField(bot.magic);
-                EditorGUILayout.EndHorizontal();
-
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label("Level: ", GUILayout.Width(70));
-                bot.level = EditorGUILayout.IntField(bot.level);
-                EditorGUILayout.EndHorizontal();
-
-                GUILayout.EndVertical();
+                    GUILayout.EndVertical();
+                }
             }
         }
-    }
 
-    /// <summary>
-    /// Used to display things like audio settings.
-    /// </summary>
-    private void SettingsViewer()
-    {
-        
-        List<string> musicNames = new List<string>();
-        foreach (AudioClip audio in unit.Music)
+        /// <summary>
+        /// Used to display things like audio settings.
+        /// </summary>
+        private void SettingsViewer()
         {
-            musicNames.Add(audio.name);
+
+            List<string> musicNames = new List<string>();
+            foreach (AudioClip audio in unit.Music)
+            {
+                musicNames.Add(audio.name);
+            }
+
+            GUILayout.BeginVertical("In BigTitle");
+            GUILayout.Label("SOUND\n-------- ", GUILayout.Width(70));
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Music:", GUILayout.Width(70));
+            unit.startMusic = EditorGUILayout.Popup(unit.startMusic, musicNames.ToArray());
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("BGM: ", GUILayout.Width(70));
+            unit.GetComponent<AudioSource>().volume = EditorGUILayout.Slider(unit.GetComponent<AudioSource>().volume, 0, 0.300f);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("SFX: ", GUILayout.Width(70));
+            unit.sound[1] = EditorGUILayout.IntSlider(unit.sound[1], 0, 100);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Voices: ", GUILayout.Width(70));
+            unit.sound[2] = EditorGUILayout.IntSlider(unit.sound[2], 0, 100);
+            EditorGUILayout.EndHorizontal();
+
+            GUILayout.EndVertical();
+
+            EditorGUILayout.Space();
+
+            GUILayout.BeginVertical("In BigTitle");
+            GUILayout.Label("Menus\n-------- ", GUILayout.Width(70));
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Pause Menu", GUILayout.Width(80));
+            unit.openMenus[0] = GUILayout.Toggle(unit.openMenus[0], "");
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Save Menu", GUILayout.Width(80));
+            unit.openMenus[1] = GUILayout.Toggle(unit.openMenus[1], "");
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Other Menu", GUILayout.Width(80));
+            unit.openMenus[2] = GUILayout.Toggle(unit.openMenus[2], "");
+            EditorGUILayout.EndHorizontal();
+
+            GUILayout.EndVertical();
+
         }
 
-        GUILayout.BeginVertical("In BigTitle");
-        GUILayout.Label("SOUND\n-------- ", GUILayout.Width(70));
-
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("Music:", GUILayout.Width(70));
-        unit.startMusic = EditorGUILayout.Popup(unit.startMusic, musicNames.ToArray());
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("BGM: ", GUILayout.Width(70));
-        unit.sound[0] = EditorGUILayout.IntSlider(unit.sound[0], 0, 100);
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("SFX: ", GUILayout.Width(70));
-        unit.sound[1] = EditorGUILayout.IntSlider(unit.sound[1], 0, 100);
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("Voices: ", GUILayout.Width(70));
-        unit.sound[2] = EditorGUILayout.IntSlider(unit.sound[2], 0, 100);
-        EditorGUILayout.EndHorizontal();
-
-        GUILayout.EndVertical();
-
-        EditorGUILayout.Space();
-
-        GUILayout.BeginVertical("In BigTitle");
-        GUILayout.Label("Menus\n-------- ", GUILayout.Width(70));
-
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("Pause Menu", GUILayout.Width(80));
-        unit.openMenus[0] = GUILayout.Toggle(unit.openMenus[0],"");
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("Save Menu", GUILayout.Width(80));
-        unit.openMenus[1] = GUILayout.Toggle(unit.openMenus[1], "");
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("Other Menu", GUILayout.Width(80));
-        unit.openMenus[2] = GUILayout.Toggle(unit.openMenus[2], "");
-        EditorGUILayout.EndHorizontal();
-
-        GUILayout.EndVertical();
-
-    }
-
-    /// <summary>
-    /// Displays controller input(A bit bugged since it's refreshing by standard inspector rules)
-    /// </summary>
-    private void ControllerViewer()
-    {
-        List <bool> button = new List<bool>
+        /// <summary>
+        /// Displays controller input(A bit bugged since it's refreshing by standard inspector rules)
+        /// </summary>
+        private void ControllerViewer()
+        {
+            List<bool> button = new List<bool>
             {
             Input.GetKey(KeyCode.JoystickButton0),
             Input.GetKey(KeyCode.JoystickButton1),
@@ -230,50 +231,50 @@ public class Viewer_GameManager : Editor
             Input.GetKey(KeyCode.JoystickButton11),
             Input.GetKey(KeyCode.JoystickButton12)
             };
-        string[] buttonName = new string[] { };
-        if (unit)
-        {
-            switch (unit.controller)
+            string[] buttonName = new string[] { };
+            if (unit)
             {
-                default:
-                    break;
+                switch (unit.controller)
+                {
+                    default:
+                        break;
 
-                case "PS4":
-                    buttonName = new string[14];
-                    buttonName[0] = "";
-                    buttonName[1] = "Cross";
-                    buttonName[2] = "Circle";
-                    buttonName[3] = "Triangle";
-                    buttonName[4] = "L1";
-                    buttonName[5] = "R1";
-                    buttonName[6] = "Options";
-                    buttonName[13] = "Share";
-                    break;
+                    case "PS4":
+                        buttonName = new string[14];
+                        buttonName[0] = "";
+                        buttonName[1] = "Cross";
+                        buttonName[2] = "Circle";
+                        buttonName[3] = "Triangle";
+                        buttonName[4] = "L1";
+                        buttonName[5] = "R1";
+                        buttonName[6] = "Options";
+                        buttonName[13] = "Share";
+                        break;
 
-                case "Xbox":
-                    buttonName = new string[8];
-                    buttonName[0] = "A";
-                    buttonName[1] = "B";
-                    buttonName[2] = "X";
-                    buttonName[3] = "Y";
-                    buttonName[4] = "LB";
-                    buttonName[5] = "RB";
-                    buttonName[7] = "Start";
-                    buttonName[6] = "Back";
-                    break;
+                    case "Xbox":
+                        buttonName = new string[8];
+                        buttonName[0] = "A";
+                        buttonName[1] = "B";
+                        buttonName[2] = "X";
+                        buttonName[3] = "Y";
+                        buttonName[4] = "LB";
+                        buttonName[5] = "RB";
+                        buttonName[7] = "Start";
+                        buttonName[6] = "Back";
+                        break;
 
-                case "Snes":
-                    buttonName = new string[12];
-                    buttonName[2] = "A";
-                    buttonName[5] = "B";
-                    buttonName[6] = "";
-                    buttonName[7] = "L";
-                    buttonName[8] = "R";
-                    buttonName[11] = "Start";
-                    buttonName[12] = "Select";
-                    break;
+                    case "Snes":
+                        buttonName = new string[12];
+                        buttonName[2] = "A";
+                        buttonName[5] = "B";
+                        buttonName[6] = "";
+                        buttonName[7] = "L";
+                        buttonName[8] = "R";
+                        buttonName[11] = "Start";
+                        buttonName[12] = "Select";
+                        break;
 
-            }
+                }
                 if (unit.controller != "Keyboard")
                 {
                     GUILayout.BeginHorizontal("In BigTitle");
@@ -389,17 +390,17 @@ public class Viewer_GameManager : Editor
                         GUILayout.EndVertical();
                         break;
                 }
-        } 
-    }
+            }
+        }
 
-    /// <summary>
-    /// Displays the items the player has picked up.
-    /// </summary>
-    private void InventoryViewer()
-    {
+        /// <summary>
+        /// Displays the items the player has picked up.
+        /// </summary>
+        private void InventoryViewer()
+        {
             GUILayout.BeginVertical("In BigTitle");
             int i = 0;
-            foreach(string names in unit.itemNames)
+            foreach (string names in unit.itemNames)
             {
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(unit.itemNames[i] + ": ", GUILayout.Width(80));
@@ -408,190 +409,356 @@ public class Viewer_GameManager : Editor
                 i++;
             }
             GUILayout.EndVertical();
-        
-    }
-}
 
-[CustomEditor(typeof(Interactable))]
-public class Viewer_Interactable : Editor
-{
-    protected int debugView;
-    protected bool Initialized;
-    Interactable unit;
-    protected int currentPickerWindow;
-
-    void Init()
-    {
-        if (!Initialized)
-        {
-            unit = (Interactable)target;
-            Initialized = true;
         }
     }
-    #region Debug View Tweaker
-    public override void OnInspectorGUI()
+
+    [CustomEditor(typeof(Interactable))]
+    public class Viewer_Interactable : Editor
     {
-        Init();
-        debugView = GUILayout.Toolbar(debugView, new[] { "Default", "Debug" });
-        switch (debugView)
+        protected int debugView;
+        protected bool Initialized;
+        public Interactable unit;
+        protected int currentPickerWindow;
+
+        void Init()
         {
-            case 0:
-                Inspector();
-                break;
-
-
-            case 1:
-                base.OnInspectorGUI();
-                break;
+            if (!Initialized)
+            {
+                unit = (Interactable)target;
+                Initialized = true;
+            }
         }
-    }
-    #endregion
-
-    void Inspector()
-    {
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("Object Type: ", GUILayout.Width(80));
-        unit.selectedType = EditorGUILayout.Popup(unit.selectedType, new string[] { "Item", "Chest", "Door", "Save Point", "Actor","Event"});
-        EditorGUILayout.EndHorizontal();
-
-        switch (unit.selectedType)
+        #region Debug View Tweaker
+        public override void OnInspectorGUI()
         {
-            case 0:
-                unit.type = "Item";
-                GUILayout.BeginVertical("In BigTitle");
-                EditorGUILayout.BeginHorizontal();
-                ItemSelection();
-                EditorGUILayout.EndHorizontal();
+            Init();
+            debugView = GUILayout.Toolbar(debugView, new[] { "Default", "Debug" });
+            switch (debugView)
+            {
+                case 0:
+                    Inspector();
+                    break;
 
 
-                GUILayout.EndVertical();
-                break;
+                case 1:
+                    base.OnInspectorGUI();
+                    break;
+            }
+        }
+        #endregion
+
+        void Inspector()
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Object Type: ", GUILayout.Width(80));
+            unit.selectedType = EditorGUILayout.Popup(unit.selectedType, new string[] { "Item", "Chest", "Door", "Save Point", "Actor", "Event" });
+            EditorGUILayout.EndHorizontal();
+
+            switch (unit.selectedType)
+            {
+                case 0:
+                    unit.type = "Item";
+                    GUILayout.BeginVertical("In BigTitle");
+                    EditorGUILayout.BeginHorizontal();
+                    ItemSelection();
+                    EditorGUILayout.EndHorizontal();
+
+
+                    GUILayout.EndVertical();
+                    break;
 
 
 
-            case 1:
-                unit.type = "Chest";
-                GUILayout.BeginVertical("In BigTitle");
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label("Contains: ", GUILayout.Width(70));
-                unit.selectedItem = EditorGUILayout.Popup(unit.selectedItem, new string[] { "Empty", "Item", "NPC" });
-                EditorGUILayout.EndHorizontal();
-                switch (unit.selectedItem)
+                case 1:
+                    unit.type = "Chest";
+                    GUILayout.BeginVertical("In BigTitle");
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("Contains: ", GUILayout.Width(70));
+                    unit.selectedItem = EditorGUILayout.Popup(unit.selectedItem, new string[] { "Empty", "Item", "NPC" });
+                    EditorGUILayout.EndHorizontal();
+                    switch (unit.selectedItem)
+                    {
+                        default:
+                            unit.item = null;
+                            break;
+
+                        case 1:
+
+                            ItemSelection();
+                            break;
+                    }
+
+                    GUILayout.EndVertical();
+                    break;
+
+                case 2:
+                    unit.type = "Door";
+                    GUILayout.BeginVertical("In BigTitle");
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("Locked: ", GUILayout.Width(70));
+                    unit.selectedLocked = EditorGUILayout.Popup(unit.selectedLocked, new string[] { "Unlocked", "Locked" });
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.EndVertical();
+                    switch (unit.selectedLocked)
+                    {
+                        case 0:
+                            unit.locked = false;
+                            break;
+
+
+                        case 1:
+
+                            LockedDoor();
+                            break;
+                    }
+
+                    if (unit.selectedLocked == 1)
+                    {
+
+
+
+                    }
+                    break;
+
+                case 3:
+                    unit.type = "Save Point";
+                    //GUILayout.BeginVertical("In BigTitle");
+                    //GUILayout.EndVertical();
+                    break;
+
+                case 4:
+                    unit.type = "Actor";
+                    GUILayout.BeginVertical("In BigTitle");
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("Script Number: ", GUILayout.Width(90));
+                    unit.scriptNo = EditorGUILayout.IntField(unit.scriptNo);
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.EndVertical();
+                    break;
+
+                case 5:
+                    unit.type = "Event";
+                    GUILayout.BeginVertical("In BigTitle");
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("Event Type: ", GUILayout.Width(70));
+                    unit.eventType = EditorGUILayout.Popup(unit.eventType, new string[] { "None", "Ladder", "Partner Action" });
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.EndVertical();
+                    break;
+
+            }
+        }
+        void ItemSelection()
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Item: ", GUILayout.Width(70));
+            unit.item = (_Item)EditorGUILayout.ObjectField(unit.item, typeof(_Item), false);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Obtained: ", GUILayout.Width(70));
+            unit.obtained = EditorGUILayout.Toggle(!unit.obtained);
+            EditorGUILayout.EndHorizontal();
+        }
+        void LockedDoor()
+        {
+            unit.locked = true;
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Lock Requirment: ", GUILayout.Width(110));
+            unit.lockRequirement = EditorGUILayout.Popup(unit.lockRequirement, new string[] { "Item Requirement", "Enemies Defeated" });
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            switch (unit.lockRequirement)
+            {
+                case 0:
+                    GUILayout.Label("Items Required: ", GUILayout.Width(110));
+                    unit.requiredAmount = EditorGUILayout.IntField(unit.requiredAmount);
+                    break;
+
+
+                case 1:
+                    break;
+
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+
+
+        public void ObjectPicked()
+        {
+            _Item unit = (_Item)target;
+            string commandName = Event.current.commandName;
+            if (commandName == "ObjectSelectorUpdated")
+            {
+                unit = (_Item)EditorGUIUtility.GetObjectPickerObject();
+                Repaint();
+            }
+        }
+
+    }
+
+    [CustomEditor(typeof(_Character))]
+    public class Viewer_Character : Editor
+    {
+
+        #region Font
+        protected GUIStyle titleStyle = new GUIStyle(EditorStyles.label);
+        protected GUIStyle m_TitleStyle;
+        protected GUIStyle TitleStyle { get { return m_TitleStyle; } }
+        protected Texture empty = null;
+
+        protected int currentPickerWindow;
+
+        #endregion
+
+
+        public _Character unit;
+        protected bool Initialized;
+        protected int debugView = 1;
+
+
+        /// <summary>
+        /// Initialise the current selected script of the type to be under this script's scope.
+        /// </summary>
+        void Init()
+        {
+            if (!Initialized)
+            {
+                #region Font
+                m_TitleStyle = titleStyle;
+                m_TitleStyle.fontSize = 35;
+                m_TitleStyle.padding = new RectOffset(0, 0, 60, 0);
+                #endregion
+                unit = (_Character)target;
+                Initialized = true;
+            }
+        }
+
+
+        void ObjectPicked()
+        {
+            _Character unit = (_Character)target;
+            string commandName = Event.current.commandName;
+            if (commandName == "ObjectSelectorUpdated")
+            {
+
+                //Texture newtexture = (Texture)EditorGUIUtility.GetObjectPickerObject();
+
+
+                unit.portrait = (Sprite)EditorGUIUtility.GetObjectPickerObject();//Sprite.Create((Texture2D)newtexture, new Rect(0, 0, newtexture.width, newtexture.height), new Vector2(0.5f, 0.5f));
+                Repaint();
+            }
+        }
+
+
+
+        protected override void OnHeaderGUI()
+        {
+            Init();
+
+            #region Portrait Stuff
+            GUILayout.BeginHorizontal("In BigTitle");
+            if (unit.portrait != null)
+            {
+                if (GUILayout.Button(unit.portrait.texture, GUILayout.Width(100), GUILayout.Height(100)))
                 {
-                    default:
-                        unit.item = null;
-                        break;
-
-                    case 1:
-
-                        ItemSelection();
-                        break;
+                    currentPickerWindow = EditorGUIUtility.GetControlID(FocusType.Passive);
+                    EditorGUIUtility.ShowObjectPicker<Sprite>(null, false, unit.name, currentPickerWindow);
                 }
-
-                GUILayout.EndVertical();
-                break;
-
-            case 2:
-                unit.type = "Door";
-                GUILayout.BeginVertical("In BigTitle");
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label("Locked: ", GUILayout.Width(70));
-                unit.selectedLocked = EditorGUILayout.Popup(unit.selectedLocked, new string[] { "Unlocked", "Locked" });
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.EndVertical();
-                switch (unit.selectedLocked)
+                ObjectPicked();
+            }
+            if (unit.portrait == null)
+            {
+                if (GUILayout.Button(empty, GUILayout.Width(100), GUILayout.Height(100)))
                 {
-                    case 0:
-                        unit.locked = false;
-                        break;
-
-
-                    case 1:
-
-                        LockedDoor();
-                        break;
+                    currentPickerWindow = EditorGUIUtility.GetControlID(FocusType.Passive);
+                    EditorGUIUtility.ShowObjectPicker<Sprite>(null, false, unit.name, currentPickerWindow);
                 }
-
-                if (unit.selectedLocked == 1)
-                {
-
-
-
-                }
-                break;
-
-            case 3:
-                unit.type = "Save Point";
-                //GUILayout.BeginVertical("In BigTitle");
-                //GUILayout.EndVertical();
-                break;
-
-            case 4:
-                unit.type = "Actor";
-                GUILayout.BeginVertical("In BigTitle");
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label("Script Number: ", GUILayout.Width(90));
-                unit.scriptNo = EditorGUILayout.IntField(unit.scriptNo);
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.EndVertical();
-                break;
-
-            case 5:
-                unit.type = "Event";
-                GUILayout.BeginVertical("In BigTitle");
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.Label("Event Type: ", GUILayout.Width(70));
-                unit.eventType = EditorGUILayout.Popup(unit.eventType, new string[] { "None", "Ladder", "Partner Action" });
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.EndVertical();
-                break;
-
+                ObjectPicked();
+            }
+            #endregion
+            #region Name Stuff
+            unit.name = GUILayout.TextField(unit.name, titleStyle);
+            GUILayout.EndHorizontal();
+            #endregion
         }
-    }
-    void ItemSelection()
-    {
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("Item: ", GUILayout.Width(70));
-        unit.item = (_Item)EditorGUILayout.ObjectField(unit.item, typeof(_Item), false);
-        EditorGUILayout.EndHorizontal();
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("Obtained: ", GUILayout.Width(70));
-        unit.obtained = EditorGUILayout.Toggle(!unit.obtained);
-        EditorGUILayout.EndHorizontal();
-    }
-    void LockedDoor()
-    {
-        unit.locked = true;
 
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("Lock Requirment: ", GUILayout.Width(110));
-        unit.lockRequirement = EditorGUILayout.Popup(unit.lockRequirement, new string[] { "Item Requirement", "Enemies Defeated" });
-        EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.BeginHorizontal();
-        switch (unit.lockRequirement)
+
+
+
+
+
+
+    }
+
+
+    [CustomEditor(typeof(Entity))]
+    public class Viewer_Entity : Editor
+    {
+        protected Entity unit;
+        protected bool initialized;
+
+
+        void Init()
         {
-            case 0:
-                GUILayout.Label("Items Required: ", GUILayout.Width(110));
-                unit.requiredAmount = EditorGUILayout.IntField(unit.requiredAmount);
-                break;
-
-
-            case 1:
-                break;
-
+            if (!initialized)
+            {
+                unit = (Entity)target;
+                initialized = true;
+            }
         }
-        EditorGUILayout.EndHorizontal();
-    }
-    void ObjectPicked()
-    {
-        _Item unit = (_Item)target;
-        string commandName = Event.current.commandName;
-        if (commandName == "ObjectSelectorUpdated")
+
+        protected override void OnHeaderGUI()
+        {   
+        }
+
+        public override void OnInspectorGUI()
         {
-            unit = (_Item)EditorGUIUtility.GetObjectPickerObject();
-            Repaint();
-        }
-    }
+            Init();
+            EditorGUILayout.BeginHorizontal("BigTitle");
+            GUILayout.Label("Entity Type: ");
+            unit.entityType = EditorGUILayout.Popup(unit.entityType, new string[] { "Default", "Player Controller", "Bot Controller", "Interactable" });
+            EditorGUILayout.EndHorizontal();
 
+            switch(unit.entityType)
+            {
+                case 1:
+                    PlayerController();
+                    break;
+
+                case 2:
+                    PlayerController();
+                    break;
+
+                case 3:
+
+                    break;
+            }
+            
+        }
+
+        void PlayerController()
+        {
+            EditorGUILayout.BeginHorizontal("In BigTitle");
+            GUILayout.Label("Character: ");
+            unit.character = EditorGUILayout.Popup(unit.character, new string[] { "Scarf","ClownFace","Human"});
+            EditorGUILayout.EndHorizontal();
+        }
+
+        void Interactable()
+        {
+            EditorGUILayout.BeginHorizontal("In BigTitle");
+            GUILayout.Label("Type: ");
+            unit.character = EditorGUILayout.Popup(unit.character, new string[] { "Scarf","ClownFace","Human"});
+            EditorGUILayout.EndHorizontal();
+        }
+
+
+
+
+
+    }
 }
