@@ -10,13 +10,9 @@
 //||                                                                                   ||
 //||=====================================||
 
-using System;
-using System.IO;
-using System.Text;
-using System.Collections;
+
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization.Formatters.Binary;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,9 +23,6 @@ using ScriptableObjects;
 
 public class GameManager : Game.Player.Inventory
 {
-    /// <summary>
-    /// Makes the script consist over multiple scenes.
-    /// </summary>
     void Awake()
     {
         if (game == null)
@@ -63,12 +56,17 @@ namespace Game
     {
         public class Inventory : Amount
         {
-            //Creates an event when an item is recieved.
             public delegate void OnItemChanged();
             public OnItemChanged onItemChangedCallback;
+            /// <summary>
+            /// Adds an item to your inventory.
+            /// </summary>
+            /// <param name="currentItem"></param>
+            /// <returns></returns>
             public bool Add(_Item currentItem)
             {
                 int i = 0;
+                
                 foreach (string names in itemNames)
                 {
                     if (currentItem.name == names)
@@ -115,6 +113,9 @@ namespace Game
         }
         public class Amount : Misc.LevelLoaded
         {
+            /// <summary>
+            /// Counts all characters in party.
+            /// </summary>
             protected void CharacterDetector()
             {
                 if (player.Count < 1)
@@ -134,7 +135,7 @@ namespace Game
         {
             #region Keycode Stuff
            readonly bool isTest = false;
-            float scroll = 0;
+            //float scroll = 0;
 
             #region Controllers //Variables for detecting how many controllers there are.
             public string controller;
@@ -159,6 +160,7 @@ namespace Game
             [HideInInspector] public KeyCode button_Attack;
             [HideInInspector] public KeyCode button_Action;
             [HideInInspector] public KeyCode button_Kick;
+            [HideInInspector] public KeyCode button_Crouch;
 
             [HideInInspector] public bool d_Up;
             [HideInInspector] public bool d_Down;
@@ -313,15 +315,15 @@ namespace Game
 
                 if (Input.GetAxis("Mouse ScrollWheel") * 10 > 0)
                 {
-                    scroll = 1;
+                    //scroll = 1;
                 }
                 if (Input.GetAxis("Mouse ScrollWheel") * 10 < 0)
                 {
-                    scroll = -1;
+                    //scroll = -1;
                 }
                 if (Input.GetAxis("Mouse ScrollWheel") * 10 == 0)
                 {
-                    scroll = 0;
+                    //scroll = 0;
                 }
 
 
@@ -331,6 +333,7 @@ namespace Game
                 button_Jump = KeyCode.Mouse1;
                 button_Attack = KeyCode.Mouse0;
                 button_Action = KeyCode.E;
+                button_Crouch = KeyCode.LeftControl;
 
                 button_Start = KeyCode.Escape;
                 button_Select = KeyCode.Backspace;
@@ -542,14 +545,13 @@ namespace Game
             private void OnEnable()
             {
                 SceneManager.sceneLoaded += OnLevelFinishedLoading;
-            
             }
             private void OnDisable()
             {
                 SceneManager.sceneLoaded -= OnLevelFinishedLoading;
-               
             }
             public AudioClip[] Music = new AudioClip[] { };
+            public AudioClip[] sfx;
             private void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
             {
                 Start();
@@ -589,7 +591,7 @@ namespace Game
     {
         public class Dialogue_Manager : Variables
         {
-            public List<Text> dialogue = new List<Text>(2);
+           [HideInInspector] public List<Text> dialogue = new List<Text>(2);
 
             [HideInInspector] public Canvas dialogueBox;
             [HideInInspector] public Image actorPortrait;
@@ -632,7 +634,7 @@ namespace Game
             }
         }
     }
-    
+
     public class Variables : Controller.Gamepad
     {
         protected void StartingVariables()
@@ -647,9 +649,16 @@ namespace Game
 
         public GameObject[] characters;
 
-       [HideInInspector] public List<bool> openMenus = new List<bool>(3);
-       [HideInInspector] public List<int> sound = new List<int>(3);
-        public List <Sprite> actorPortraits;
+        [HideInInspector] public List<bool> openMenus = new List<bool>(3);
+        [HideInInspector] public List<int> sound = new List<int>(3);
+        public List<Sprite> actorPortraits;
+
+
+        public Mesh[] meshes = new Mesh[4];
+        public Material[] materials = new Material[4];
+        public _Character[] playerInfo = new _Character[4];
+
+
 
         #region Characters
         /// <summary>
@@ -688,12 +697,16 @@ namespace Game
         /// <summary>
         /// The names of all the available items.
         /// </summary>
-         public string[] itemNames;
+        [HideInInspector] public string[] itemNames =
+        {
+            "Key",
+            "Potion"
+        };
 
         /// <summary>
         /// The amount of an item is stored here.
         /// </summary>
-         public int[] itemAmount;
+        [HideInInspector] public int[] itemAmount = new int[2];
         #endregion
         #region To Be Scrapped
         /// <summary>
@@ -706,98 +719,5 @@ namespace Game
     }
 
  
-    public class SaveEncrypt
-    {
-        #region Variables
-        public List<PlayerController> player = new List<PlayerController>();
-       readonly BinaryFormatter bf = new BinaryFormatter();
 
-        Vector3 positions;
-        Quaternion rotations;
-        #endregion
-
-        public void Save(string category, string saveType, string fileName)
-        {
-            string fileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/" + Application.productName;
-            FileStream file = File.Create(fileDirectory + "/Data/" + category + "/" + saveType + "/" + fileName + ".dat");
-            PlayerData data = new PlayerData();
-
-            if (!Directory.Exists(fileDirectory + "/Data/" + category + "/" + saveType))
-            {
-                Directory.CreateDirectory(fileDirectory + "/Data/" + category + "/" + saveType);
-            }
-                
-            Debug.Log(fileDirectory + "/Data/" + category + "/" + saveType + "/" + fileName + ".dat");
-
-            int i = 0;
-            int p = 0;
-            int r = 0;
-            foreach (PlayerController character in player)
-            {
-                data.health[i] = character.health;
-                data.level[i] = character.level;
-
-                positions = character.transform.localPosition;
-                data.positionFloat[p] = positions.x;
-                data.positionFloat[p + 1] = positions.y;
-                data.positionFloat[p + 2] = positions.z;
-
-                rotations = character.transform.localRotation;
-                data.rotationFloat[r] = rotations.x;
-                data.rotationFloat[r + 1] = rotations.y;
-                data.rotationFloat[r + 2] = rotations.z;
-                data.rotationFloat[r + 3] = rotations.w;
-
-                data.currentYaw[i] = character.currentYaw;
-
-                i++;
-                p += 3;
-                r += 4;
-            }
-            bf.Serialize(file, data);
-            file.Close();
-        }
-        public void Load(string category, string saveType, string fileName)
-        {
-            string fileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/" + Application.productName;
-
-            if (File.Exists(fileDirectory + "/Data/" + category + "/" + saveType + "/" + fileName + ".dat"))
-            {
-                FileStream file = File.Open(fileDirectory + "/Data/" + category + "/" + saveType + "/" + fileName + ".dat", FileMode.Open);
-                PlayerData data = (PlayerData)bf.Deserialize(file);
-                file.Close();
-
-                int i = 0;
-                int p = 0;
-                int r = 0;
-                foreach (PlayerController character in player)
-                {
-                    character.health = data.health[i];
-                    character.level = data.level[i];
-
-                    positions = new Vector3(data.positionFloat[p], data.positionFloat[p + 1], data.positionFloat[p + 2]);
-                    rotations = new Quaternion(data.rotationFloat[r], data.rotationFloat[r + 1], data.rotationFloat[r + 2], data.rotationFloat[r + 3]);
-
-                    character.transform.localPosition = positions;
-                    character.transform.localRotation = rotations;
-                    character.currentYaw = data.currentYaw[i];
-                    i++;
-                    p += 3;
-                    r += 4;
-                }
-            }
-        }
-    }
-    [Serializable] class PlayerData
-    {
-        public int[] items = new int[2];
-
-        public int[] health = new int[4];
-        public int[] level = new int[4];
-
-        public float[] positionFloat = new float[12];
-        public float[] rotationFloat = new float[16];
-
-        public float[] currentYaw = new float[4];
-    }
 }

@@ -22,7 +22,7 @@ namespace Inspectors
     public class Viewer_GameManager : Editor
     {
         #region Main Layer
-        protected int debugView = 1;
+        protected int debugView = 0;
         protected int defaultView;
         protected bool Initialized;
 
@@ -714,11 +714,13 @@ namespace Inspectors
         protected override void OnHeaderGUI()
         {   
         }
+        GameManager game;
 
         public override void OnInspectorGUI()
         {
             Init();
-            EditorGUILayout.BeginHorizontal("BigTitle");
+            game = FindObjectOfType<GameManager>();
+            EditorGUILayout.BeginHorizontal("In BigTitle");
             GUILayout.Label("Entity Type: ");
             unit.entityType = EditorGUILayout.Popup(unit.entityType, new string[] { "Default", "Player Controller", "Bot Controller", "Interactable" });
             EditorGUILayout.EndHorizontal();
@@ -734,7 +736,7 @@ namespace Inspectors
                     break;
 
                 case 3:
-
+                    Interactable();
                     break;
             }
             
@@ -742,6 +744,7 @@ namespace Inspectors
 
         void PlayerController()
         {
+            if (unit.character > 2) unit.character = 0;
             EditorGUILayout.BeginHorizontal("In BigTitle");
             GUILayout.Label("Character: ");
             unit.character = EditorGUILayout.Popup(unit.character, new string[] { "Scarf","ClownFace","Human"});
@@ -750,10 +753,54 @@ namespace Inspectors
 
         void Interactable()
         {
-            EditorGUILayout.BeginHorizontal("In BigTitle");
+            EditorGUILayout.BeginVertical("In BigTitle");
+            EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Type: ");
-            unit.character = EditorGUILayout.Popup(unit.character, new string[] { "Scarf","ClownFace","Human"});
+            unit.character = EditorGUILayout.Popup(unit.character, new string[] { "Item","Chest","Door","Save Point", "Actor", "Event"});
             EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            switch (unit.character)
+            {
+                default:
+                    
+                    break;
+
+                case 0: // Item
+                    GUILayout.Label("Item: ");
+                    unit.context[0] = EditorGUILayout.Popup(unit.context[0], new string[] { "Nothing", "Potion", "Key" });
+                    break;
+
+                case 1: // Chest
+                    GUILayout.Label("Item: ");
+                    unit.context[0] = EditorGUILayout.Popup(unit.context[0], new string[] { "Nothing", "Potion", "Key" });
+                    break;
+
+                case 2: // Door
+                    GUILayout.Label("Locked: ");
+                    unit.context[0] = EditorGUILayout.Popup(unit.context[0], new string[] { "Unlocked", "Locked" });
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("Door Type: ");
+                    unit.context[1] = EditorGUILayout.Popup(unit.context[1], new string[] { "Lift", "Swing" });
+                    break;
+
+                case 3: // Save Point:
+
+                    break;
+
+                case 4: // Actor
+                    GUILayout.Label("Character: ");
+                    unit.context[0] = EditorGUILayout.Popup(unit.context[0], new string[] { "Scarf", "ClownFace", "Human", "SignPost" });
+                    break;
+
+                case 5: // Event
+
+                    break;
+
+
+            }
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
         }
 
 

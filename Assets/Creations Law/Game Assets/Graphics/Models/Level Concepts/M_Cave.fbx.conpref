@@ -1,0 +1,17 @@
+{
+  "Scaling": 500.0,
+  "ReduceDupVerts": true,
+  "Fog": null,
+  "ResizeTextures": true,
+  "CenterModel": true,
+  "Shading": {
+    "AmbientColor": "127, 127, 127",
+    "DiffuseColor": "White",
+    "DiffusePosition": {
+      "X": 0.0,
+      "Y": 0.0,
+      "Z": 0.0
+    }
+  },
+  "OptimizeTransparencyChecks": false
+}

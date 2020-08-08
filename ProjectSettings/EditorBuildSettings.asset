@@ -15,5 +15,5 @@ EditorBuildSettings:
     path: Assets/Creations Law/Game Assets/Scenes/Test Rooms/Gameplay Test.unity
     guid: 5570270a76e3d6146a58489a43853e5c
   m_configObjects:
-    com.unity.input.settings: {fileID: 11400000, guid: 665bef7f256471a4fa0ee599bd475268,
+    com.unity.input.settings: {fileID: 11400000, guid: 98b71ed9bce67d44a925622e1ef54308,
       type: 2}

@@ -70,7 +70,7 @@ namespace PlayerPackage
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                partyMember = game.bot[0];
+               // partyMember = game.bot[0];
             }
         }
     }

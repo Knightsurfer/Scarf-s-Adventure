@@ -1078,7 +1078,9 @@ namespace UI
         protected void MenuItemsCountRelevant()
         {
             //Clears the menu items context array to make room for the new items.
+			menuItemsCurrentContext = new GameObject[10];
             Array.Clear(menuItemsCurrentContext, 0, menuItemsCurrentContext.Length);
+			
 
             int i = 0;
             foreach (MouseMenu m in menuItems)
@@ -1090,7 +1092,10 @@ namespace UI
                     i++;
                 }
             }
+			
+			
             menuItemsCounted = i - 1;
+			
             //Debug.Log(menuItemsCounted);
         }
     }

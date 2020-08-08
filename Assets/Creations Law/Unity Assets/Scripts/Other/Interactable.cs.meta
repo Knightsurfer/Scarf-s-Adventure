@@ -3,7 +3,16 @@ guid: 51649fe34c436014c8f26d9932ce85be
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - playerInfo: {instanceID: 0}
+  - actorPortrait: {instanceID: 0}
+  - prefab: {instanceID: 0}
+  - game: {instanceID: 0}
+  - anim: {instanceID: 0}
+  - sfx_open: {fileID: 8300000, guid: 8cb4965ac98cf964ab5d502bd4c9dd71, type: 3}
+  - sfx_close: {instanceID: 0}
+  - sfx_chestopen: {instanceID: 0}
+  - item: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -53,11 +53,24 @@ public class Interactable : Interactive.I_Item
                 scriptNo = 7;
                 ActorStart();
                 gameObject.AddComponent<NavMeshObstacle>();
-                gameObject.AddComponent<Animator>();
+                anim = GetComponent<Animator>();
+                sfx = gameObject.AddComponent<AudioSource>();
                 BoxCollider doorCollider = gameObject.AddComponent<BoxCollider>();
                 BoxCollider doorTrigger = gameObject.AddComponent<BoxCollider>();
-                doorTrigger.center = new Vector3(-0, 0.3f, -0.2f);
-                doorTrigger.size = new Vector3(2.8f, 4.5f, 8);
+                anim.SetFloat("DoorType", doortype);
+                switch(doortype)
+                {
+                    default:
+                        doorTrigger.center = new Vector3(-0, 0.3f, -0.2f);
+                        doorTrigger.size = new Vector3(2.8f, 4.5f, 8);
+                        break;
+
+                    case 1:
+                        doorTrigger.center = new Vector3(-0.3f, 0.3f, -0.2f);
+                        doorTrigger.size = new Vector3(6.4f, 4.5f, 8);
+                        break;
+
+                }
                 doorTrigger.isTrigger = true;
                 break;
         }
@@ -68,6 +81,7 @@ public class Interactable : Interactive.I_Item
         {
             case "Door":
                
+
                 GetComponent<NavMeshObstacle>().enabled = locked;
                 if (hasInteracted)
                 {
@@ -91,6 +105,8 @@ public class Interactable : Interactive.I_Item
                     {
                         if (!anim.GetBool("Approached"))
                         {
+                            sfx.clip = game.sfx[0];
+                            sfx.Play();
                             anim.SetBool("Approached", true);
                         }
                     }
@@ -99,7 +115,8 @@ public class Interactable : Interactive.I_Item
                 {
                     if (anim.GetBool("Approached"))
                     {
-
+                        sfx.clip = game.sfx[1];
+                        sfx.Play();
                         anim.SetBool("Approached", false);
                     }
                 }
@@ -347,7 +364,7 @@ namespace Interactive
     {
         public void Awake()
         {
-            anim = GetComponentInChildren<Animator>();
+            
         }
 
         #region Setup
@@ -361,11 +378,14 @@ namespace Interactive
         public _Item item;
         public bool obtained;
         protected bool wasPickedUp;
+        protected AudioSource sfx;
+        
         #endregion
 
         #region Door
         public int requiredAmount;
         public bool locked;
+        public int doortype;
         #endregion
 
         #region Actor

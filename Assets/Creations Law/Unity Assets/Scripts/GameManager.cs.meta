@@ -3,7 +3,10 @@ guid: 6cce977c1d3b5e24a8a684c095e7311b
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - slotAdd: {instanceID: 0}
+  - dialogueBox: {instanceID: 0}
+  - actorPortrait: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
