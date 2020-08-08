@@ -374,7 +374,7 @@ MonoBehaviour:
   button_R: 0
   button_Start: 0
   button_Select: 0
-  startMusic: 2
+  startMusic: 3
   characters: []
   openMenus: 000000
   sound: 000000000000000000000000
@@ -2555,6 +2555,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3990036101274998414, guid: 807f338e17e370c42adc651e4608f81e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 807f338e17e370c42adc651e4608f81e,
         type: 3}
@@ -5464,7 +5469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51649fe34c436014c8f26d9932ce85be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptNo: 11
+  scriptNo: 5
   playerInfo: {fileID: 0}
   currentlyActing: 0
   actorPortrait: {fileID: 0}
